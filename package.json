@@ -1,0 +1,12 @@
+{
+  "name": "aios-x",
+  "version": "1.0.0",
+  "description": "AIOS-X - Agentic Intelligence Orchestration System",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "start": "npx serve . -l 3000"
+  },
+  "keywords": ["agentic-ai", "orchestration", "mcp-protocol"],
+  "author": "",
+  "license": "MIT"
+}
