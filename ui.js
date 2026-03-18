@@ -54,21 +54,31 @@ function clearLog(panelId) {
 // ── PANEL NAVIGATION ──
 function initNavigation() {
   const buttons = document.querySelectorAll('.nav-btn');
+  if (!buttons.length) return;
+  
   buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.panel;
-      // Update buttons
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      // Update panels
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      const panel = document.getElementById('panel-' + target);
-      if (panel) {
-        panel.classList.add('active');
-        onPanelActivate(target);
-      }
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      switchToPanel(this.dataset.panel);
     });
   });
+}
+
+function switchToPanel(target) {
+  if (!target) return;
+  
+  // Update nav buttons
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.panel === target);
+  });
+  
+  // Update panels
+  document.querySelectorAll('.panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'panel-' + target);
+  });
+  
+  // Trigger panel-specific init
+  onPanelActivate(target);
 }
 
 function onPanelActivate(panel) {
