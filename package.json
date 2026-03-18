@@ -1,6 +1,6 @@
 {
   "name": "aios-x",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "AIOS-X - Agentic Intelligence Orchestration System",
   "scripts": {
