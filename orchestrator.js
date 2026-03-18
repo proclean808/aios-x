@@ -1,5 +1,6 @@
 /* ═════════════════════════════════════
    AIOS-X · Orchestration Engine
+   Multi-Provider BYOK Support
 ═════════════════════════════════════ */
 
 const ORCHESTRATION_STEPS = [
@@ -9,10 +10,6 @@ const ORCHESTRATION_STEPS = [
   { layer: 'layer-exec', node: 0, msg: '🌐 Notte browser agent: Activated for web research', delay: 800 },
   { layer: 'layer-exec', node: 1, msg: '🔌 Zatanna API bridge: Legacy system connectivity established', delay: 1000 },
   { layer: 'layer-verify', node: 0, msg: '🔬 Rubric AI: Reasoning verification engine armed', delay: 1200 },
-  { layer: 'layer-models', node: 0, msg: '⚡ DeepSeek V4 (1T params): Task assigned', delay: 1400 },
-  { layer: 'layer-models', node: 1, msg: '⚡ Llama 4 Scout (10M ctx): Task assigned', delay: 1600 },
-  { layer: 'layer-models', node: 2, msg: '⚡ Mistral 3 (675B MoE): Task assigned', delay: 1800 },
-  { layer: 'layer-models', node: 3, msg: '⚡ GPT-OSS 120B: Task assigned', delay: 2000 },
   { layer: 'layer-orch', node: 1, msg: '⚖️ Debate engine: Cross-model argument synthesis running', delay: 2400 },
   { layer: 'layer-orch', node: 2, msg: '✅ Consensus verifier: Evaluating model agreement', delay: 2800 },
   { layer: 'layer-verify', node: 3, msg: '⭐ Rubric AI: Scoring and ranking outputs', delay: 3200 },
@@ -74,9 +71,18 @@ async function launchOrchestration() {
   }
 
   const strategy = document.getElementById('orchestrationStrategy').value;
-  const activeModels = getActiveModels();
-  if (activeModels.length === 0) {
+  const selectedModels = typeof getSelectedModels === 'function' ? getSelectedModels() : [];
+  
+  if (selectedModels.length === 0) {
     showToast('Enable at least one model', 'warning');
+    return;
+  }
+
+  // Check demo mode
+  const isDemo = typeof vault !== 'undefined' && vault.isInDemoMode();
+  if (isDemo && !vault.canMakeDemoRequest()) {
+    showToast('Demo limit reached. Configure API keys in Vault.', 'warning');
+    if (typeof openVaultModal === 'function') openVaultModal();
     return;
   }
 
@@ -88,37 +94,162 @@ async function launchOrchestration() {
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Orchestrating...';
 
+  const modelNames = selectedModels.map(m => MODEL_PROVIDERS[m.provider]?.name || m.provider).join(', ');
   addLog('orchestrationLogBody', `━━━ TASK #${taskCounter}: "${input.substring(0,60)}..." ━━━`, 'highlight');
   addLog('orchestrationLogBody', `Strategy: ${ORCHESTRATION_STRATEGIES[strategy]?.name || strategy}`, 'info');
-  addLog('orchestrationLogBody', `Active models: ${activeModels.join(', ')}`, 'info');
+  addLog('orchestrationLogBody', `Active models (${selectedModels.length}): ${modelNames}`, 'info');
+  if (isDemo) {
+    addLog('orchestrationLogBody', `⚠️ Demo mode: ${vault.getDemoRemaining()} requests remaining`, 'warning');
+  }
 
-  // Animate each layer
-  for (const step of ORCHESTRATION_STEPS) {
+  // Animate layers (non-model steps)
+  for (const step of ORCHESTRATION_STEPS.slice(0, 6)) {
     await sleep(step.delay);
     activateLayerNode(step.layer, step.node);
     addLog('orchestrationLogBody', step.msg, 'success');
   }
 
-  // Final response
-  await sleep(4000);
-  const responses = TASK_RESPONSES.default;
-  for (const r of responses) {
-    addLog('orchestrationLogBody', r, 'info');
-    await sleep(300);
+  // Call models in parallel
+  addLog('orchestrationLogBody', '⚡ Dispatching to selected models...', 'highlight');
+  
+  // Clear and prepare response grid
+  const responseGrid = document.getElementById('modelResponseGrid');
+  if (responseGrid) {
+    responseGrid.innerHTML = '';
+    responseGrid.style.display = 'grid';
   }
 
-  addLog('orchestrationLogBody', `✅ Task #${taskCounter} complete. Consensus reached. Memory updated.`, 'success');
+  const messages = [
+    { role: 'system', content: 'You are a helpful AI assistant participating in a multi-model orchestration system. Provide concise, insightful responses.' },
+    { role: 'user', content: input }
+  ];
+
+  let results = [];
+  
+  if (isDemo) {
+    vault.incrementDemoCount();
+    // Demo mode: simulate responses
+    results = await Promise.all(selectedModels.map(async ({ provider, model }) => {
+      const startTime = Date.now();
+      await sleep(800 + Math.random() * 1200);
+      const response = await getDemoResponse(provider);
+      return {
+        provider,
+        model,
+        response,
+        latency: Date.now() - startTime,
+        status: 'demo'
+      };
+    }));
+  } else {
+    // Real API calls
+    results = await callMultipleModels(messages, selectedModels);
+  }
+
+  // Render responses in grid
+  results.forEach((result, idx) => {
+    const providerInfo = MODEL_PROVIDERS[result.provider] || {};
+    addLog('orchestrationLogBody', 
+      result.status === 'error' 
+        ? `❌ ${providerInfo.name}: ${result.error}` 
+        : `✅ ${providerInfo.name} responded (${result.latency}ms)`, 
+      result.status === 'error' ? 'error' : 'success'
+    );
+
+    if (responseGrid) {
+      const card = createResponseCard(result, idx);
+      responseGrid.appendChild(card);
+    }
+  });
+
+  // Continue with remaining orchestration steps
+  for (const step of ORCHESTRATION_STEPS.slice(6)) {
+    await sleep(step.delay - 2000);
+    activateLayerNode(step.layer, step.node);
+    addLog('orchestrationLogBody', step.msg, 'success');
+  }
+
+  addLog('orchestrationLogBody', `✅ Task #${taskCounter} complete. ${results.filter(r => r.status !== 'error').length}/${results.length} models responded.`, 'success');
 
   // Update memory stats
-  incrementMemoryNodes(3);
-  updateMemoryStats();
+  if (typeof incrementMemoryNodes === 'function') incrementMemoryNodes(3);
+  if (typeof updateMemoryStats === 'function') updateMemoryStats();
 
   btn.disabled = false;
   btn.innerHTML = '<i class="fas fa-play"></i> Launch Orchestration';
   orchestrationRunning = false;
 
-  showToast(`Task #${taskCounter} completed successfully`, 'success');
+  showToast(`Task #${taskCounter} completed`, 'success');
 }
+
+function createResponseCard(result, index) {
+  const providerInfo = MODEL_PROVIDERS[result.provider] || {};
+  const card = document.createElement('div');
+  card.className = `response-card ${result.status === 'error' ? 'error' : ''} ${result.status === 'demo' ? 'demo' : ''}`;
+  card.style.setProperty('--card-color', providerInfo.color || '#38bdf8');
+  card.style.animationDelay = `${index * 100}ms`;
+
+  card.innerHTML = `
+    <div class="rc-header">
+      <div class="rc-badge" style="background: ${providerInfo.color}20; color: ${providerInfo.color}">${providerInfo.icon || '?'}</div>
+      <div class="rc-info">
+        <div class="rc-name">${providerInfo.name || result.provider}</div>
+        <div class="rc-model">${result.model}</div>
+      </div>
+      <div class="rc-meta">
+        <span class="rc-latency">${result.latency}ms</span>
+        ${result.status === 'demo' ? '<span class="rc-demo-badge">DEMO</span>' : ''}
+      </div>
+    </div>
+    <div class="rc-content">
+      ${result.status === 'error' 
+        ? `<div class="rc-error"><i class="fas fa-exclamation-triangle"></i> ${result.error}</div>`
+        : `<div class="rc-response">${escapeHtml(result.response)}</div>`
+      }
+    </div>
+    <div class="rc-footer">
+      <button class="rc-btn" onclick="copyResponse(this)" data-response="${escapeAttr(result.response || '')}">
+        <i class="fas fa-copy"></i> Copy
+      </button>
+      <button class="rc-btn" onclick="expandResponse(this)">
+        <i class="fas fa-expand"></i> Expand
+      </button>
+    </div>
+  `;
+
+  return card;
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function escapeAttr(text) {
+  if (!text) return '';
+  return text.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function copyResponse(btn) {
+  const text = btn.dataset.response;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Response copied to clipboard', 'success');
+  }).catch(() => {
+    showToast('Failed to copy', 'error');
+  });
+}
+
+function expandResponse(btn) {
+  const card = btn.closest('.response-card');
+  const content = card.querySelector('.rc-response')?.textContent || card.querySelector('.rc-error')?.textContent || '';
+  const name = card.querySelector('.rc-name')?.textContent || 'Response';
+  openModal(name + ' Response', `<div class="expanded-response">${escapeHtml(content)}</div>`);
+}
+
+window.copyResponse = copyResponse;
+window.expandResponse = expandResponse;
 
 function activateLayerNode(layerId, nodeIndex) {
   const layer = document.getElementById(layerId);

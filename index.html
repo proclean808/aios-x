@@ -91,27 +91,33 @@
           <div class="textarea-glow"></div>
         </div>
         <div class="input-controls">
-          <div class="model-toggles">
-            <span class="mt-label">Active Models:</span>
-            <button class="model-toggle active" data-model="deepseek">DeepSeek V4</button>
-            <button class="model-toggle active" data-model="llama">Llama 4 Scout</button>
-            <button class="model-toggle active" data-model="mistral">Mistral 3</button>
-            <button class="model-toggle active" data-model="gpt-oss">GPT-OSS 120B</button>
+          <div class="model-toggles-section">
+            <div class="mt-header">
+              <span class="mt-label">Active Models (max 6):</span>
+              <button class="btn-vault" onclick="openVaultModal()" title="Configure API Keys">
+                <i class="fas fa-key"></i> Vault
+              </button>
+            </div>
+            <div class="model-toggles" id="modelTogglesContainer">
+              <!-- Populated by vault.js -->
+            </div>
           </div>
-          <div class="strategy-select-wrapper">
-            <label class="sl-label">Strategy:</label>
-            <select id="orchestrationStrategy" class="strategy-select">
-              <option value="debate">Debate &amp; Consensus</option>
-              <option value="parallel">Parallel Execution</option>
-              <option value="waterfall">Waterfall Pipeline</option>
-              <option value="adversarial">Adversarial Challenge</option>
-              <option value="swarm">Swarm Intelligence</option>
-            </select>
+          <div class="controls-row">
+            <div class="strategy-select-wrapper">
+              <label class="sl-label">Strategy:</label>
+              <select id="orchestrationStrategy" class="strategy-select">
+                <option value="debate">Debate &amp; Consensus</option>
+                <option value="parallel">Parallel Execution</option>
+                <option value="waterfall">Waterfall Pipeline</option>
+                <option value="adversarial">Adversarial Challenge</option>
+                <option value="swarm">Swarm Intelligence</option>
+              </select>
+            </div>
+            <button class="btn-primary btn-launch" id="launchOrchestration">
+              <i class="fas fa-play"></i> Launch Orchestration
+              <div class="btn-glow"></div>
+            </button>
           </div>
-          <button class="btn-primary btn-launch" id="launchOrchestration">
-            <i class="fas fa-play"></i> Launch Orchestration
-            <div class="btn-glow"></div>
-          </button>
         </div>
       </div>
     </div>
@@ -211,6 +217,21 @@
       </div>
     </div>
 
+    <!-- Model Response Grid (2x3 for up to 6 models) -->
+    <div class="response-grid-wrapper">
+      <div class="rg-header">
+        <span><i class="fas fa-layer-group"></i> MODEL RESPONSES</span>
+        <span class="rg-status" id="responseStatus">Awaiting orchestration...</span>
+      </div>
+      <div class="model-response-grid" id="modelResponseGrid">
+        <!-- Response cards populated dynamically -->
+        <div class="response-placeholder">
+          <i class="fas fa-robot"></i>
+          <p>Select models and launch orchestration to see responses</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Live Orchestration Log -->
     <div class="log-panel" id="orchestrationLog">
       <div class="log-header">
@@ -218,10 +239,9 @@
         <button class="log-clear" onclick="clearLog('orchestrationLog')"><i class="fas fa-trash"></i></button>
       </div>
       <div class="log-body" id="orchestrationLogBody">
-        <div class="log-entry info"><span class="log-ts"></span><span class="log-msg">AIOS-X initialized. All systems nominal.</span></div>
-        <div class="log-entry success"><span class="log-ts"></span><span class="log-msg">MCP Protocol active · 82.7K stars on GitHub · Linux Foundation</span></div>
-        <div class="log-entry info"><span class="log-ts"></span><span class="log-msg">Loaded: DeepSeek V4 (1T params) · Llama 4 Scout (10M ctx) · Mistral 3 (675B MoE) · GPT-OSS 120B</span></div>
-        <div class="log-entry warning"><span class="log-ts"></span><span class="log-msg">Agent memory layer: ByteRover .brv context-tree initialized (92.2% retrieval accuracy)</span></div>
+        <div class="log-entry info"><span class="log-ts"></span><span class="log-msg">AIOS-X initialized. Multi-provider BYOK system ready.</span></div>
+        <div class="log-entry success"><span class="log-ts"></span><span class="log-msg">Vault: Configure API keys for OpenAI, Claude, Gemini, Grok, Ollama, or Llama 4</span></div>
+        <div class="log-entry warning"><span class="log-ts"></span><span class="log-msg">Demo mode active: 3 free requests available. Add API keys for unlimited use.</span></div>
       </div>
     </div>
   </section>
@@ -867,6 +887,7 @@
 <!-- ── SCRIPTS ── -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="particles.js"></script>
+<script src="vault.js"></script>
 <script src="orchestrator.js"></script>
 <script src="debate.js"></script>
 <script src="memory.js"></script>
