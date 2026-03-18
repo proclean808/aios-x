@@ -1,6 +1,7 @@
 {
   "name": "aios-x",
   "version": "1.0.0",
+  "type": "module",
   "description": "AIOS-X - Agentic Intelligence Orchestration System",
   "scripts": {
     "dev": "vite",
