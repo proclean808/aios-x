@@ -10,7 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initTicker();
   initShortcuts();
-  initModelToggles();
+  
+  // Initialize BYOK model toggles from vault
+  if (typeof updateModelToggles === 'function') {
+    updateModelToggles();
+  }
 
   // ── INIT MODULES ──
   initOrchestrator();
@@ -26,26 +30,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── BOOT SEQUENCE LOG ──
   setTimeout(() => {
-    addLog('orchestrationLogBody', '🚀 AIOS-X v1.0 · March 2026 AI Landscape Integration', 'highlight');
-    addLog('orchestrationLogBody', 'Source: March 2026 AI Landscape Intelligence Brief', 'info');
+    addLog('orchestrationLogBody', '🚀 AIOS-X v2.0 · Multi-Provider BYOK System', 'highlight');
+    addLog('orchestrationLogBody', 'Supported: OpenAI · Claude · Gemini · Grok · Ollama · Llama 4', 'info');
     addLog('orchestrationLogBody', '═══════════════════════════════════════════════════', 'info');
   }, 100);
 
   setTimeout(() => {
-    addLog('orchestrationLogBody', '💰 Market Context: $189B VC funding · 90% to AI · Record month', 'success');
-    addLog('orchestrationLogBody', '🤖 Paradigm: Agentic AI is the dominant architecture in 2026', 'success');
-    addLog('orchestrationLogBody', '🔗 Protocol: MCP at 82.7K stars · Linux Foundation · Universal standard', 'success');
+    const configured = typeof vault !== 'undefined' ? vault.getConfiguredProviders().length : 0;
+    const isDemo = typeof vault !== 'undefined' && vault.isInDemoMode();
+    addLog('orchestrationLogBody', `🔑 Vault Status: ${configured} provider(s) configured`, configured > 0 ? 'success' : 'warning');
+    if (isDemo) {
+      addLog('orchestrationLogBody', `⚠️ Demo Mode: ${vault.getDemoRemaining()} free requests available`, 'warning');
+      addLog('orchestrationLogBody', '💡 Click "Vault" to add your API keys for unlimited access', 'info');
+    }
   }, 400);
 
   setTimeout(() => {
-    addLog('orchestrationLogBody', '🧠 Models online: DeepSeek V4 (1T) · Llama 4 Scout (10M ctx) · Mistral 3 (675B MoE) · GPT-OSS 120B', 'success');
-    addLog('orchestrationLogBody', '💾 ByteRover: 92.2% retrieval accuracy · compresr: 68% avg compression', 'success');
-    addLog('orchestrationLogBody', '🔒 ClawSecure: Active · Zero-trust IAM: Active · EU AI Act deadline: Aug 2, 2026', 'warning');
+    addLog('orchestrationLogBody', '🤖 Paradigm: Agentic AI multi-model orchestration', 'success');
+    addLog('orchestrationLogBody', '🔗 Protocol: MCP at 82.7K stars · Linux Foundation · Universal standard', 'success');
+    addLog('orchestrationLogBody', '⚡ Max 6 models can run simultaneously in parallel', 'info');
   }, 800);
 
   setTimeout(() => {
-    addLog('orchestrationLogBody', '⭐ White Space: Agent Orchestration Middleware — underfunded, critical opportunity', 'warning');
-    addLog('orchestrationLogBody', '✅ AIOS-X fully initialized. All layers operational. Enter a task to begin.', 'success');
+    addLog('orchestrationLogBody', '✅ AIOS-X ready. Select models and launch orchestration.', 'success');
   }, 1200);
 
   // ── SECURITY LOG INIT ──
