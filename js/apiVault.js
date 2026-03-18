@@ -33,6 +33,7 @@ const PROVIDERS = {
   ollama:    { name: 'Ollama (Local)',      icon: '🦙', color: '#fb923c', placeholder: 'http://localhost:11434', baseUrl: '' },
   mistral:   { name: 'Mistral AI',          icon: '🔴', color: '#f87171', placeholder: 'sk-…',     baseUrl: 'https://api.mistral.ai' },
   deepseek:  { name: 'DeepSeek',           icon: '🐋', color: '#818cf8', placeholder: 'sk-…',     baseUrl: 'https://api.deepseek.com' },
+  vercel:    { name: 'Vercel',             icon: '▲',  color: '#ffffff', placeholder: 'token_…',  baseUrl: 'https://api.vercel.com' },
 };
 
 // ── VAULT OPERATIONS ──
@@ -197,6 +198,8 @@ async function callModel(provider, modelId, messages, options = {}) {
       return callMistral(key, modelId, messages, systemPrompt, maxTokens, temperature);
     case 'deepseek':
       return callDeepSeek(key, modelId, messages, systemPrompt, maxTokens, temperature);
+    case 'vercel':
+      throw new Error('Vercel is a deployment provider — use submitVercelDeploy() for deployments, not callModel().');
     default:
       throw new Error(`Unknown provider: ${provider}`);
   }
@@ -331,6 +334,66 @@ async function callDeepSeek(key, model, messages, system, maxTokens, temperature
   return data.choices?.[0]?.message?.content || '';
 }
 
+// ── VERCEL DEPLOY ──
+// Triggers a deployment for the given Vercel project.
+// opts.teamId  — optional Vercel team ID (slug or cuid)
+// opts.ref     — git branch/tag/SHA to deploy (default: main)
+async function submitVercelDeploy(opts = {}) {
+  const key = getKey('vercel');
+  if (!key) throw new Error('No Vercel token stored. Open the Vault, select Vercel, and save your token.');
+
+  const { name, teamId, ref = 'main', env = {}, target = 'production' } = opts;
+  if (!name) throw new Error('submitVercelDeploy requires opts.name (project name or id)');
+
+  const url = teamId
+    ? `https://api.vercel.com/v13/deployments?teamId=${encodeURIComponent(teamId)}`
+    : 'https://api.vercel.com/v13/deployments';
+
+  const body = {
+    name,
+    target,
+    gitSource: { type: 'github', ref },
+    projectSettings: {},
+  };
+  if (Object.keys(env).length) body.env = env;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`Vercel deploy error ${res.status}: ${err.error?.message || res.statusText}`);
+  }
+
+  const data = await res.json();
+  showToast(`Vercel deployment started: ${data.url || data.id}`, 'success');
+  return data;
+}
+
+// List recent deployments for a project
+async function listVercelDeployments(projectName, { teamId, limit = 10 } = {}) {
+  const key = getKey('vercel');
+  if (!key) throw new Error('No Vercel token stored.');
+
+  const params = new URLSearchParams({ projectId: projectName, limit });
+  if (teamId) params.set('teamId', teamId);
+
+  const res = await fetch(`https://api.vercel.com/v6/deployments?${params}`, {
+    headers: { 'Authorization': `Bearer ${key}` },
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`Vercel list error ${res.status}: ${err.error?.message || res.statusText}`);
+  }
+  return (await res.json()).deployments || [];
+}
+
 // Expose
 window.renderVaultGrid = renderVaultGrid;
 window.addVaultKey = addVaultKey;
@@ -343,3 +406,5 @@ window.getKey = getKey;
 window.hasKey = hasKey;
 window.callModel = callModel;
 window.PROVIDERS = PROVIDERS;
+window.submitVercelDeploy = submitVercelDeploy;
+window.listVercelDeployments = listVercelDeployments;

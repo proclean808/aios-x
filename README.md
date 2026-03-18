@@ -187,6 +187,45 @@ Keys are stored in `localStorage` — they persist across sessions and are never
 - Google: [aistudio.google.com](https://aistudio.google.com)
 - xAI: [console.x.ai](https://console.x.ai)
 - Ollama: Use `http://localhost:11434` as the endpoint (no key)
+- Vercel: [vercel.com/account/tokens](https://vercel.com/account/tokens) — create a token with `Full Account` scope
+
+---
+
+## Vercel API Command Reference
+
+Once a Vercel token is saved in the vault, you can call these from the browser console or from any tab's JS context:
+
+### Trigger a Deployment
+
+```js
+// Minimal — deploys 'main' branch to production
+submitVercelDeploy({ name: 'aios-x' })
+
+// Full options
+submitVercelDeploy({
+  name: 'aios-x',          // project name or project ID (required)
+  ref: 'main',             // git branch, tag, or commit SHA (default: 'main')
+  target: 'production',    // 'production' | 'preview' (default: 'production')
+  teamId: 'my-team',       // optional Vercel team slug or ID
+  env: {                   // optional env var overrides for this deploy
+    NEXT_PUBLIC_ENV: 'prod'
+  }
+})
+```
+
+Returns the Vercel deployment object and shows a toast with the deployment URL.
+
+### List Recent Deployments
+
+```js
+// List last 10 deployments for a project
+listVercelDeployments('aios-x')
+
+// With options
+listVercelDeployments('aios-x', { limit: 5, teamId: 'my-team' })
+```
+
+Returns an array of deployment objects from the Vercel API.
 
 ---
 
