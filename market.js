@@ -1,6 +1,6 @@
 /* ═════════════════════════════════════
    AIOS-X · Market Intelligence
-   Feb 2026 AI Landscape Data
+   March 2026 AI Landscape Data
 ═════════════════════════════════════ */
 
 let chartsInitialized = false;
