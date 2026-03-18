@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIOS-X · Agentic Intelligence Orchestration System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Particle Canvas Background -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header class="app-header">
+  <div class="header-left">
+    <div class="logo-block">
+      <svg class="logo-hex" viewBox="0 0 40 46" fill="none">
+        <path d="M20 0L40 11.5V34.5L20 46L0 34.5V11.5L20 0Z" fill="url(#hexGrad)"/>
+        <path d="M20 8L32 15V29L20 36L8 29V15L20 8Z" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+        <text x="20" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="white" font-family="monospace">AX</text>
+        <defs>
+          <linearGradient id="hexGrad" x1="0" y1="0" x2="40" y2="46" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#1d4ed8"/>
+            <stop offset="100%" stop-color="#0ea5e9"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div>
+        <div class="app-title">AIOS-X</div>
+        <div class="app-subtitle">Agentic Intelligence Orchestration System · Extended</div>
+      </div>
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="ticker-wrap">
+      <div class="ticker-track" id="tickerTrack">
+        <span>📡 Feb 2026: $189B global VC funding — 90% to AI</span>
+        <span>🤖 Agentic AI: Dominant paradigm in 2026</span>
+        <span>🏗️ Big Tech CapEx: $650–700B projected for 2026</span>
+        <span>🔗 MCP Protocol: 82.7K GitHub stars · Linux Foundation</span>
+        <span>💰 OpenAI: $110B round · Cursor/Anysphere: $1B ARR</span>
+        <span>🛡️ EU AI Act: Full applicability August 2, 2026</span>
+        <span>🧠 JEPA World Models: AMI Labs $1.03B seed round</span>
+        <span>🏆 White Space: Agent Orchestration Middleware</span>
+        <span>🔥 Gemini 2.0 Flash: Native multimodal · Real-time voice</span>
+        <span>⚡ DeepSeek V3: 685B MoE · $5.5M training cost</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-indicators">
+      <div class="status-dot active" title="System Online"></div>
+      <span class="status-text">SYS ONLINE</span>
+    </div>
+    <button class="btn-icon" id="voiceBtn" title="Voice Assistant" onclick="toggleVoice()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+    </button>
+    <button class="btn-icon" id="exportBtn" title="Export / Print" onclick="openExportPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </button>
+    <button class="btn-icon" id="vaultBtn" title="API Key Vault" onclick="openVault()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ══════════════ VOICE OVERLAY ══════════════ -->
+<div class="voice-overlay" id="voiceOverlay" style="display:none">
+  <div class="voice-modal">
+    <div class="voice-rings">
+      <div class="voice-ring r1"></div>
+      <div class="voice-ring r2"></div>
+      <div class="voice-ring r3"></div>
+      <div class="voice-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+      </div>
+    </div>
+    <div class="voice-status" id="voiceStatus">Listening…</div>
+    <div class="voice-transcript" id="voiceTranscript">Say a command…</div>
+    <div class="voice-commands-hint">
+      <b>Commands:</b> "open orchestrator" · "start debate" · "show market" · "export report" · "add key"
+    </div>
+    <button class="btn-secondary" onclick="stopVoice()">Stop Listening</button>
+  </div>
+</div>
+
+<!-- ══════════════ API VAULT MODAL ══════════════ -->
+<div class="modal-overlay" id="vaultModal" style="display:none">
+  <div class="modal large-modal">
+    <div class="modal-header">
+      <h2>🔐 BYOK API Key Vault</h2>
+      <button class="modal-close" onclick="closeModal('vaultModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="vault-notice">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Keys are stored encrypted in <code>localStorage</code> — never sent to any server. They are used client-side only for live API calls.
+      </div>
+      <div class="vault-grid" id="vaultGrid">
+        <!-- Populated by apiVault.js -->
+      </div>
+      <div class="vault-actions">
+        <button class="btn-primary" onclick="addVaultKey()">+ Add Key</button>
+        <button class="btn-secondary" onclick="clearAllKeys()">Clear All</button>
+        <button class="btn-secondary" onclick="exportKeys()">Export Encrypted</button>
+      </div>
+      <div class="vault-add-form" id="vaultAddForm" style="display:none">
+        <select id="vaultProviderSelect">
+          <option value="anthropic">Anthropic (Claude)</option>
+          <option value="openai">OpenAI (GPT)</option>
+          <option value="google">Google (Gemini)</option>
+          <option value="xai">xAI (Grok)</option>
+          <option value="ollama">Ollama (Local URL)</option>
+          <option value="mistral">Mistral AI</option>
+          <option value="deepseek">DeepSeek</option>
+        </select>
+        <input type="password" id="vaultKeyInput" placeholder="sk-... or endpoint URL" class="vault-key-input">
+        <div class="vault-form-btns">
+          <button class="btn-primary" onclick="saveVaultKey()">Save</button>
+          <button class="btn-secondary" onclick="cancelVaultKey()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ EXPORT PANEL MODAL ══════════════ -->
+<div class="modal-overlay" id="exportModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>📄 Export & Print Center</h2>
+      <button class="modal-close" onclick="closeModal('exportModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="export-grid">
+        <button class="export-tile" onclick="exportAction('print')">
+          <span class="export-icon">🖨️</span>
+          <span class="export-label">Print / PDF</span>
+          <span class="export-desc">System print dialog</span>
+        </button>
+        <button class="export-tile" onclick="exportAction('markdown')">
+          <span class="export-icon">📝</span>
+          <span class="export-label">Markdown Report</span>
+          <span class="export-desc">Full session as .md</span>
+        </button>
+        <button class="export-tile" onclick="exportAction('json')">
+          <span class="export-icon">{ }</span>
+          <span class="export-label">JSON Artifact</span>
+          <span class="export-desc">Structured data export</span>
+        </button>
+        <button class="export-tile" onclick="exportAction('csv')">
+          <span class="export-icon">📊</span>
+          <span class="export-label">CSV Data</span>
+          <span class="export-desc">Model metrics & logs</span>
+        </button>
+        <button class="export-tile" onclick="exportAction('html')">
+          <span class="export-icon">🌐</span>
+          <span class="export-label">HTML Snapshot</span>
+          <span class="export-desc">Current panel as HTML</span>
+        </button>
+        <button class="export-tile" onclick="exportAction('clipboard')">
+          <span class="export-icon">📋</span>
+          <span class="export-label">Copy to Clipboard</span>
+          <span class="export-desc">Plain text summary</span>
+        </button>
+      </div>
+      <div class="export-scope">
+        <label><b>Export scope:</b></label>
+        <label><input type="radio" name="exportScope" value="current" checked> Current Panel</label>
+        <label><input type="radio" name="exportScope" value="all"> All Panels</label>
+        <label><input type="radio" name="exportScope" value="session"> Full Session Log</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ LIVE MODEL CALL MODAL ══════════════ -->
+<div class="modal-overlay" id="liveCallModal" style="display:none">
+  <div class="modal large-modal">
+    <div class="modal-header">
+      <h2 id="liveCallTitle">🤖 Live Model Call</h2>
+      <button class="modal-close" onclick="closeModal('liveCallModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="live-call-meta" id="liveCallMeta"></div>
+      <div class="live-call-output" id="liveCallOutput">
+        <div class="lco-placeholder">Response will appear here…</div>
+      </div>
+      <div class="live-call-actions">
+        <button class="btn-secondary" onclick="copyLiveOutput()">Copy</button>
+        <button class="btn-secondary" onclick="exportLiveOutput()">Export</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ GENERIC DETAIL MODAL ══════════════ -->
+<div class="modal-overlay" id="detailModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="detailTitle">Detail</h2>
+      <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+
+<!-- ══════════════ NAV TABS ══════════════ -->
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="orchestrator" onclick="switchTab('orchestrator')">
+    <span class="tab-icon">⬡</span> Orchestrator
+  </button>
+  <button class="tab-btn" data-tab="models" onclick="switchTab('models')">
+    <span class="tab-icon">🤖</span> Models
+  </button>
+  <button class="tab-btn" data-tab="debate" onclick="switchTab('debate')">
+    <span class="tab-icon">💬</span> Debate Arena
+  </button>
+  <button class="tab-btn" data-tab="memory" onclick="switchTab('memory')">
+    <span class="tab-icon">🧠</span> Memory
+  </button>
+  <button class="tab-btn" data-tab="execution" onclick="switchTab('execution')">
+    <span class="tab-icon">⚡</span> Execution
+  </button>
+  <button class="tab-btn" data-tab="market" onclick="switchTab('market')">
+    <span class="tab-icon">📊</span> Market Intel
+  </button>
+  <button class="tab-btn" data-tab="security" onclick="switchTab('security')">
+    <span class="tab-icon">🛡️</span> Security
+  </button>
+  <div class="tab-indicator" id="tabIndicator"></div>
+</nav>
+
+<!-- ══════════════ MAIN CONTENT ══════════════ -->
+<main class="app-main">
+
+  <!-- ─── TAB: ORCHESTRATOR ─── -->
+  <section class="tab-panel active" id="tab-orchestrator">
+    <div class="panel-header">
+      <h2>⬡ Orchestration Engine</h2>
+      <div class="panel-kpis">
+        <div class="kpi-chip"><span id="kpiTasks">0</span> Tasks</div>
+        <div class="kpi-chip"><span id="kpiTokens">0</span> Tokens</div>
+        <div class="kpi-chip"><span id="kpiLatency">—</span> ms avg</div>
+        <div class="kpi-chip" id="kpiModelChip">No Model</div>
+      </div>
+    </div>
+    <div class="panel-layout">
+      <div class="panel-left">
+        <div class="card">
+          <div class="card-title">Task Input</div>
+          <textarea id="taskInput" placeholder="Describe your agentic task… (Ctrl+Enter to launch)" rows="4"></textarea>
+          <div class="input-controls">
+            <div class="control-group">
+              <label class="ctrl-label">Strategy</label>
+              <select id="strategySelect">
+                <option value="debate">🗣️ Debate</option>
+                <option value="parallel">⚡ Parallel</option>
+                <option value="waterfall">🌊 Waterfall</option>
+                <option value="adversarial">⚔️ Adversarial</option>
+                <option value="swarm">🐝 Swarm</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label class="ctrl-label">Primary Model</label>
+              <select id="orchestratorModelSelect">
+                <option value="claude-opus-4-6">Claude Opus 4.6</option>
+                <option value="claude-sonnet-4-6">Claude Sonnet 4.6</option>
+                <option value="claude-haiku-4-5">Claude Haiku 4.5</option>
+                <option value="gpt-4o">GPT-4o</option>
+                <option value="gpt-4o-mini">GPT-4o-mini</option>
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                <option value="grok-2">Grok-2</option>
+                <option value="grok-1">Grok-1</option>
+                <option value="llama3:70b">Llama 3 70B (Ollama)</option>
+                <option value="llama3:8b">Llama 3 8B (Ollama)</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label class="ctrl-label">Max Rounds</label>
+              <input type="number" id="maxRoundsInput" value="3" min="1" max="10" style="width:70px">
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" id="launchBtn" onclick="launchOrchestration()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Launch
+            </button>
+            <button class="btn-secondary" onclick="clearLog('orchestrationLogBody')">Clear Log</button>
+            <button class="btn-secondary" onclick="exportOrchestratorSession()">Export</button>
+            <button class="btn-icon small" onclick="startVoiceInput('taskInput')" title="Voice Input">🎤</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Architecture Layers</div>
+          <div class="arch-layers" id="archLayers">
+            <div class="arch-layer" style="--layer-color:#38bdf8" data-layer="0">
+              <div class="layer-label">Perception</div>
+              <div class="arch-nodes">
+                <div class="arch-node">MCP Router</div>
+                <div class="arch-node">Tool Registry</div>
+                <div class="arch-node">Context Ingest</div>
+              </div>
+            </div>
+            <div class="arch-layer" style="--layer-color:#818cf8" data-layer="1">
+              <div class="layer-label">Reasoning</div>
+              <div class="arch-nodes">
+                <div class="arch-node">CoT Engine</div>
+                <div class="arch-node">Debate Mediator</div>
+                <div class="arch-node">Rubric Scorer</div>
+              </div>
+            </div>
+            <div class="arch-layer" style="--layer-color:#34d399" data-layer="2">
+              <div class="layer-label">Planning</div>
+              <div class="arch-nodes">
+                <div class="arch-node">Task Decomposer</div>
+                <div class="arch-node">DAG Builder</div>
+                <div class="arch-node">Priority Queue</div>
+              </div>
+            </div>
+            <div class="arch-layer" style="--layer-color:#fb923c" data-layer="3">
+              <div class="layer-label">Memory</div>
+              <div class="arch-nodes">
+                <div class="arch-node">ByteRover .brv</div>
+                <div class="arch-node">compresr</div>
+                <div class="arch-node">RAG Index</div>
+              </div>
+            </div>
+            <div class="arch-layer" style="--layer-color:#f472b6" data-layer="4">
+              <div class="layer-label">Execution</div>
+              <div class="arch-nodes">
+                <div class="arch-node">Notte Browser</div>
+                <div class="arch-node">Zatanna Code</div>
+                <div class="arch-node">Sapiom Search</div>
+              </div>
+            </div>
+            <div class="arch-layer" style="--layer-color:#facc15" data-layer="5">
+              <div class="layer-label">Output</div>
+              <div class="arch-nodes">
+                <div class="arch-node">Artifact Builder</div>
+                <div class="arch-node">Report Gen</div>
+                <div class="arch-node">Voice TTS</div>
+              </div>
+            </div>
+            <div class="arch-layer" style="--layer-color:#f87171" data-layer="6">
+              <div class="layer-label">Security</div>
+              <div class="arch-nodes">
+                <div class="arch-node">ClawSecure</div>
+                <div class="arch-node">Goodfire</div>
+                <div class="arch-node">EU AI Act</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-right">
+        <div class="card log-card">
+          <div class="card-title">
+            Orchestration Log
+            <span class="live-badge">LIVE</span>
+          </div>
+          <div class="log-body" id="orchestrationLogBody"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Active Agents</div>
+          <div class="agent-roster" id="agentRoster">
+            <!-- populated by orchestrator.js -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TAB: MODELS ─── -->
+  <section class="tab-panel" id="tab-models">
+    <div class="panel-header">
+      <h2>🤖 Multi-Model Registry</h2>
+      <div class="panel-kpis">
+        <div class="kpi-chip"><span id="kpiModelsConfigured">0</span> Configured</div>
+        <div class="kpi-chip"><span id="kpiModelsAvailable">11</span> Available</div>
+      </div>
+    </div>
+    <div class="models-grid" id="modelsGrid">
+      <!-- populated by models.js -->
+    </div>
+    <div class="models-compare-section">
+      <div class="card">
+        <div class="card-title">Model Comparison — Benchmarks</div>
+        <div class="benchmark-table-wrap">
+          <table class="benchmark-table" id="benchmarkTable">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Provider</th>
+                <th>MMLU</th>
+                <th>HumanEval</th>
+                <th>MATH</th>
+                <th>Context</th>
+                <th>$/1M tok</th>
+                <th>Status</th>
+                <th>Test</th>
+              </tr>
+            </thead>
+            <tbody id="benchmarkTableBody">
+              <!-- populated by models.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">Live Model Test</div>
+      <div class="model-test-area">
+        <div class="model-test-controls">
+          <select id="testModelSelect" style="flex:1">
+            <option value="">Select model…</option>
+          </select>
+          <input type="text" id="testPromptInput" placeholder="Enter test prompt…" style="flex:3">
+          <button class="btn-primary" onclick="runModelTest()">Run</button>
+        </div>
+        <div class="model-test-output" id="modelTestOutput">
+          <div class="placeholder-text">Select a model and enter a prompt, then click Run to make a live API call (requires API key in Vault).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TAB: DEBATE ARENA ─── -->
+  <section class="tab-panel" id="tab-debate">
+    <div class="panel-header">
+      <h2>💬 Multi-Model Debate Arena</h2>
+      <div class="panel-kpis">
+        <div class="kpi-chip" id="debateRoundChip">Round 0/3</div>
+        <div class="kpi-chip" id="debateStatusChip">Idle</div>
+      </div>
+    </div>
+    <div class="debate-controls card">
+      <div class="control-row">
+        <div class="control-group">
+          <label class="ctrl-label">Topic</label>
+          <select id="debateTopic">
+            <option value="agentic_dominance">Agentic AI as Dominant Paradigm</option>
+            <option value="mcp_protocol">MCP Protocol vs Custom APIs</option>
+            <option value="open_vs_closed">Open vs Closed Source Models</option>
+            <option value="ai_regulation">EU AI Act: Enabler or Inhibitor?</option>
+            <option value="world_models">World Models vs LLM Scaling</option>
+            <option value="custom">Custom Topic…</option>
+          </select>
+        </div>
+        <div class="control-group" id="customTopicWrap" style="display:none">
+          <label class="ctrl-label">Custom</label>
+          <input type="text" id="customTopicInput" placeholder="Enter debate topic…">
+        </div>
+        <div class="control-group">
+          <label class="ctrl-label">Rounds</label>
+          <input type="number" id="debateRounds" value="3" min="1" max="6" style="width:70px">
+        </div>
+        <div class="control-group">
+          <label class="ctrl-label">Scoring</label>
+          <select id="debateScoring">
+            <option value="rubric">Rubric AI</option>
+            <option value="consensus">Consensus</option>
+            <option value="adversarial">Adversarial</option>
+          </select>
+        </div>
+      </div>
+      <div class="debate-model-selector">
+        <div class="dms-label">Participants:</div>
+        <div class="debate-model-btns" id="debateModelBtns">
+          <button class="dmb active" data-model="claude-opus-4-6" data-provider="anthropic">Claude Opus 4.6</button>
+          <button class="dmb active" data-model="gpt-4o" data-provider="openai">GPT-4o</button>
+          <button class="dmb active" data-model="gemini-2.0-flash" data-provider="google">Gemini 2.0 Flash</button>
+          <button class="dmb active" data-model="grok-2" data-provider="xai">Grok-2</button>
+          <button class="dmb" data-model="claude-sonnet-4-6" data-provider="anthropic">Claude Sonnet</button>
+          <button class="dmb" data-model="gpt-4o-mini" data-provider="openai">GPT-4o-mini</button>
+          <button class="dmb" data-model="llama3:70b" data-provider="ollama">Llama 3 70B</button>
+          <button class="dmb" data-model="mistral-large" data-provider="mistral">Mistral Large</button>
+          <button class="dmb" data-model="deepseek-v3" data-provider="deepseek">DeepSeek V3</button>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" id="startDebate" onclick="startDebate()">▶ Start Debate</button>
+        <button class="btn-secondary" onclick="resetDebate()">Reset</button>
+        <button class="btn-secondary" onclick="exportDebate()">Export Transcript</button>
+        <button class="btn-icon small" onclick="startVoiceInput('customTopicInput')" title="Voice Topic">🎤</button>
+      </div>
+    </div>
+
+    <div class="debate-arena" id="debateArena">
+      <div class="debate-models-row" id="debateModelsRow"></div>
+      <div class="debate-flow" id="debateFlow"></div>
+      <div class="debate-synthesis" id="debateSynthesis" style="display:none">
+        <div class="card">
+          <div class="card-title">🏆 Synthesis & Verdict</div>
+          <div id="synthesisContent"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TAB: MEMORY ─── -->
+  <section class="tab-panel" id="tab-memory">
+    <div class="panel-header">
+      <h2>🧠 Agent Memory Layer</h2>
+      <div class="panel-kpis">
+        <div class="kpi-chip"><span id="memNodeCount">0</span> Nodes</div>
+        <div class="kpi-chip"><span id="memTokenCount">0</span> Tokens</div>
+        <div class="kpi-chip"><span id="memComprRatio">1.0×</span> Compression</div>
+      </div>
+    </div>
+    <div class="panel-layout">
+      <div class="panel-left">
+        <div class="card">
+          <div class="card-title">ByteRover Context Tree (.brv)</div>
+          <div class="brv-tree" id="brvTree"></div>
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn-secondary" onclick="addMemoryNode()">+ Add Node</button>
+            <button class="btn-secondary" onclick="compressMemory()">compresr ↓</button>
+            <button class="btn-secondary" onclick="exportMemory()">Export .brv</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">RAG Query</div>
+          <div class="rag-input-row">
+            <input type="text" id="ragQuery" placeholder="Query the memory index…">
+            <button class="btn-primary" onclick="runRagQuery()">Search</button>
+            <button class="btn-icon small" onclick="startVoiceInput('ragQuery')" title="Voice Query">🎤</button>
+          </div>
+          <div class="rag-results" id="ragResults"></div>
+        </div>
+      </div>
+      <div class="panel-right">
+        <div class="card">
+          <div class="card-title">Memory Visualizer</div>
+          <canvas id="memoryCanvas" width="460" height="300"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">compresr Stats</div>
+          <div class="compresr-stats" id="comprStats"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TAB: EXECUTION ─── -->
+  <section class="tab-panel" id="tab-execution">
+    <div class="panel-header">
+      <h2>⚡ Execution Pipeline</h2>
+      <div class="panel-kpis">
+        <div class="kpi-chip" id="execStatusChip">Idle</div>
+        <div class="kpi-chip"><span id="execStepCount">0</span> Steps</div>
+      </div>
+    </div>
+    <div class="panel-layout">
+      <div class="panel-left">
+        <div class="card">
+          <div class="card-title">Pipeline Builder</div>
+          <div class="pipeline-steps" id="pipelineSteps"></div>
+          <div class="btn-row">
+            <button class="btn-secondary" onclick="addExecStep()">+ Step</button>
+            <button class="btn-primary" onclick="runPipeline()">▶ Run Pipeline</button>
+            <button class="btn-secondary" onclick="exportPipeline()">Export</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Agent Roster</div>
+          <div class="exec-agents" id="execAgents"></div>
+        </div>
+      </div>
+      <div class="panel-right">
+        <div class="card">
+          <div class="card-title">Pipeline Visualizer</div>
+          <canvas id="pipelineCanvas" width="460" height="200"></canvas>
+        </div>
+        <div class="card log-card" style="flex:1">
+          <div class="card-title">Execution Log <span class="live-badge">LIVE</span></div>
+          <div class="log-body" id="execLogBody"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TAB: MARKET INTEL ─── -->
+  <section class="tab-panel" id="tab-market">
+    <div class="panel-header">
+      <h2>📊 Market Intelligence — March 2026</h2>
+    </div>
+    <div class="kpi-row" id="marketKpiRow"></div>
+    <div class="charts-row">
+      <div class="card">
+        <div class="card-title">Funding by Category ($B)</div>
+        <canvas id="fundingChart" width="400" height="220"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Model Performance Radar</div>
+        <canvas id="radarChart" width="300" height="220"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">CapEx Forecast 2024–2026</div>
+        <canvas id="capexChart" width="400" height="220"></canvas>
+      </div>
+    </div>
+    <div class="market-sections">
+      <div class="card">
+        <div class="card-title">AI Vertical Opportunities ("Harvey for X")</div>
+        <div class="vertical-grid" id="verticalGrid"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">White Space Opportunities</div>
+        <div class="whitespace-grid" id="whitespaceGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TAB: SECURITY ─── -->
+  <section class="tab-panel" id="tab-security">
+    <div class="panel-header">
+      <h2>🛡️ Security & Compliance</h2>
+      <div class="panel-kpis">
+        <div class="kpi-chip" id="secStatusChip">Monitoring</div>
+        <div class="kpi-chip"><span id="secEventCount">0</span> Events</div>
+        <div class="kpi-chip" id="euActCountdown">EU AI Act: —</div>
+      </div>
+    </div>
+    <div class="panel-layout">
+      <div class="panel-left">
+        <div class="card">
+          <div class="card-title">ClawSecure Threat Monitor</div>
+          <div class="threat-grid" id="threatGrid"></div>
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn-primary" onclick="simulateAttack()">Simulate Attack</button>
+            <button class="btn-secondary" onclick="runSecurityScan()">Full Scan</button>
+            <button class="btn-secondary" onclick="exportSecReport()">Export Report</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Goodfire Interpretability Probe</div>
+          <div class="goodfire-controls">
+            <select id="goodfireModel">
+              <option value="claude-opus-4-6">Claude Opus 4.6</option>
+              <option value="gpt-4o">GPT-4o</option>
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+              <option value="grok-2">Grok-2</option>
+              <option value="llama3:70b">Llama 3 70B</option>
+            </select>
+            <input type="text" id="goodfireConcept" placeholder="Concept to probe (e.g. deception)">
+            <button class="btn-primary" onclick="probeModel()">Probe</button>
+          </div>
+          <div class="goodfire-output" id="goodfireOutput"></div>
+        </div>
+      </div>
+      <div class="panel-right">
+        <div class="card">
+          <div class="card-title">EU AI Act Compliance</div>
+          <div class="eu-countdown" id="euCountdown"></div>
+          <div class="compliance-list" id="complianceList"></div>
+        </div>
+        <div class="card log-card" style="flex:1">
+          <div class="card-title">Security Log <span class="live-badge">LIVE</span></div>
+          <div class="log-body" id="secLogBody"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Print-only artifact area (hidden on screen) -->
+<div id="printArtifact" class="print-only"></div>
+
+<!-- Scripts (order matters) -->
+<script src="js/particles.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/apiVault.js"></script>
+<script src="js/models.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/export.js"></script>
+<script src="js/orchestrator.js"></script>
+<script src="js/debate.js"></script>
+<script src="js/memory.js"></script>
+<script src="js/execution.js"></script>
+<script src="js/market.js"></script>
+<script src="js/security.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

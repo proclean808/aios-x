@@ -1,0 +1,281 @@
+/* ═══════════════════════════════════════════════════════
+   AIOS-X · ANIMATIONS CSS
+═══════════════════════════════════════════════════════ */
+
+/* ── TICKER SCROLL ── */
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── STATUS PULSE ── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ── LIVE BADGE ── */
+@keyframes livePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ── LOG FADE IN ── */
+@keyframes logFadeIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── TOAST ── */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(20px); }
+}
+
+/* ── MODAL ── */
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(-16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── DEBATE MESSAGE ── */
+@keyframes messageSlide {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── NODE FLASH ── */
+@keyframes nodeFlash {
+  0%   { background: rgba(56,189,248,0.2); }
+  100% { background: transparent; }
+}
+
+/* ── AGENT PULSE ── */
+@keyframes agentPulse {
+  0%, 100% { box-shadow: none; }
+  50% { box-shadow: 0 0 10px rgba(52,211,153,0.2); }
+}
+
+/* ── VOICE RING ── */
+@keyframes voiceRingExpand {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* ── CURSOR BLINK ── */
+@keyframes cursorBlink {
+  0%, 100% { border-color: var(--accent-blue); }
+  50% { border-color: transparent; }
+}
+
+/* ── RECORD PULSE ── */
+@keyframes recordPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(248,113,113,0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(248,113,113,0); }
+}
+
+/* ── PARTICLE FLOW ── */
+@keyframes particleFloat {
+  0%   { transform: translateY(0) translateX(0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+}
+
+/* ── ARCH LAYER ACTIVE ── */
+@keyframes layerGlow {
+  0%, 100% { box-shadow: 0 0 0 rgba(56,189,248,0); }
+  50% { box-shadow: 0 0 16px rgba(56,189,248,0.15); }
+}
+
+.arch-layer.processing {
+  animation: layerGlow 1.5s ease infinite;
+}
+
+/* ── DEBATE MODEL WINNER ── */
+@keyframes victoryFlash {
+  0%   { box-shadow: 0 0 0 rgba(250,204,21,0); }
+  30%  { box-shadow: 0 0 30px rgba(250,204,21,0.4); }
+  100% { box-shadow: 0 0 20px rgba(250,204,21,0.15); }
+}
+
+.debate-model-card.winner {
+  animation: victoryFlash 1.5s ease forwards;
+}
+
+/* ── DATA FLOW LINE ── */
+@keyframes flowDash {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ── PIPELINE STEP RUNNING ── */
+@keyframes stepRun {
+  0%   { background-position: 0 0; }
+  100% { background-position: 30px 0; }
+}
+
+.pipeline-step.running::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(52,211,153,0.04),
+    rgba(52,211,153,0.04) 5px,
+    transparent 5px,
+    transparent 10px
+  );
+  background-size: 14px 14px;
+  animation: stepRun 0.8s linear infinite;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.pipeline-step { position: relative; overflow: hidden; }
+
+/* ── TYPING CURSOR ── */
+@keyframes typingCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typing-cursor::after {
+  content: '▋';
+  animation: typingCursor 0.8s step-end infinite;
+  color: var(--accent-blue);
+}
+
+/* ── KPI COUNTER ── */
+@keyframes countUp {
+  from { transform: translateY(8px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ── SCORE BAR FILL ── */
+@keyframes barFill {
+  from { width: 0%; }
+}
+
+.score-fill, .dmc-score-bar, .compr-bar, .gf-bar {
+  animation: barFill 0.8s ease forwards;
+}
+
+/* ── THREAT CARD ALERT ── */
+@keyframes threatAlert {
+  0%, 100% { border-color: rgba(248,113,113,0.3); }
+  50% { border-color: rgba(248,113,113,0.7); box-shadow: 0 0 12px rgba(248,113,113,0.2); }
+}
+
+.threat-card.critical { animation: threatAlert 2s infinite; }
+
+/* ── MODEL CARD HOVER GLOW ── */
+.model-card {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ── SCAN LINE ── */
+@keyframes scanLine {
+  0%   { top: 0; }
+  100% { top: 100%; }
+}
+
+.scan-effect {
+  position: relative; overflow: hidden;
+}
+
+.scan-effect::after {
+  content: '';
+  position: absolute; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(56,189,248,0.5), transparent);
+  animation: scanLine 3s linear infinite;
+  pointer-events: none;
+}
+
+/* ── SPINNER ── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(56,189,248,0.2);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── EXEC WAVE ── */
+@keyframes waveAnim {
+  0%   { transform: scaleY(0.3); }
+  50%  { transform: scaleY(1); }
+  100% { transform: scaleY(0.3); }
+}
+
+.wave-bar {
+  display: inline-block;
+  width: 4px; margin: 0 1px;
+  border-radius: 2px;
+  background: var(--accent-blue);
+  transform-origin: bottom;
+  animation: waveAnim 1s ease-in-out infinite;
+}
+
+/* ── GOODFIRE PROBE ── */
+@keyframes probeAnim {
+  0%   { width: 0%; }
+  60%  { width: var(--target-width, 70%); }
+  100% { width: var(--target-width, 70%); }
+}
+
+.gf-bar { animation: probeAnim 1.2s ease forwards; }
+
+/* ── VAULT KEY SAVED ── */
+@keyframes savedFlash {
+  0%   { background: rgba(52,211,153,0.2); }
+  100% { background: transparent; }
+}
+
+.vault-item.just-saved { animation: savedFlash 1s ease; }
+
+/* ── RADAR CHART ── */
+@keyframes radarPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ── EU COUNTDOWN ── */
+@keyframes countdownPulse {
+  0%, 100% { color: var(--accent-red); }
+  50% { color: rgba(248,113,113,0.6); }
+}
+
+.eu-days { animation: countdownPulse 3s ease-in-out infinite; }
+
+/* ── TAB SWITCH ── */
+@keyframes tabContentIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tab-panel.active { animation: tabContentIn 0.25s ease; }
+
+/* ── ORCHESTRATION LAUNCH ── */
+@keyframes launchFlash {
+  0%   { box-shadow: 0 0 0 rgba(14,165,233,0); }
+  40%  { box-shadow: 0 0 30px rgba(14,165,233,0.4); }
+  100% { box-shadow: 0 0 0 rgba(14,165,233,0); }
+}
+
+.launch-flash { animation: launchFlash 0.8s ease; }
