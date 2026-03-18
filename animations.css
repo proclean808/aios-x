@@ -1,0 +1,263 @@
+/* ═══════════════════════════════════════════════════════
+   AIOS-X · ANIMATIONS CSS
+   Data flows, pulses, glows, transitions
+═══════════════════════════════════════════════════════ */
+
+/* ── FLOWING DATA PARTICLES ON ARCH LAYERS ── */
+@keyframes dataFlow {
+  0%   { opacity: 0; transform: translateX(-100%); }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+@keyframes nodeActivate {
+  0%   { box-shadow: none; }
+  50%  { box-shadow: 0 0 20px var(--layer-color), 0 0 40px rgba(56,189,248,0.3); }
+  100% { box-shadow: none; }
+}
+
+.arch-node.active {
+  animation: nodeActivate 1.5s ease;
+}
+
+/* ── NEON GLOW PULSE ── */
+@keyframes neonPulse {
+  0%, 100% { box-shadow: 0 0 6px currentColor; }
+  50% { box-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+}
+
+/* ── DATA STREAM LINES ── */
+.data-stream {
+  stroke-dasharray: 8 4;
+  animation: streamDash 1s linear infinite;
+}
+@keyframes streamDash {
+  to { stroke-dashoffset: -24; }
+}
+
+/* ── MODEL CARD THINKING ── */
+@keyframes thinkingPulse {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.dmc-argument.thinking {
+  background: linear-gradient(270deg, #0d1526, #111d36, #0d1526);
+  background-size: 200% 200%;
+  animation: thinkingPulse 2s ease infinite;
+}
+
+/* ── TYPING CURSOR ── */
+.typing-cursor::after {
+  content: '▋';
+  animation: blinkCursor 0.8s step-end infinite;
+}
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── SCORE COUNTER ── */
+@keyframes scoreIn {
+  from { transform: scale(0) rotate(-90deg); opacity: 0; }
+  to { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.dmc-score.animate { animation: scoreIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* ── LAYER ENTRY ANIMATION ── */
+@keyframes layerSlideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.arch-layer {
+  animation: layerSlideIn 0.5s ease forwards;
+}
+.arch-layer:nth-child(1) { animation-delay: 0.0s; }
+.arch-layer:nth-child(2) { animation-delay: 0.1s; }
+.arch-layer:nth-child(3) { animation-delay: 0.2s; }
+.arch-layer:nth-child(4) { animation-delay: 0.3s; }
+.arch-layer:nth-child(5) { animation-delay: 0.4s; }
+.arch-layer:nth-child(6) { animation-delay: 0.5s; }
+.arch-layer:nth-child(7) { animation-delay: 0.6s; }
+
+/* ── MEMORY TREE NODE APPEAR ── */
+@keyframes treeNodeAppear {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.tree-node { animation: treeNodeAppear 0.25s ease forwards; }
+
+/* ── KPI COUNT UP ── */
+@keyframes kpiPop {
+  from { transform: scale(0.8) translateY(10px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+.kpi-val { animation: kpiPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* ── THREAT ALERT ── */
+@keyframes threatAlert {
+  0%   { background: rgba(248,113,113,0.08); }
+  25%  { background: rgba(248,113,113,0.25); }
+  50%  { background: rgba(248,113,113,0.08); }
+  75%  { background: rgba(248,113,113,0.25); }
+  100% { background: rgba(248,113,113,0.08); }
+}
+.threat-card.alerting {
+  animation: threatAlert 1s ease;
+}
+
+/* ── PROGRESS BAR FILL ── */
+@keyframes barFill {
+  from { width: 0%; }
+}
+.rm-fill { animation: barFill 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ── SCAN LINE EFFECT ── */
+@keyframes scanLine {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+.scan-effect::before {
+  content: '';
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+  animation: scanLine 3s linear infinite;
+  pointer-events: none; z-index: 9999;
+}
+
+/* ── CONSENSUS SYNTHESIS REVEAL ── */
+@keyframes synthReveal {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0% 0 0);
+  }
+}
+.rs-body.reveal {
+  animation: synthReveal 1.5s ease forwards;
+}
+
+/* ── AGENT CARD ACTIVE ── */
+@keyframes agentActive {
+  0%   { box-shadow: none; }
+  50%  { box-shadow: 0 0 16px rgba(56,189,248,0.4); }
+  100% { box-shadow: none; }
+}
+.agent-card.active-flash {
+  animation: agentActive 1s ease;
+}
+
+/* ── PIPELINE STEP RUNNING ── */
+@keyframes stepRunning {
+  0%   { border-color: var(--border); }
+  50%  { border-color: var(--accent-blue); box-shadow: 0 0 12px rgba(56,189,248,0.3); }
+  100% { border-color: var(--border); }
+}
+.step-box.running {
+  animation: stepRunning 1s ease infinite;
+}
+
+/* ── MARKET CHART ENTRY ── */
+@keyframes chartEntry {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.chart-card { animation: chartEntry 0.5s ease forwards; }
+.chart-card:nth-child(1) { animation-delay: 0.1s; }
+.chart-card:nth-child(2) { animation-delay: 0.2s; }
+.chart-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* ── HEXAGONAL PATTERN OVERLAY ── */
+.hex-bg-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='58'%3E%3Cg fill='none' stroke='%23192338' stroke-width='0.5'%3E%3Cpath d='M0 14 L12.5 0 L37.5 0 L50 14 L50 44 L37.5 58 L12.5 58 L0 44Z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── WAVE ANIMATION FOR EXEC VIZ ── */
+@keyframes execWave {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── FLOATING LABELS ── */
+@keyframes floatLabel {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-4px); }
+}
+.logo-block { animation: floatLabel 4s ease-in-out infinite; }
+
+/* ── COMPLIANCE CHECK ITEM APPEAR ── */
+@keyframes checkAppear {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.cc-item {
+  animation: checkAppear 0.4s ease forwards;
+}
+
+/* ── HYBRID CARD HOVER DNA ── */
+@keyframes dnaRotate {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+.hybrid-card:hover .hc-combo {
+  background: linear-gradient(90deg, var(--accent-pink), var(--accent-purple), var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── FEATURE NEURON APPEAR ── */
+@keyframes neuronAppear {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.fn-item {
+  animation: neuronAppear 0.3s ease forwards;
+}
+
+/* ── SCORE RING ANIMATION ── */
+@keyframes scoreRingGrow {
+  from { stroke-dashoffset: 283; }
+  to   { stroke-dashoffset: var(--target-dashoffset, 0); }
+}
+
+/* ── SCROLLBAR TRACK GLOW ── */
+@keyframes scrollTrackGlow {
+  0%, 100% { box-shadow: inset 0 0 3px rgba(56,189,248,0.1); }
+  50%       { box-shadow: inset 0 0 8px rgba(56,189,248,0.25); }
+}
+
+/* ── BOOT SEQUENCE ── */
+@keyframes bootReveal {
+  0%   { opacity: 0; clip-path: inset(50% 0 50% 0); }
+  100% { opacity: 1; clip-path: inset(0% 0 0% 0); }
+}
+#mainContent { animation: bootReveal 0.6s ease forwards; }
+
+/* ── SHIMMER LOADING ── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.loading-shimmer {
+  background: linear-gradient(90deg, var(--bg-card) 25%, var(--bg-card-hover) 50%, var(--bg-card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+}
+
+/* ── VICTORY FLASH ── */
+@keyframes victoryFlash {
+  0%   { box-shadow: none; }
+  25%  { box-shadow: 0 0 30px rgba(250,204,21,0.5), 0 0 60px rgba(250,204,21,0.2); }
+  50%  { box-shadow: none; }
+  75%  { box-shadow: 0 0 30px rgba(250,204,21,0.5), 0 0 60px rgba(250,204,21,0.2); }
+  100% { box-shadow: 0 0 20px rgba(250,204,21,0.3); }
+}
+.debate-model-card.winner {
+  animation: victoryFlash 2s ease forwards;
+}

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AIOS-X | Agentic Intelligence Orchestration System</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- ── PARTICLE CANVAS BACKGROUND ── -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- ── GRID OVERLAY ── -->
+<div class="grid-overlay"></div>
+
+<!-- ════════════════════════════════════════
+     HEADER / NAV
+════════════════════════════════════════ -->
+<header id="mainHeader">
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-icon">
+        <div class="hex-ring"></div>
+        <span class="logo-glyph">⬡</span>
+      </div>
+      <div class="logo-text">
+        <span class="logo-main">AIOS<span class="logo-accent">-X</span></span>
+        <span class="logo-sub">Agentic Intelligence Orchestration System</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <button class="nav-btn active" data-panel="orchestrator"><i class="fas fa-sitemap"></i> Orchestrator</button>
+      <button class="nav-btn" data-panel="debate"><i class="fas fa-comments"></i> Debate Arena</button>
+      <button class="nav-btn" data-panel="memory"><i class="fas fa-brain"></i> Memory Layer</button>
+      <button class="nav-btn" data-panel="execution"><i class="fas fa-bolt"></i> Execution</button>
+      <button class="nav-btn" data-panel="market"><i class="fas fa-chart-line"></i> Market Intel</button>
+      <button class="nav-btn" data-panel="security"><i class="fas fa-shield-alt"></i> Security</button>
+    </nav>
+    <div class="header-status">
+      <div class="status-indicator active" id="systemStatus">
+        <span class="pulse-dot"></span>
+        <span class="status-text">SYSTEM ONLINE</span>
+      </div>
+      <div class="header-stats">
+        <span class="hstat" id="hAgents">0 Agents</span>
+        <span class="hstat" id="hTasks">0 Tasks</span>
+        <span class="hstat" id="hModels">4 Models</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-ticker">
+    <div class="ticker-inner" id="tickerInner">
+      <span>📡 February 2026: $189B global VC funding — 90% to AI</span>
+      <span>🤖 Agentic AI: Dominant paradigm in 2026</span>
+      <span>🏗️ Big Tech CapEx: $650–700B projected for 2026</span>
+      <span>⚡ DeepSeek V4: 1T params · Open weights · GPT-5.4 parity</span>
+      <span>🦙 Llama 4 Scout: 10M token context window</span>
+      <span>🔗 MCP Protocol: 82.7K GitHub stars · Linux Foundation</span>
+      <span>💰 OpenAI: $110B round · Cursor/Anysphere: $1B ARR</span>
+      <span>🛡️ EU AI Act: Full applicability August 2, 2026</span>
+      <span>🧠 JEPA World Models: AMI Labs $1.03B seed round</span>
+      <span>🏆 White Space: Agent Orchestration Middleware</span>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
+     MAIN CONTENT AREA
+════════════════════════════════════════ -->
+<main id="mainContent">
+
+  <!-- ══════════════════════════════════════
+       PANEL 1: ORCHESTRATOR
+  ══════════════════════════════════════ -->
+  <section class="panel active" id="panel-orchestrator">
+    <div class="panel-header">
+      <h2><i class="fas fa-sitemap"></i> Multi-Model Orchestration Engine</h2>
+      <p class="panel-desc">MCP-driven task decomposition → model routing → debate resolution → execution pipeline</p>
+    </div>
+
+    <!-- Task Input -->
+    <div class="orchestrator-input-area">
+      <div class="input-block">
+        <label class="input-label">TASK PROMPT <span class="badge-mcp">MCP</span></label>
+        <div class="textarea-wrapper">
+          <textarea id="orchestratorInput" placeholder="Enter your agentic task... e.g. 'Analyze the Q1 2026 AI funding landscape and generate an investment thesis with risk matrix'"></textarea>
+          <div class="textarea-glow"></div>
+        </div>
+        <div class="input-controls">
+          <div class="model-toggles">
+            <span class="mt-label">Active Models:</span>
+            <button class="model-toggle active" data-model="deepseek">DeepSeek V4</button>
+            <button class="model-toggle active" data-model="llama">Llama 4 Scout</button>
+            <button class="model-toggle active" data-model="mistral">Mistral 3</button>
+            <button class="model-toggle active" data-model="gpt-oss">GPT-OSS 120B</button>
+          </div>
+          <div class="strategy-select-wrapper">
+            <label class="sl-label">Strategy:</label>
+            <select id="orchestrationStrategy" class="strategy-select">
+              <option value="debate">Debate &amp; Consensus</option>
+              <option value="parallel">Parallel Execution</option>
+              <option value="waterfall">Waterfall Pipeline</option>
+              <option value="adversarial">Adversarial Challenge</option>
+              <option value="swarm">Swarm Intelligence</option>
+            </select>
+          </div>
+          <button class="btn-primary btn-launch" id="launchOrchestration">
+            <i class="fas fa-play"></i> Launch Orchestration
+            <div class="btn-glow"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Architecture Visual -->
+    <div class="arch-visual-wrapper">
+      <div class="arch-title">LAYERED ORCHESTRATION ARCHITECTURE</div>
+      <div class="arch-layers" id="archLayers">
+        <!-- Layer 7: UI -->
+        <div class="arch-layer" id="layer-ui" style="--layer-color: #a78bfa;">
+          <div class="layer-label">Layer 7 · Generative UI (Thesys)</div>
+          <div class="layer-nodes">
+            <div class="arch-node ui-node"><i class="fas fa-desktop"></i><span>Adaptive Dashboard</span></div>
+            <div class="arch-node ui-node"><i class="fas fa-mobile-alt"></i><span>Responsive UI</span></div>
+            <div class="arch-node ui-node"><i class="fas fa-chart-bar"></i><span>Live Visualizer</span></div>
+          </div>
+        </div>
+        <!-- Layer 6: Orchestration -->
+        <div class="arch-layer" id="layer-orch" style="--layer-color: #38bdf8;">
+          <div class="layer-label">Layer 6 · Orchestration (MCP Protocol)</div>
+          <div class="layer-nodes">
+            <div class="arch-node orch-node"><i class="fas fa-sitemap"></i><span>Task Router</span></div>
+            <div class="arch-node orch-node"><i class="fas fa-balance-scale"></i><span>Debate Engine</span></div>
+            <div class="arch-node orch-node"><i class="fas fa-check-double"></i><span>Consensus Verifier</span></div>
+            <div class="arch-node orch-node"><i class="fas fa-random"></i><span>Load Balancer</span></div>
+          </div>
+        </div>
+        <!-- Layer 5: Models -->
+        <div class="arch-layer" id="layer-models" style="--layer-color: #f472b6;">
+          <div class="layer-label">Layer 5 · Multi-Model Inference</div>
+          <div class="layer-nodes">
+            <div class="arch-node model-node deepseek-node" id="archDeepSeek">
+              <div class="model-icon">DS</div><span>DeepSeek V4</span>
+              <div class="model-detail">1T params · Open weights</div>
+            </div>
+            <div class="arch-node model-node llama-node" id="archLlama">
+              <div class="model-icon">L4</div><span>Llama 4 Scout</span>
+              <div class="model-detail">10M ctx · Meta</div>
+            </div>
+            <div class="arch-node model-node mistral-node" id="archMistral">
+              <div class="model-icon">M3</div><span>Mistral 3</span>
+              <div class="model-detail">675B MoE · 41B active</div>
+            </div>
+            <div class="arch-node model-node gptoss-node" id="archGptOss">
+              <div class="model-icon">GO</div><span>GPT-OSS 120B</span>
+              <div class="model-detail">Open weights · OAI</div>
+            </div>
+          </div>
+        </div>
+        <!-- Layer 4: Reasoning Verification -->
+        <div class="arch-layer" id="layer-verify" style="--layer-color: #fb923c;">
+          <div class="layer-label">Layer 4 · Reasoning Verification (Rubric AI)</div>
+          <div class="layer-nodes">
+            <div class="arch-node verify-node"><i class="fas fa-microscope"></i><span>Logic Check</span></div>
+            <div class="arch-node verify-node"><i class="fas fa-exclamation-triangle"></i><span>Hallucination Guard</span></div>
+            <div class="arch-node verify-node"><i class="fas fa-sitemap"></i><span>Chain-of-Thought</span></div>
+            <div class="arch-node verify-node"><i class="fas fa-star"></i><span>Score &amp; Rank</span></div>
+          </div>
+        </div>
+        <!-- Layer 3: Memory -->
+        <div class="arch-layer" id="layer-memory" style="--layer-color: #34d399;">
+          <div class="layer-label">Layer 3 · Agent Memory &amp; State (ByteRover + compresr)</div>
+          <div class="layer-nodes">
+            <div class="arch-node mem-node"><i class="fas fa-database"></i><span>ByteRover .brv</span>
+              <div class="model-detail">92.2% retrieval accuracy</div>
+            </div>
+            <div class="arch-node mem-node"><i class="fas fa-compress-alt"></i><span>compresr</span>
+              <div class="model-detail">Context compression</div>
+            </div>
+            <div class="arch-node mem-node"><i class="fas fa-layer-group"></i><span>Context Tree</span></div>
+            <div class="arch-node mem-node"><i class="fas fa-clock"></i><span>State Machine</span></div>
+          </div>
+        </div>
+        <!-- Layer 2: Execution -->
+        <div class="arch-layer" id="layer-exec" style="--layer-color: #facc15;">
+          <div class="layer-label">Layer 2 · Execution (Notte + Zatanna)</div>
+          <div class="layer-nodes">
+            <div class="arch-node exec-node"><i class="fas fa-globe"></i><span>Browser Agent (Notte)</span></div>
+            <div class="arch-node exec-node"><i class="fas fa-plug"></i><span>API Bridge (Zatanna)</span></div>
+            <div class="arch-node exec-node"><i class="fas fa-robot"></i><span>Code Executor</span></div>
+            <div class="arch-node exec-node"><i class="fas fa-store"></i><span>Agent Commerce (Sapiom)</span></div>
+          </div>
+        </div>
+        <!-- Layer 1: Security -->
+        <div class="arch-layer" id="layer-security" style="--layer-color: #f87171;">
+          <div class="layer-label">Layer 1 · Security &amp; Compliance (ClawSecure)</div>
+          <div class="layer-nodes">
+            <div class="arch-node sec-node"><i class="fas fa-shield-alt"></i><span>ClawSecure</span></div>
+            <div class="arch-node sec-node"><i class="fas fa-user-shield"></i><span>Zero-Trust IAM</span></div>
+            <div class="arch-node sec-node"><i class="fas fa-file-contract"></i><span>EU AI Act</span></div>
+            <div class="arch-node sec-node"><i class="fas fa-eye"></i><span>Goodfire Interpretability</span></div>
+          </div>
+        </div>
+
+        <!-- Data flow lines SVG -->
+        <svg class="dataflow-svg" id="dataflowSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+
+    <!-- Live Orchestration Log -->
+    <div class="log-panel" id="orchestrationLog">
+      <div class="log-header">
+        <span><i class="fas fa-terminal"></i> ORCHESTRATION LOG</span>
+        <button class="log-clear" onclick="clearLog('orchestrationLog')"><i class="fas fa-trash"></i></button>
+      </div>
+      <div class="log-body" id="orchestrationLogBody">
+        <div class="log-entry info"><span class="log-ts"></span><span class="log-msg">AIOS-X initialized. All systems nominal.</span></div>
+        <div class="log-entry success"><span class="log-ts"></span><span class="log-msg">MCP Protocol active · 82.7K stars on GitHub · Linux Foundation</span></div>
+        <div class="log-entry info"><span class="log-ts"></span><span class="log-msg">Loaded: DeepSeek V4 (1T params) · Llama 4 Scout (10M ctx) · Mistral 3 (675B MoE) · GPT-OSS 120B</span></div>
+        <div class="log-entry warning"><span class="log-ts"></span><span class="log-msg">Agent memory layer: ByteRover .brv context-tree initialized (92.2% retrieval accuracy)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PANEL 2: DEBATE ARENA
+  ══════════════════════════════════════ -->
+  <section class="panel" id="panel-debate">
+    <div class="panel-header">
+      <h2><i class="fas fa-comments"></i> Multi-Model Debate Arena</h2>
+      <p class="panel-desc">Deterministic adversarial debate between models → consensus synthesis → Rubric AI verification</p>
+    </div>
+
+    <div class="debate-container">
+      <!-- Topic Input -->
+      <div class="debate-setup">
+        <div class="debate-topic-wrapper">
+          <label class="input-label">DEBATE TOPIC <span class="badge">Deterministic</span></label>
+          <div class="topic-suggestions">
+            <span class="topic-pill" onclick="setDebateTopic(this)">Best agentic memory architecture: ByteRover vs MuleRun</span>
+            <span class="topic-pill" onclick="setDebateTopic(this)">MCP vs custom API orchestration protocols</span>
+            <span class="topic-pill" onclick="setDebateTopic(this)">Open-source vs proprietary model selection for enterprise</span>
+            <span class="topic-pill" onclick="setDebateTopic(this)">JEPA world models vs transformer scaling</span>
+            <span class="topic-pill" onclick="setDebateTopic(this)">Vertical AI specialization vs general-purpose agents</span>
+          </div>
+          <input type="text" id="debateTopic" class="debate-input" placeholder="Enter debate topic or select a suggestion above..." value="Best agentic memory architecture: ByteRover vs MuleRun"/>
+        </div>
+        <div class="debate-controls">
+          <div class="debate-settings">
+            <label>Rounds: <select id="debateRounds" class="mini-select">
+              <option value="2">2</option>
+              <option value="3" selected>3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select></label>
+            <label>Mode: <select id="debateMode" class="mini-select">
+              <option value="adversarial">Adversarial</option>
+              <option value="socratic">Socratic</option>
+              <option value="consensus">Consensus-seeking</option>
+            </select></label>
+          </div>
+          <button class="btn-primary" id="startDebate">
+            <i class="fas fa-gavel"></i> Start Debate
+          </button>
+        </div>
+      </div>
+
+      <!-- Model Cards in Debate Positions -->
+      <div class="debate-models-grid">
+        <div class="debate-model-card" id="dcard-deepseek" data-model="deepseek">
+          <div class="dmc-header deepseek-theme">
+            <div class="dmc-badge">DS</div>
+            <div class="dmc-info">
+              <div class="dmc-name">DeepSeek V4</div>
+              <div class="dmc-spec">1T params · Open weights · Rivals GPT-5.4</div>
+            </div>
+            <div class="dmc-score" id="score-deepseek">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-deepseek">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="ds-confidence">-</span>% confidence</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="ds-citations">0</span> citations</span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="ds-tokens">0</span> tokens</span>
+          </div>
+        </div>
+
+        <div class="debate-model-card" id="dcard-llama" data-model="llama">
+          <div class="dmc-header llama-theme">
+            <div class="dmc-badge">L4</div>
+            <div class="dmc-info">
+              <div class="dmc-name">Llama 4 Scout</div>
+              <div class="dmc-spec">10M ctx window · Meta AI</div>
+            </div>
+            <div class="dmc-score" id="score-llama">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-llama">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="ll-confidence">-</span>% confidence</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="ll-citations">0</span> citations</span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="ll-tokens">0</span> tokens</span>
+          </div>
+        </div>
+
+        <div class="debate-model-card" id="dcard-mistral" data-model="mistral">
+          <div class="dmc-header mistral-theme">
+            <div class="dmc-badge">M3</div>
+            <div class="dmc-info">
+              <div class="dmc-name">Mistral 3</div>
+              <div class="dmc-spec">675B MoE · 41B active · Half compute</div>
+            </div>
+            <div class="dmc-score" id="score-mistral">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-mistral">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="mi-confidence">-</span>% confidence</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="mi-citations">0</span> citations</span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="mi-tokens">0</span> tokens</span>
+          </div>
+        </div>
+
+        <div class="debate-model-card" id="dcard-gptoss" data-model="gptoss">
+          <div class="dmc-header gptoss-theme">
+            <div class="dmc-badge">GO</div>
+            <div class="dmc-info">
+              <div class="dmc-name">GPT-OSS 120B</div>
+              <div class="dmc-spec">Open weights · First since GPT-2</div>
+            </div>
+            <div class="dmc-score" id="score-gptoss">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-gptoss">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="go-confidence">-</span>% confidence</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="go-citations">0</span> citations</span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="go-tokens">0</span> tokens</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rubric AI Verification Panel -->
+      <div class="rubric-panel" id="rubricPanel">
+        <div class="rubric-header">
+          <i class="fas fa-microscope"></i> RUBRIC AI · Reasoning Verification Engine
+          <span class="rubric-status" id="rubricStatus">Idle</span>
+        </div>
+        <div class="rubric-body">
+          <div class="rubric-metrics">
+            <div class="rm-item">
+              <div class="rm-label">Logic Coherence</div>
+              <div class="rm-bar"><div class="rm-fill" id="rm-logic" style="width:0%"></div></div>
+              <div class="rm-val" id="rmv-logic">0%</div>
+            </div>
+            <div class="rm-item">
+              <div class="rm-label">Factual Grounding</div>
+              <div class="rm-bar"><div class="rm-fill" id="rm-fact" style="width:0%"></div></div>
+              <div class="rm-val" id="rmv-fact">0%</div>
+            </div>
+            <div class="rm-item">
+              <div class="rm-label">Hallucination Risk</div>
+              <div class="rm-bar rm-danger"><div class="rm-fill danger" id="rm-halluc" style="width:0%"></div></div>
+              <div class="rm-val" id="rmv-halluc">0%</div>
+            </div>
+            <div class="rm-item">
+              <div class="rm-label">Consensus Strength</div>
+              <div class="rm-bar"><div class="rm-fill success" id="rm-consensus" style="width:0%"></div></div>
+              <div class="rm-val" id="rmv-consensus">0%</div>
+            </div>
+          </div>
+          <div class="rubric-synthesis" id="rubricSynthesis">
+            <div class="rs-title"><i class="fas fa-lightbulb"></i> SYNTHESIZED CONSENSUS</div>
+            <div class="rs-body" id="synthBody">Run a debate to generate consensus output...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Debate Timeline -->
+      <div class="debate-timeline" id="debateTimeline">
+        <div class="dt-header"><i class="fas fa-history"></i> DEBATE TIMELINE</div>
+        <div class="dt-body" id="dtBody">
+          <div class="dt-empty">No debate rounds yet. Start a debate to see the timeline.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PANEL 3: MEMORY LAYER
+  ══════════════════════════════════════ -->
+  <section class="panel" id="panel-memory">
+    <div class="panel-header">
+      <h2><i class="fas fa-brain"></i> Agent Memory &amp; State Layer</h2>
+      <p class="panel-desc">ByteRover .brv context-tree · compresr token compression · persistent state machine</p>
+    </div>
+
+    <div class="memory-container">
+      <!-- Memory Stats -->
+      <div class="memory-stats-row">
+        <div class="mstat-card">
+          <div class="msc-icon" style="color:#34d399"><i class="fas fa-database"></i></div>
+          <div class="msc-val" id="memNodes">0</div>
+          <div class="msc-label">Memory Nodes</div>
+        </div>
+        <div class="mstat-card">
+          <div class="msc-icon" style="color:#38bdf8"><i class="fas fa-compress-alt"></i></div>
+          <div class="msc-val" id="compRatio">0%</div>
+          <div class="msc-label">Compression Ratio</div>
+        </div>
+        <div class="mstat-card">
+          <div class="msc-icon" style="color:#f472b6"><i class="fas fa-bullseye"></i></div>
+          <div class="msc-val">92.2%</div>
+          <div class="msc-label">Retrieval Accuracy</div>
+        </div>
+        <div class="mstat-card">
+          <div class="msc-icon" style="color:#facc15"><i class="fas fa-clock"></i></div>
+          <div class="msc-val" id="memAge">0s</div>
+          <div class="msc-label">State Age</div>
+        </div>
+        <div class="mstat-card">
+          <div class="msc-icon" style="color:#fb923c"><i class="fas fa-project-diagram"></i></div>
+          <div class="msc-val" id="ctxTokens">0</div>
+          <div class="msc-label">Context Tokens</div>
+        </div>
+        <div class="mstat-card">
+          <div class="msc-icon" style="color:#a78bfa"><i class="fas fa-archive"></i></div>
+          <div class="msc-val" id="brv-files">0</div>
+          <div class="msc-label">.brv Files</div>
+        </div>
+      </div>
+
+      <div class="memory-panels-row">
+        <!-- Context Tree -->
+        <div class="mem-panel">
+          <div class="mp-header">
+            <i class="fas fa-sitemap"></i> ByteRover Context Tree
+            <div class="mp-actions">
+              <button class="mp-btn" onclick="seedMemory()"><i class="fas fa-seedling"></i> Seed</button>
+              <button class="mp-btn" onclick="compressMemory()"><i class="fas fa-compress-alt"></i> Compress</button>
+              <button class="mp-btn danger" onclick="clearMemory()"><i class="fas fa-trash"></i> Clear</button>
+            </div>
+          </div>
+          <div class="context-tree" id="contextTree">
+            <div class="tree-empty">Memory tree is empty. Seed or run orchestration to populate.</div>
+          </div>
+        </div>
+
+        <!-- Memory Input -->
+        <div class="mem-panel">
+          <div class="mp-header"><i class="fas fa-plus-circle"></i> Write to Memory</div>
+          <div class="mem-write-form">
+            <div class="mwf-field">
+              <label>Node Key</label>
+              <input type="text" id="memKey" class="mem-input" placeholder="e.g. task/analysis/q1-2026"/>
+            </div>
+            <div class="mwf-field">
+              <label>Node Value</label>
+              <textarea id="memValue" class="mem-textarea" placeholder="Enter memory content..."></textarea>
+            </div>
+            <div class="mwf-field">
+              <label>Type</label>
+              <select id="memType" class="mini-select" style="width:100%">
+                <option value="task">Task Context</option>
+                <option value="result">Execution Result</option>
+                <option value="debate">Debate Outcome</option>
+                <option value="knowledge">Knowledge Fragment</option>
+                <option value="state">State Snapshot</option>
+              </select>
+            </div>
+            <button class="btn-primary" style="width:100%;margin-top:8px" onclick="writeMemory()">
+              <i class="fas fa-save"></i> Write to ByteRover
+            </button>
+          </div>
+
+          <!-- compresr panel -->
+          <div class="compressor-panel">
+            <div class="cp-header"><i class="fas fa-compress-alt"></i> compresr · Context Compression</div>
+            <div class="cp-input-row">
+              <textarea id="comprInput" class="mem-textarea" placeholder="Paste context to compress..."></textarea>
+            </div>
+            <button class="btn-secondary" style="width:100%;margin-top:8px" onclick="runCompresr()">
+              <i class="fas fa-magic"></i> Compress Context
+            </button>
+            <div class="cp-output" id="comprOutput">
+              <div class="cp-stats">Original: <span id="comprOrig">-</span> tokens → Compressed: <span id="comprNew">-</span> tokens (<span id="comprSaved">-</span>% saved)</div>
+              <div class="cp-result" id="comprResult"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memory retrieval -->
+      <div class="mem-retrieval">
+        <div class="mp-header"><i class="fas fa-search"></i> Vector Retrieval · RAG Query</div>
+        <div class="retrieval-row">
+          <input type="text" id="ragQuery" class="mem-input" placeholder="Query memory: 'What was the outcome of the Q1 funding analysis?'" style="flex:1"/>
+          <button class="btn-primary" onclick="queryMemory()"><i class="fas fa-search"></i> Query</button>
+        </div>
+        <div class="retrieval-results" id="retrievalResults">
+          <div class="rr-empty">Query results will appear here...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PANEL 4: EXECUTION LAYER
+  ══════════════════════════════════════ -->
+  <section class="panel" id="panel-execution">
+    <div class="panel-header">
+      <h2><i class="fas fa-bolt"></i> Execution Pipeline</h2>
+      <p class="panel-desc">Notte browser agents · Zatanna API bridge · Sapiom commerce · multi-step task runner</p>
+    </div>
+
+    <div class="execution-container">
+      <!-- Pipeline Builder -->
+      <div class="pipeline-builder">
+        <div class="pb-header">
+          <i class="fas fa-stream"></i> PIPELINE BUILDER
+          <div class="pb-actions">
+            <button class="mp-btn" onclick="addPipelineStep()"><i class="fas fa-plus"></i> Add Step</button>
+            <button class="btn-primary" id="runPipeline" onclick="executePipeline()"><i class="fas fa-play"></i> Execute Pipeline</button>
+          </div>
+        </div>
+        <div class="pipeline-canvas" id="pipelineCanvas">
+          <!-- Steps injected here -->
+        </div>
+      </div>
+
+      <!-- Execution Visualizer -->
+      <div class="execution-viz">
+        <div class="ev-header"><i class="fas fa-wave-square"></i> REAL-TIME EXECUTION VISUALIZER</div>
+        <div class="ev-body" id="evBody">
+          <canvas id="execCanvas" height="140"></canvas>
+        </div>
+      </div>
+
+      <!-- Agent Roster -->
+      <div class="agent-roster">
+        <div class="ar-header"><i class="fas fa-robot"></i> ACTIVE AGENTS</div>
+        <div class="agent-grid" id="agentGrid">
+          <div class="agent-card" data-agent="notte">
+            <div class="ac-icon notte"><i class="fas fa-globe"></i></div>
+            <div class="ac-info">
+              <div class="ac-name">Notte Browser Agent</div>
+              <div class="ac-spec">Managed browser · Web scraping · UI automation</div>
+              <div class="ac-status idle">IDLE</div>
+            </div>
+            <div class="ac-actions">
+              <button class="mini-btn" onclick="activateAgent('notte')"><i class="fas fa-play"></i></button>
+              <button class="mini-btn" onclick="configAgent('notte')"><i class="fas fa-cog"></i></button>
+            </div>
+          </div>
+          <div class="agent-card" data-agent="zatanna">
+            <div class="ac-icon zatanna"><i class="fas fa-plug"></i></div>
+            <div class="ac-info">
+              <div class="ac-name">Zatanna API Bridge</div>
+              <div class="ac-spec">Legacy API bridge · Universal connector</div>
+              <div class="ac-status idle">IDLE</div>
+            </div>
+            <div class="ac-actions">
+              <button class="mini-btn" onclick="activateAgent('zatanna')"><i class="fas fa-play"></i></button>
+              <button class="mini-btn" onclick="configAgent('zatanna')"><i class="fas fa-cog"></i></button>
+            </div>
+          </div>
+          <div class="agent-card" data-agent="sapiom">
+            <div class="ac-icon sapiom"><i class="fas fa-coins"></i></div>
+            <div class="ac-info">
+              <div class="ac-name">Sapiom Commerce</div>
+              <div class="ac-spec">Agent payments · Autonomous transactions</div>
+              <div class="ac-status idle">IDLE</div>
+            </div>
+            <div class="ac-actions">
+              <button class="mini-btn" onclick="activateAgent('sapiom')"><i class="fas fa-play"></i></button>
+              <button class="mini-btn" onclick="configAgent('sapiom')"><i class="fas fa-cog"></i></button>
+            </div>
+          </div>
+          <div class="agent-card" data-agent="orthogonal">
+            <div class="ac-icon orthogonal"><i class="fas fa-store"></i></div>
+            <div class="ac-info">
+              <div class="ac-name">Orthogonal Marketplace</div>
+              <div class="ac-spec">Agent API marketplace · Service discovery</div>
+              <div class="ac-status idle">IDLE</div>
+            </div>
+            <div class="ac-actions">
+              <button class="mini-btn" onclick="activateAgent('orthogonal')"><i class="fas fa-play"></i></button>
+              <button class="mini-btn" onclick="configAgent('orthogonal')"><i class="fas fa-cog"></i></button>
+            </div>
+          </div>
+          <div class="agent-card" data-agent="byterover">
+            <div class="ac-icon byterover"><i class="fas fa-database"></i></div>
+            <div class="ac-info">
+              <div class="ac-name">ByteRover Memory</div>
+              <div class="ac-spec">File-based state · 92.2% retrieval accuracy</div>
+              <div class="ac-status running">RUNNING</div>
+            </div>
+            <div class="ac-actions">
+              <button class="mini-btn" onclick="activateAgent('byterover')"><i class="fas fa-play"></i></button>
+              <button class="mini-btn" onclick="configAgent('byterover')"><i class="fas fa-cog"></i></button>
+            </div>
+          </div>
+          <div class="agent-card" data-agent="rubric">
+            <div class="ac-icon rubric"><i class="fas fa-check-circle"></i></div>
+            <div class="ac-info">
+              <div class="ac-name">Rubric AI Verifier</div>
+              <div class="ac-spec">Reasoning verification · Anti-hallucination</div>
+              <div class="ac-status idle">IDLE</div>
+            </div>
+            <div class="ac-actions">
+              <button class="mini-btn" onclick="activateAgent('rubric')"><i class="fas fa-play"></i></button>
+              <button class="mini-btn" onclick="configAgent('rubric')"><i class="fas fa-cog"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Execution Log -->
+      <div class="log-panel">
+        <div class="log-header">
+          <span><i class="fas fa-terminal"></i> EXECUTION LOG</span>
+          <button class="log-clear" onclick="clearLog('execLog')"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="log-body" id="execLogBody">
+          <div class="log-entry info"><span class="log-msg">Execution layer ready. Build a pipeline and click Execute.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PANEL 5: MARKET INTEL
+  ══════════════════════════════════════ -->
+  <section class="panel" id="panel-market">
+    <div class="panel-header">
+      <h2><i class="fas fa-chart-line"></i> Market Intelligence Dashboard</h2>
+      <p class="panel-desc">February 2026 AI funding landscape · vertical opportunities · strategic white spaces</p>
+    </div>
+
+    <div class="market-container">
+      <!-- KPI Row -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-val">$189<span class="kpi-unit">B</span></div>
+          <div class="kpi-label">Feb 2026 VC Funding</div>
+          <div class="kpi-sub">Global record — all-time high</div>
+          <div class="kpi-trend up">↑ Record</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-val">90<span class="kpi-unit">%</span></div>
+          <div class="kpi-label">AI Share of VC</div>
+          <div class="kpi-sub">$170B of $189B to AI</div>
+          <div class="kpi-trend up">↑ Dominant</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-val">$650<span class="kpi-unit">B</span></div>
+          <div class="kpi-label">Hyperscaler CapEx 2026</div>
+          <div class="kpi-sub">Big Tech infrastructure</div>
+          <div class="kpi-trend up">↑ Accelerating</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-val">40<span class="kpi-unit">+</span></div>
+          <div class="kpi-label">New AI Unicorns Q1</div>
+          <div class="kpi-sub">Fastest pace ever</div>
+          <div class="kpi-trend up">↑ Explosive</div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-title">Top Funding Rounds (Feb 2026)</div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="fundingChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Macro Theme Distribution</div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="themeChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Open-Source Model Benchmarks</div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="modelBenchChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vertical AI Matrix -->
+      <div class="vertical-matrix">
+        <div class="vm-header"><i class="fas fa-th"></i> VERTICAL AI · "Harvey for X" MATRIX</div>
+        <div class="vm-grid" id="vmGrid">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Hybridization Candidates -->
+      <div class="hybrid-section">
+        <div class="hs-header"><i class="fas fa-dna"></i> HYBRIDIZATION CANDIDATES · Strategic Combinations</div>
+        <div class="hybrid-grid" id="hybridGrid">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- White Space Radar -->
+      <div class="whitespace-section">
+        <div class="ws-header"><i class="fas fa-crosshairs"></i> WHITE SPACE OPPORTUNITIES</div>
+        <div class="ws-items">
+          <div class="ws-item priority-high">
+            <div class="ws-priority">HIGH PRIORITY</div>
+            <div class="ws-title">Agent Orchestration Middleware</div>
+            <div class="ws-desc">Coordinates multiple agents, manages state, handles conflict resolution, provides observability. Currently underfunded relative to importance.</div>
+            <div class="ws-tags"><span>Orchestration</span><span>State Mgmt</span><span>Observability</span></div>
+          </div>
+          <div class="ws-item priority-high">
+            <div class="ws-priority">HIGH PRIORITY</div>
+            <div class="ws-title">AI Governance & Audit (EU AI Act)</div>
+            <div class="ws-desc">Full applicability August 2, 2026. Demand for interpretability, compliance tooling, audit trails, and risk classification systems.</div>
+            <div class="ws-tags"><span>Compliance</span><span>Interpretability</span><span>Aug 2026</span></div>
+          </div>
+          <div class="ws-item priority-med">
+            <div class="ws-priority">MEDIUM PRIORITY</div>
+            <div class="ws-title">MCP Security Gateway</div>
+            <div class="ws-desc">As MCP becomes the standard integration protocol, security risks are emerging. Need for MCP Gateways with authentication, rate-limiting, and audit.</div>
+            <div class="ws-tags"><span>MCP</span><span>Security</span><span>Gateway</span></div>
+          </div>
+          <div class="ws-item priority-med">
+            <div class="ws-priority">MEDIUM PRIORITY</div>
+            <div class="ws-title">Open-Source Arbitrage Infrastructure</div>
+            <div class="ws-desc">DeepSeek V4, Llama 4 Scout, GPT-OSS 120B enable sovereign agent deployment. Need tooling to manage, fine-tune, and deploy at scale.</div>
+            <div class="ws-tags"><span>Open-Source</span><span>Deployment</span><span>Fine-tuning</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PANEL 6: SECURITY
+  ══════════════════════════════════════ -->
+  <section class="panel" id="panel-security">
+    <div class="panel-header">
+      <h2><i class="fas fa-shield-alt"></i> Security, Compliance &amp; Interpretability</h2>
+      <p class="panel-desc">ClawSecure · Zero-trust IAM · Goodfire interpretability · EU AI Act readiness</p>
+    </div>
+
+    <div class="security-container">
+      <!-- Threat Monitor -->
+      <div class="threat-monitor">
+        <div class="tm-header">
+          <i class="fas fa-radar"></i> CLAWSECURE · AGENT THREAT MONITOR
+          <div class="tm-controls">
+            <button class="mp-btn danger" id="runScan" onclick="runSecurityScan()"><i class="fas fa-search"></i> Run Scan</button>
+            <button class="mp-btn" onclick="simulateAttack()"><i class="fas fa-bug"></i> Simulate Attack</button>
+          </div>
+        </div>
+        <div class="threat-grid">
+          <div class="threat-card" id="tc-prompt">
+            <div class="tc-icon"><i class="fas fa-terminal"></i></div>
+            <div class="tc-name">Prompt Injection</div>
+            <div class="tc-status safe" id="ts-prompt">MONITORED</div>
+            <div class="tc-count" id="tcount-prompt">0 detected</div>
+          </div>
+          <div class="threat-card" id="tc-chain">
+            <div class="tc-icon"><i class="fas fa-link"></i></div>
+            <div class="tc-name">Chain Hijacking</div>
+            <div class="tc-status safe" id="ts-chain">MONITORED</div>
+            <div class="tc-count" id="tcount-chain">0 detected</div>
+          </div>
+          <div class="threat-card" id="tc-data">
+            <div class="tc-icon"><i class="fas fa-database"></i></div>
+            <div class="tc-name">Data Exfiltration</div>
+            <div class="tc-status safe" id="ts-data">MONITORED</div>
+            <div class="tc-count" id="tcount-data">0 detected</div>
+          </div>
+          <div class="threat-card" id="tc-mcp">
+            <div class="tc-icon"><i class="fas fa-network-wired"></i></div>
+            <div class="tc-name">MCP Spoofing</div>
+            <div class="tc-status safe" id="ts-mcp">MONITORED</div>
+            <div class="tc-count" id="tcount-mcp">0 detected</div>
+          </div>
+          <div class="threat-card" id="tc-memory">
+            <div class="tc-icon"><i class="fas fa-brain"></i></div>
+            <div class="tc-name">Memory Poisoning</div>
+            <div class="tc-status safe" id="ts-memory">MONITORED</div>
+            <div class="tc-count" id="tcount-memory">0 detected</div>
+          </div>
+          <div class="threat-card" id="tc-agent">
+            <div class="tc-icon"><i class="fas fa-robot"></i></div>
+            <div class="tc-name">Rogue Agent</div>
+            <div class="tc-status safe" id="ts-agent">MONITORED</div>
+            <div class="tc-count" id="tcount-agent">0 detected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goodfire Interpretability -->
+      <div class="goodfire-panel">
+        <div class="gf-header"><i class="fas fa-eye"></i> GOODFIRE · MECHANISTIC INTERPRETABILITY</div>
+        <div class="gf-body">
+          <div class="gf-input-row">
+            <select id="gfModel" class="mini-select">
+              <option>DeepSeek V4</option>
+              <option>Llama 4 Scout</option>
+              <option>Mistral 3</option>
+              <option>GPT-OSS 120B</option>
+            </select>
+            <input type="text" id="gfConcept" class="mem-input" placeholder="Concept to probe: e.g. 'hallucination', 'deception', 'reasoning'" style="flex:1"/>
+            <button class="btn-primary" onclick="probeModel()"><i class="fas fa-microscope"></i> Probe</button>
+          </div>
+          <div class="feature-visualization" id="featureViz">
+            <div class="fv-empty">Select a model and concept to visualize internal feature activations</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EU AI Act Compliance -->
+      <div class="compliance-panel">
+        <div class="cp2-header"><i class="fas fa-file-contract"></i> EU AI ACT · COMPLIANCE READINESS</div>
+        <div class="compliance-deadline">
+          <div class="cd-label">⏰ Full Applicability Deadline</div>
+          <div class="cd-date">August 2, 2026</div>
+          <div class="cd-countdown" id="euCountdown">Calculating...</div>
+        </div>
+        <div class="compliance-checklist" id="complianceChecklist">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Security Log -->
+      <div class="log-panel">
+        <div class="log-header">
+          <span><i class="fas fa-shield-alt"></i> SECURITY LOG</span>
+          <button class="log-clear" onclick="clearLog('secLog')"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="log-body" id="secLogBody">
+          <div class="log-entry info"><span class="log-msg">ClawSecure initialized. All vectors monitored.</span></div>
+          <div class="log-entry success"><span class="log-msg">Zero-trust IAM active. All agent identities verified.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── TOAST NOTIFICATION ── -->
+<div id="toastContainer"></div>
+
+<!-- ── MODAL OVERLAY ── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/orchestrator.js"></script>
+<script src="js/debate.js"></script>
+<script src="js/memory.js"></script>
+<script src="js/execution.js"></script>
+<script src="js/market.js"></script>
+<script src="js/security.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
