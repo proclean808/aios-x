@@ -9,10 +9,12 @@ const ORCHESTRATION_STEPS = [
   { layer: 'layer-exec', node: 0, msg: '🌐 Notte browser agent: Activated for web research', delay: 800 },
   { layer: 'layer-exec', node: 1, msg: '🔌 Zatanna API bridge: Legacy system connectivity established', delay: 1000 },
   { layer: 'layer-verify', node: 0, msg: '🔬 Rubric AI: Reasoning verification engine armed', delay: 1200 },
-  { layer: 'layer-models', node: 0, msg: '⚡ DeepSeek V4 (1T params): Task assigned', delay: 1400 },
-  { layer: 'layer-models', node: 1, msg: '⚡ Llama 4 Scout (10M ctx): Task assigned', delay: 1600 },
-  { layer: 'layer-models', node: 2, msg: '⚡ Mistral 3 (675B MoE): Task assigned', delay: 1800 },
-  { layer: 'layer-models', node: 3, msg: '⚡ GPT-OSS 120B: Task assigned', delay: 2000 },
+  { layer: 'layer-models', node: 0, msg: '⚡ Gemini 2.5 (Multimodal): Task assigned', delay: 1400 },
+  { layer: 'layer-models', node: 1, msg: '⚡ ChatGPT-5 (OpenAI): Task assigned', delay: 1550 },
+  { layer: 'layer-models', node: 2, msg: '⚡ Grok 3 (xAI): Task assigned', delay: 1700 },
+  { layer: 'layer-models', node: 3, msg: '⚡ Claude 4 Opus (Anthropic): Task assigned', delay: 1850 },
+  { layer: 'layer-models', node: 4, msg: '⚡ Ollama Local (Private): Task assigned', delay: 2000 },
+  { layer: 'layer-models', node: 5, msg: '⚡ DeepSeek V4 (1T params): Task assigned', delay: 2150 },
   { layer: 'layer-orch', node: 1, msg: '⚖️ Debate engine: Cross-model argument synthesis running', delay: 2400 },
   { layer: 'layer-orch', node: 2, msg: '✅ Consensus verifier: Evaluating model agreement', delay: 2800 },
   { layer: 'layer-verify', node: 3, msg: '⭐ Rubric AI: Scoring and ranking outputs', delay: 3200 },
@@ -21,9 +23,9 @@ const ORCHESTRATION_STEPS = [
 
 const TASK_RESPONSES = {
   default: [
-    "Analyzing task through multi-model consensus framework. DeepSeek V4 identifies key structural patterns. Llama 4 Scout leverages its 10M token context window for comprehensive document analysis. Mistral 3's sparse MoE architecture provides efficiency gains at 50% compute cost.",
-    "Cross-model debate initiated. Models propose competing frameworks. DeepSeek V4 advocates for JEPA-based reasoning; Llama 4 Scout suggests RAG augmentation given context window advantage; Mistral 3 recommends MoE routing for cost efficiency.",
-    "Rubric AI verification: Logic coherence 94% · Factual grounding 89% · Hallucination risk 6% · Consensus strength 87%. Synthesizing final output.",
+    "Analyzing task through 6-model consensus framework. Gemini 2.5 handles multimodal reasoning. ChatGPT-5 provides comprehensive task decomposition. Grok 3 pulls real-time data streams. Claude 4 Opus applies nuanced analysis. Ollama runs privacy-critical subtasks locally. DeepSeek V4 validates with benchmark citations.",
+    "Cross-model debate initiated. Gemini advocates multimodal reasoning; ChatGPT-5 proposes structured task completion; Grok 3 integrates live data; Claude 4 adds safety considerations; Ollama ensures data privacy; DeepSeek V4 cites technical benchmarks.",
+    "Rubric AI verification: Logic coherence 94% · Factual grounding 89% · Hallucination risk 6% · Consensus strength 91%. Synthesizing 6-model output.",
     "MCP Protocol routing task to specialized execution agents. Notte browser agent activated for real-time data retrieval. Zatanna API bridge connecting to legacy enterprise systems.",
     "ByteRover memory updated: task context persisted to .brv context-tree. State snapshot saved for multi-session continuity. compresr reduced context from 48K to 14K tokens (71% reduction).",
   ]
@@ -43,7 +45,7 @@ const ORCHESTRATION_STRATEGIES = {
   waterfall: {
     name: 'Waterfall Pipeline',
     desc: 'Each model builds on the previous model\'s output sequentially',
-    flow: ['DeepSeek', '→', 'Llama', '→', 'Mistral', '→', 'GPT-OSS', '→', 'Verify', '→', 'Output']
+    flow: ['Gemini', '→', 'ChatGPT', '→', 'Grok', '→', 'Claude', '→', 'Ollama', '→', 'DeepSeek', '→', 'Output']
   },
   adversarial: {
     name: 'Adversarial Challenge',

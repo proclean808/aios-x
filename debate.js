@@ -5,37 +5,53 @@
 
 // ── MODEL PERSONAS ──
 const MODEL_PERSONAS = {
+  gemini: {
+    name: 'Gemini 2.5',
+    badge: 'GE',
+    color: '#4285f4',
+    style: 'multimodal, reasoning-focused, excels at complex problem decomposition',
+    strengths: ['Multimodal reasoning', 'Code generation', 'Scientific analysis'],
+    signature: 'Through systematic multimodal analysis,'
+  },
+  chatgpt: {
+    name: 'ChatGPT-5',
+    badge: 'GP',
+    color: '#10a37f',
+    style: 'conversational, comprehensive, balances depth with accessibility',
+    strengths: ['Natural language', 'Task completion', 'Creative writing'],
+    signature: 'Considering the full context of this question,'
+  },
+  grok: {
+    name: 'Grok 3',
+    badge: 'GK',
+    color: '#1da1f2',
+    style: 'direct, real-time informed, leverages live data streams',
+    strengths: ['Real-time data', 'Direct communication', 'Trend analysis'],
+    signature: 'Based on real-time information and direct analysis,'
+  },
+  claude: {
+    name: 'Claude 4 Opus',
+    badge: 'CL',
+    color: '#cc785c',
+    style: 'thoughtful, nuanced, prioritizes safety and accuracy',
+    strengths: ['Long-context reasoning', 'Nuanced analysis', 'Ethical considerations'],
+    signature: 'Examining this thoughtfully and with nuance,'
+  },
+  ollama: {
+    name: 'Ollama Local',
+    badge: 'OL',
+    color: '#ffffff',
+    style: 'privacy-first, local execution, customizable',
+    strengths: ['Privacy', 'Local deployment', 'Custom fine-tuning'],
+    signature: 'From a local-first, privacy-preserving perspective,'
+  },
   deepseek: {
     name: 'DeepSeek V4',
     badge: 'DS',
     color: '#38bdf8',
     style: 'analytical, data-driven, cites specific benchmarks and technical metrics',
-    strengths: ['Technical depth', 'Benchmark citations', 'Architecture analysis'],
+    strengths: ['Technical depth', 'Benchmark citations', 'Open-source leadership'],
     signature: 'Based on empirical evidence and benchmark data,'
-  },
-  llama: {
-    name: 'Llama 4 Scout',
-    badge: 'L4',
-    color: '#34d399',
-    style: 'comprehensive, leverages wide context, synthesizes diverse sources',
-    strengths: ['Long-context reasoning', 'Cross-domain synthesis', 'Document analysis'],
-    signature: 'With access to the full contextual landscape,'
-  },
-  mistral: {
-    name: 'Mistral 3',
-    badge: 'M3',
-    color: '#a78bfa',
-    style: 'efficient, pragmatic, focuses on cost-performance tradeoffs',
-    strengths: ['Efficiency analysis', 'Cost optimization', 'Sparse reasoning'],
-    signature: 'From an efficiency-first perspective,'
-  },
-  gptoss: {
-    name: 'GPT-OSS 120B',
-    badge: 'GO',
-    color: '#f472b6',
-    style: 'creative, nuanced, explores edge cases and emergent behaviors',
-    strengths: ['Creative reasoning', 'Edge case analysis', 'Nuanced synthesis'],
-    signature: 'Examining the nuanced dimensions of this question,'
   }
 };
 
@@ -115,7 +131,7 @@ function generateDebateArgument(model, topic, round) {
 // ── DEBATE STATE ──
 let debateRunning = false;
 let debateRoundNum = 0;
-const debateScores = { deepseek: 0, llama: 0, mistral: 0, gptoss: 0 };
+const debateScores = { gemini: 0, chatgpt: 0, grok: 0, claude: 0, ollama: 0, deepseek: 0 };
 
 // ── SCORING ALGORITHM ──
 function scoreRound(topic, model, round, argument) {
@@ -159,7 +175,7 @@ async function startDebate() {
 
   // Reset
   Object.keys(debateScores).forEach(m => debateScores[m] = 0);
-  ['deepseek','llama','mistral','gptoss'].forEach(m => {
+  ['gemini','chatgpt','grok','claude','ollama','deepseek'].forEach(m => {
     document.getElementById(`score-${m}`).textContent = '-';
     document.getElementById(`arg-${m}`).innerHTML = '<span class="arg-placeholder">Preparing argument...</span>';
     document.getElementById(`ds-confidence`) && (document.getElementById(`ds-confidence`).textContent = '-');
@@ -190,7 +206,7 @@ async function startDebate() {
     dtBody.appendChild(roundDiv);
 
     // Each model argues
-    const modelOrder = shuffle(['deepseek', 'llama', 'mistral', 'gptoss']);
+    const modelOrder = shuffle(['gemini', 'chatgpt', 'grok', 'claude', 'ollama', 'deepseek']);
     for (const model of modelOrder) {
       const card = document.getElementById(`dcard-${model}`);
       card.classList.add('speaking');
@@ -271,7 +287,7 @@ async function startDebate() {
 }
 
 function updateModelStats(model, confidence, citations, tokens) {
-  const prefixes = { deepseek: 'ds', llama: 'll', mistral: 'mi', gptoss: 'go' };
+  const prefixes = { gemini: 'ge', chatgpt: 'gp', grok: 'gk', claude: 'cl', ollama: 'ol', deepseek: 'ds' };
   const p = prefixes[model];
   if (document.getElementById(`${p}-confidence`)) document.getElementById(`${p}-confidence`).textContent = confidence;
   if (document.getElementById(`${p}-citations`)) document.getElementById(`${p}-citations`).textContent = citations;
@@ -279,7 +295,7 @@ function updateModelStats(model, confidence, citations, tokens) {
 }
 
 function updateDebateScores(topic) {
-  ['deepseek','llama','mistral','gptoss'].forEach(model => {
+  ['gemini','chatgpt','grok','claude','ollama','deepseek'].forEach(model => {
     const el = document.getElementById(`score-${model}`);
     if (el) {
       el.textContent = debateScores[model];

@@ -426,10 +426,17 @@ body {
 }
 .model-detail { font-size: 9px; color: var(--text-muted); font-family: var(--font-mono); text-align: center; }
 
-.deepseek-node .model-icon { background: rgba(56,189,248,0.3); color: var(--accent-blue); }
-.llama-node .model-icon { background: rgba(52,211,153,0.3); color: var(--accent-green); }
-.mistral-node .model-icon { background: rgba(167,139,250,0.3); color: var(--accent-purple); }
-.gptoss-node .model-icon { background: rgba(244,114,182,0.3); color: var(--accent-pink); }
+/* 6 Model Node Colors */
+.gemini-node .model-icon { background: rgba(66,133,244,0.3); color: #4285f4; }
+.chatgpt-node .model-icon { background: rgba(16,163,127,0.3); color: #10a37f; }
+.grok-node .model-icon { background: rgba(29,161,242,0.3); color: #1da1f2; }
+.claude-node .model-icon { background: rgba(204,120,92,0.3); color: #cc785c; }
+.ollama-node .model-icon { background: rgba(255,255,255,0.2); color: #ffffff; }
+.deepseek-node .model-icon { background: rgba(56,189,248,0.3); color: #38bdf8; }
+
+.models-grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+@media (max-width: 900px) { .models-grid-6 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .models-grid-6 { grid-template-columns: repeat(2, 1fr); } }
 
 .dataflow-svg {
   position: absolute; top: 0; left: 0;
@@ -484,10 +491,17 @@ body {
   display: flex; align-items: center; gap: 10px;
   padding: 12px 14px;
 }
+/* 6 Model Theme Colors */
+.gemini-theme { background: linear-gradient(135deg, rgba(66,133,244,0.15), transparent); border-bottom: 1px solid rgba(66,133,244,0.2); }
+.chatgpt-theme { background: linear-gradient(135deg, rgba(16,163,127,0.15), transparent); border-bottom: 1px solid rgba(16,163,127,0.2); }
+.grok-theme { background: linear-gradient(135deg, rgba(29,161,242,0.15), transparent); border-bottom: 1px solid rgba(29,161,242,0.2); }
+.claude-theme { background: linear-gradient(135deg, rgba(204,120,92,0.15), transparent); border-bottom: 1px solid rgba(204,120,92,0.2); }
+.ollama-theme { background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent); border-bottom: 1px solid rgba(255,255,255,0.15); }
 .deepseek-theme { background: linear-gradient(135deg, rgba(56,189,248,0.15), transparent); border-bottom: 1px solid rgba(56,189,248,0.2); }
-.llama-theme { background: linear-gradient(135deg, rgba(52,211,153,0.15), transparent); border-bottom: 1px solid rgba(52,211,153,0.2); }
-.mistral-theme { background: linear-gradient(135deg, rgba(167,139,250,0.15), transparent); border-bottom: 1px solid rgba(167,139,250,0.2); }
-.gptoss-theme { background: linear-gradient(135deg, rgba(244,114,182,0.15), transparent); border-bottom: 1px solid rgba(244,114,182,0.2); }
+
+.debate-grid-6 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .debate-grid-6 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .debate-grid-6 { grid-template-columns: 1fr; } }
 
 .dmc-badge {
   width: 34px; height: 34px; border-radius: 8px;

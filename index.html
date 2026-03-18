@@ -92,11 +92,13 @@
         </div>
         <div class="input-controls">
           <div class="model-toggles">
-            <span class="mt-label">Active Models:</span>
-            <button class="model-toggle active" data-model="deepseek">DeepSeek V4</button>
-            <button class="model-toggle active" data-model="llama">Llama 4 Scout</button>
-            <button class="model-toggle active" data-model="mistral">Mistral 3</button>
-            <button class="model-toggle active" data-model="gpt-oss">GPT-OSS 120B</button>
+            <span class="mt-label">Active Models (6):</span>
+            <button class="model-toggle active" data-model="gemini">Gemini 2.5</button>
+            <button class="model-toggle active" data-model="chatgpt">ChatGPT-5</button>
+            <button class="model-toggle active" data-model="grok">Grok 3</button>
+            <button class="model-toggle active" data-model="claude">Claude 4</button>
+            <button class="model-toggle active" data-model="ollama">Ollama</button>
+            <button class="model-toggle active" data-model="deepseek">DeepSeek</button>
           </div>
           <div class="strategy-select-wrapper">
             <label class="sl-label">Strategy:</label>
@@ -142,22 +144,30 @@
         <!-- Layer 5: Models -->
         <div class="arch-layer" id="layer-models" style="--layer-color: #f472b6;">
           <div class="layer-label">Layer 5 · Multi-Model Inference</div>
-          <div class="layer-nodes">
+          <div class="layer-nodes models-grid-6">
+            <div class="arch-node model-node gemini-node" id="archGemini">
+              <div class="model-icon">GE</div><span>Gemini 2.5</span>
+              <div class="model-detail">Multimodal · Google</div>
+            </div>
+            <div class="arch-node model-node chatgpt-node" id="archChatGPT">
+              <div class="model-icon">GP</div><span>ChatGPT-5</span>
+              <div class="model-detail">GPT-5 · OpenAI</div>
+            </div>
+            <div class="arch-node model-node grok-node" id="archGrok">
+              <div class="model-icon">GK</div><span>Grok 3</span>
+              <div class="model-detail">Real-time · xAI</div>
+            </div>
+            <div class="arch-node model-node claude-node" id="archClaude">
+              <div class="model-icon">CL</div><span>Claude 4 Opus</span>
+              <div class="model-detail">200K ctx · Anthropic</div>
+            </div>
+            <div class="arch-node model-node ollama-node" id="archOllama">
+              <div class="model-icon">OL</div><span>Ollama Local</span>
+              <div class="model-detail">Private · Self-hosted</div>
+            </div>
             <div class="arch-node model-node deepseek-node" id="archDeepSeek">
               <div class="model-icon">DS</div><span>DeepSeek V4</span>
-              <div class="model-detail">1T params · Open weights</div>
-            </div>
-            <div class="arch-node model-node llama-node" id="archLlama">
-              <div class="model-icon">L4</div><span>Llama 4 Scout</span>
-              <div class="model-detail">10M ctx · Meta</div>
-            </div>
-            <div class="arch-node model-node mistral-node" id="archMistral">
-              <div class="model-icon">M3</div><span>Mistral 3</span>
-              <div class="model-detail">675B MoE · 41B active</div>
-            </div>
-            <div class="arch-node model-node gptoss-node" id="archGptOss">
-              <div class="model-icon">GO</div><span>GPT-OSS 120B</span>
-              <div class="model-detail">Open weights · OAI</div>
+              <div class="model-detail">1T params · Open</div>
             </div>
           </div>
         </div>
@@ -269,14 +279,109 @@
         </div>
       </div>
 
-      <!-- Model Cards in Debate Positions -->
-      <div class="debate-models-grid">
+      <!-- Model Cards in Debate Positions (6 Models) -->
+      <div class="debate-models-grid debate-grid-6">
+        <div class="debate-model-card" id="dcard-gemini" data-model="gemini">
+          <div class="dmc-header gemini-theme">
+            <div class="dmc-badge">GE</div>
+            <div class="dmc-info">
+              <div class="dmc-name">Gemini 2.5</div>
+              <div class="dmc-spec">Multimodal · Google DeepMind</div>
+            </div>
+            <div class="dmc-score" id="score-gemini">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-gemini">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="ge-confidence">-</span>%</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="ge-citations">0</span></span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="ge-tokens">0</span></span>
+          </div>
+        </div>
+
+        <div class="debate-model-card" id="dcard-chatgpt" data-model="chatgpt">
+          <div class="dmc-header chatgpt-theme">
+            <div class="dmc-badge">GP</div>
+            <div class="dmc-info">
+              <div class="dmc-name">ChatGPT-5</div>
+              <div class="dmc-spec">GPT-5 · OpenAI</div>
+            </div>
+            <div class="dmc-score" id="score-chatgpt">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-chatgpt">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="gp-confidence">-</span>%</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="gp-citations">0</span></span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="gp-tokens">0</span></span>
+          </div>
+        </div>
+
+        <div class="debate-model-card" id="dcard-grok" data-model="grok">
+          <div class="dmc-header grok-theme">
+            <div class="dmc-badge">GK</div>
+            <div class="dmc-info">
+              <div class="dmc-name">Grok 3</div>
+              <div class="dmc-spec">Real-time · xAI</div>
+            </div>
+            <div class="dmc-score" id="score-grok">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-grok">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="gk-confidence">-</span>%</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="gk-citations">0</span></span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="gk-tokens">0</span></span>
+          </div>
+        </div>
+
+        <div class="debate-model-card" id="dcard-claude" data-model="claude">
+          <div class="dmc-header claude-theme">
+            <div class="dmc-badge">CL</div>
+            <div class="dmc-info">
+              <div class="dmc-name">Claude 4 Opus</div>
+              <div class="dmc-spec">200K ctx · Anthropic</div>
+            </div>
+            <div class="dmc-score" id="score-claude">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-claude">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="cl-confidence">-</span>%</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="cl-citations">0</span></span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="cl-tokens">0</span></span>
+          </div>
+        </div>
+
+        <div class="debate-model-card" id="dcard-ollama" data-model="ollama">
+          <div class="dmc-header ollama-theme">
+            <div class="dmc-badge">OL</div>
+            <div class="dmc-info">
+              <div class="dmc-name">Ollama Local</div>
+              <div class="dmc-spec">Private · Self-hosted</div>
+            </div>
+            <div class="dmc-score" id="score-ollama">-</div>
+          </div>
+          <div class="dmc-argument" id="arg-ollama">
+            <span class="arg-placeholder">Awaiting debate start...</span>
+          </div>
+          <div class="dmc-stats">
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="ol-confidence">-</span>%</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="ol-citations">0</span></span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="ol-tokens">0</span></span>
+          </div>
+        </div>
+
         <div class="debate-model-card" id="dcard-deepseek" data-model="deepseek">
           <div class="dmc-header deepseek-theme">
             <div class="dmc-badge">DS</div>
             <div class="dmc-info">
               <div class="dmc-name">DeepSeek V4</div>
-              <div class="dmc-spec">1T params · Open weights · Rivals GPT-5.4</div>
+              <div class="dmc-spec">1T params · Open weights</div>
             </div>
             <div class="dmc-score" id="score-deepseek">-</div>
           </div>
@@ -284,66 +389,9 @@
             <span class="arg-placeholder">Awaiting debate start...</span>
           </div>
           <div class="dmc-stats">
-            <span class="dstat"><i class="fas fa-fire"></i> <span id="ds-confidence">-</span>% confidence</span>
-            <span class="dstat"><i class="fas fa-link"></i> <span id="ds-citations">0</span> citations</span>
-            <span class="dstat"><i class="fas fa-clock"></i> <span id="ds-tokens">0</span> tokens</span>
-          </div>
-        </div>
-
-        <div class="debate-model-card" id="dcard-llama" data-model="llama">
-          <div class="dmc-header llama-theme">
-            <div class="dmc-badge">L4</div>
-            <div class="dmc-info">
-              <div class="dmc-name">Llama 4 Scout</div>
-              <div class="dmc-spec">10M ctx window · Meta AI</div>
-            </div>
-            <div class="dmc-score" id="score-llama">-</div>
-          </div>
-          <div class="dmc-argument" id="arg-llama">
-            <span class="arg-placeholder">Awaiting debate start...</span>
-          </div>
-          <div class="dmc-stats">
-            <span class="dstat"><i class="fas fa-fire"></i> <span id="ll-confidence">-</span>% confidence</span>
-            <span class="dstat"><i class="fas fa-link"></i> <span id="ll-citations">0</span> citations</span>
-            <span class="dstat"><i class="fas fa-clock"></i> <span id="ll-tokens">0</span> tokens</span>
-          </div>
-        </div>
-
-        <div class="debate-model-card" id="dcard-mistral" data-model="mistral">
-          <div class="dmc-header mistral-theme">
-            <div class="dmc-badge">M3</div>
-            <div class="dmc-info">
-              <div class="dmc-name">Mistral 3</div>
-              <div class="dmc-spec">675B MoE · 41B active · Half compute</div>
-            </div>
-            <div class="dmc-score" id="score-mistral">-</div>
-          </div>
-          <div class="dmc-argument" id="arg-mistral">
-            <span class="arg-placeholder">Awaiting debate start...</span>
-          </div>
-          <div class="dmc-stats">
-            <span class="dstat"><i class="fas fa-fire"></i> <span id="mi-confidence">-</span>% confidence</span>
-            <span class="dstat"><i class="fas fa-link"></i> <span id="mi-citations">0</span> citations</span>
-            <span class="dstat"><i class="fas fa-clock"></i> <span id="mi-tokens">0</span> tokens</span>
-          </div>
-        </div>
-
-        <div class="debate-model-card" id="dcard-gptoss" data-model="gptoss">
-          <div class="dmc-header gptoss-theme">
-            <div class="dmc-badge">GO</div>
-            <div class="dmc-info">
-              <div class="dmc-name">GPT-OSS 120B</div>
-              <div class="dmc-spec">Open weights · First since GPT-2</div>
-            </div>
-            <div class="dmc-score" id="score-gptoss">-</div>
-          </div>
-          <div class="dmc-argument" id="arg-gptoss">
-            <span class="arg-placeholder">Awaiting debate start...</span>
-          </div>
-          <div class="dmc-stats">
-            <span class="dstat"><i class="fas fa-fire"></i> <span id="go-confidence">-</span>% confidence</span>
-            <span class="dstat"><i class="fas fa-link"></i> <span id="go-citations">0</span> citations</span>
-            <span class="dstat"><i class="fas fa-clock"></i> <span id="go-tokens">0</span> tokens</span>
+            <span class="dstat"><i class="fas fa-fire"></i> <span id="ds-confidence">-</span>%</span>
+            <span class="dstat"><i class="fas fa-link"></i> <span id="ds-citations">0</span></span>
+            <span class="dstat"><i class="fas fa-clock"></i> <span id="ds-tokens">0</span></span>
           </div>
         </div>
       </div>

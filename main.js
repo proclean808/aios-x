@@ -119,3 +119,4 @@ window.closeModal = typeof closeModal !== 'undefined' ? closeModal : () => {};
 window.previewMemoryNode = typeof previewMemoryNode !== 'undefined' ? previewMemoryNode : () => {};
 window.showVerticalDetail = typeof showVerticalDetail !== 'undefined' ? showVerticalDetail : () => {};
 window.showHybridDetail = typeof showHybridDetail !== 'undefined' ? showHybridDetail : () => {};
+window.switchToPanel = typeof switchToPanel !== 'undefined' ? switchToPanel : () => {};
