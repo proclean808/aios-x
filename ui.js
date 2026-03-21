@@ -54,15 +54,21 @@ function clearLog(panelId) {
 // ── PANEL NAVIGATION ──
 function initNavigation() {
   const buttons = document.querySelectorAll('.nav-btn');
+  console.log('[v0] initNavigation called, found buttons:', buttons.length);
   buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       const target = btn.dataset.panel;
+      console.log('[v0] Tab clicked:', target);
       // Update buttons
       buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       // Update panels
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      const panels = document.querySelectorAll('.panel');
+      console.log('[v0] Found panels:', panels.length);
+      panels.forEach(p => p.classList.remove('active'));
       const panel = document.getElementById('panel-' + target);
+      console.log('[v0] Target panel:', panel ? panel.id : 'NOT FOUND');
       if (panel) {
         panel.classList.add('active');
         onPanelActivate(target);
