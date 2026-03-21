@@ -172,6 +172,46 @@ body {
   animation: tickerScroll 40s linear infinite;
 }
 .ticker-inner span { flex-shrink: 0; }
+
+/* Ticker Logo Styles */
+.ticker-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  transition: var(--transition-fast);
+}
+.ticker-logo:hover {
+  background: rgba(56,189,248,0.1);
+  border-color: rgba(56,189,248,0.3);
+}
+.ticker-logo img {
+  height: 18px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.ticker-icon {
+  width: 18px;
+  height: 18px;
+  fill: var(--accent-blue);
+}
+.ticker-icon.nemo { fill: var(--accent-green); }
+.ticker-icon.nano { fill: var(--accent-yellow); }
+.ticker-icon.secure { fill: var(--accent-red); }
+.ticker-icon.rubric { fill: var(--accent-orange); }
+.ticker-icon.notte { fill: var(--accent-purple); }
+.ticker-icon.byte { fill: var(--accent-cyan); }
+.ticker-model-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
 @keyframes tickerScroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
