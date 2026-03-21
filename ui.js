@@ -127,19 +127,21 @@ function typewrite(el, text, speed = 18) {
 
 // ── TICKER DUPLICATION (infinite scroll) ──
 function initTicker() {
-  // Logo ticker (scrolls right)
+  // Logo ticker (scrolls right) - clone within ticker-row-top
   const logoTicker = document.getElementById('tickerLogos');
   if (logoTicker) {
+    const row = logoTicker.closest('.ticker-row');
     const logoClone = logoTicker.cloneNode(true);
     logoClone.removeAttribute('id');
-    logoTicker.parentElement.appendChild(logoClone);
+    row.appendChild(logoClone);
   }
-  // Text ticker (scrolls left)
+  // Text ticker (scrolls left) - clone within ticker-row-bottom
   const textTicker = document.getElementById('tickerText');
   if (textTicker) {
+    const row = textTicker.closest('.ticker-row');
     const textClone = textTicker.cloneNode(true);
     textClone.removeAttribute('id');
-    textTicker.parentElement.appendChild(textClone);
+    row.appendChild(textClone);
   }
 }
 

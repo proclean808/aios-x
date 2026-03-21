@@ -163,12 +163,14 @@ body {
 .header-ticker {
   background: linear-gradient(90deg, rgba(56,189,248,0.08), transparent);
   border-top: 1px solid rgba(56,189,248,0.1);
-  padding: 4px 0; overflow: hidden;
+  overflow: hidden;
 }
-.header-ticker.ticker-left {
-  background: linear-gradient(270deg, rgba(56,189,248,0.08), transparent);
-  border-top: none;
-  border-bottom: 1px solid rgba(56,189,248,0.1);
+.ticker-row {
+  overflow: hidden;
+  padding: 4px 0;
+}
+.ticker-row-top {
+  border-bottom: 1px solid rgba(56,189,248,0.05);
 }
 .ticker-inner {
   display: flex; gap: 60px;
@@ -237,7 +239,7 @@ body {
   to { transform: translateX(-50%); }
 }
 
-/* ════════════════════════════════════════
+/* ════════════════════════════════════��═══
    MAIN CONTENT
 ════════════════════════════════════════ */
 #mainContent {
