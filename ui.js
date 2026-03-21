@@ -127,10 +127,20 @@ function typewrite(el, text, speed = 18) {
 
 // ── TICKER DUPLICATION (infinite scroll) ──
 function initTicker() {
-  const inner = document.getElementById('tickerInner');
-  if (!inner) return;
-  const clone = inner.cloneNode(true);
-  inner.parentElement.appendChild(clone);
+  // Logo ticker (scrolls right)
+  const logoTicker = document.getElementById('tickerLogos');
+  if (logoTicker) {
+    const logoClone = logoTicker.cloneNode(true);
+    logoClone.removeAttribute('id');
+    logoTicker.parentElement.appendChild(logoClone);
+  }
+  // Text ticker (scrolls left)
+  const textTicker = document.getElementById('tickerText');
+  if (textTicker) {
+    const textClone = textTicker.cloneNode(true);
+    textClone.removeAttribute('id');
+    textTicker.parentElement.appendChild(textClone);
+  }
 }
 
 // ── HEADER STATS UPDATE ──

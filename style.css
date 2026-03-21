@@ -165,11 +165,21 @@ body {
   border-top: 1px solid rgba(56,189,248,0.1);
   padding: 4px 0; overflow: hidden;
 }
+.header-ticker.ticker-left {
+  background: linear-gradient(270deg, rgba(56,189,248,0.08), transparent);
+  border-top: none;
+  border-bottom: 1px solid rgba(56,189,248,0.1);
+}
 .ticker-inner {
   display: flex; gap: 60px;
   font-size: 10px; font-family: var(--font-mono);
   color: var(--text-secondary); white-space: nowrap;
-  animation: tickerScroll 40s linear infinite;
+}
+.ticker-inner.ticker-logos {
+  animation: tickerScrollRight 45s linear infinite;
+}
+.ticker-inner.ticker-text {
+  animation: tickerScrollLeft 35s linear infinite;
 }
 .ticker-inner span { flex-shrink: 0; }
 
@@ -177,11 +187,11 @@ body {
 .ticker-logo {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 16px;
+  gap: 6px;
+  padding: 3px 12px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px;
+  border-radius: 16px;
   transition: var(--transition-fast);
 }
 .ticker-logo:hover {
@@ -189,16 +199,16 @@ body {
   border-color: rgba(56,189,248,0.3);
 }
 .ticker-logo img {
-  height: 18px;
-  width: auto;
+  height: 14px;
+  width: 14px;
   object-fit: contain;
-  filter: brightness(0) invert(1);
 }
 .ticker-icon {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   fill: var(--accent-blue);
 }
+.ticker-icon.openclaw { fill: var(--accent-blue); }
 .ticker-icon.nemo { fill: var(--accent-green); }
 .ticker-icon.nano { fill: var(--accent-yellow); }
 .ticker-icon.secure { fill: var(--accent-red); }
@@ -206,13 +216,23 @@ body {
 .ticker-icon.notte { fill: var(--accent-purple); }
 .ticker-icon.byte { fill: var(--accent-cyan); }
 .ticker-model-name {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: 0.3px;
 }
 
-@keyframes tickerScroll {
+/* Text ticker styles */
+.ticker-text span {
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+@keyframes tickerScrollRight {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@keyframes tickerScrollLeft {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
