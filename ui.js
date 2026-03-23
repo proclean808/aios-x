@@ -71,27 +71,36 @@ function initNavigation() {
       console.log('[v0] Target panel:', panel ? panel.id : 'NOT FOUND');
       if (panel) {
         panel.classList.add('active');
-        onPanelActivate(target);
+        try {
+          onPanelActivate(target);
+        } catch (err) {
+          console.error('[v0] Error activating panel:', target, err);
+          showToast(`Error loading ${target} panel`, 'warning', 2000);
+        }
       }
     });
   });
 }
 
 function onPanelActivate(panel) {
-  switch(panel) {
-    case 'market':
-      initMarketCharts();
-      break;
-    case 'memory':
-      updateMemoryStats();
-      break;
-    case 'execution':
-      initPipelineCanvas();
-      initExecCanvas();
-      break;
-    case 'security':
-      updateCountdown();
-      break;
+  try {
+    switch(panel) {
+      case 'market':
+        if (typeof initMarketCharts === 'function') initMarketCharts();
+        break;
+      case 'memory':
+        if (typeof updateMemoryStats === 'function') updateMemoryStats();
+        break;
+      case 'execution':
+        if (typeof initPipelineCanvas === 'function') initPipelineCanvas();
+        if (typeof initExecCanvas === 'function') initExecCanvas();
+        break;
+      case 'security':
+        if (typeof updateCountdown === 'function') updateCountdown();
+        break;
+    }
+  } catch (err) {
+    console.error(`[v0] Error in panel activation for '${panel}':`, err);
   }
 }
 
