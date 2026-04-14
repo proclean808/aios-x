@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlatFormula.One | B2B AI Startup Accelerator Toolkit</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER / NAV
+══════════════════════════════════════════ -->
+<header id="mainHeader">
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-icon"><i class="fas fa-rocket"></i></div>
+      <div class="logo-text">
+        <span class="logo-main">PlatFormula<span class="logo-accent">.One</span></span>
+        <span class="logo-sub">B2B AI Startup Accelerator &amp; Founders' Toolkit</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <button class="nav-btn active" data-panel="builder">
+        <i class="fas fa-pen-ruler"></i> Builder
+      </button>
+      <button class="nav-btn" data-panel="pitchstudio">
+        <i class="fas fa-presentation-screen"></i> Pitch Studio
+      </button>
+      <button class="nav-btn" data-panel="tracking">
+        <i class="fas fa-table-columns"></i> Tracking
+      </button>
+      <button class="nav-btn" data-panel="community">
+        <i class="fas fa-users"></i> Community
+      </button>
+      <button class="nav-btn" data-panel="assistant">
+        <i class="fas fa-wand-magic-sparkles"></i> Assistant
+      </button>
+      <button class="nav-btn" data-panel="concept">
+        <i class="fas fa-diagram-project"></i> Concept
+      </button>
+    </nav>
+    <div class="header-badge">
+      <span class="badge-dot"></span>
+      <span>v0.1</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════ -->
+<main id="mainContent">
+
+  <!-- ════════════════════════════════════════
+       PANEL 1: BUILDER
+  ════════════════════════════════════════ -->
+  <section class="panel active" id="panel-builder">
+    <div class="panel-header">
+      <div>
+        <h2><i class="fas fa-pen-ruler"></i> Application Builder</h2>
+        <p class="panel-desc">Fill out accelerator applications with guided question cards and word counters. Drafts auto-save locally.</p>
+      </div>
+      <div class="builder-export-row" id="builderExportRow" style="display:none;">
+        <button class="btn-secondary" id="builderCopyAll"><i class="fas fa-copy"></i> Copy All</button>
+        <button class="btn-secondary" id="builderDownload"><i class="fas fa-download"></i> Download .txt</button>
+      </div>
+    </div>
+
+    <div class="builder-layout">
+      <!-- Program Selector -->
+      <div class="builder-selector-bar">
+        <label class="field-label"><i class="fas fa-building"></i> Select Program</label>
+        <select id="programSelect" class="program-select">
+          <option value="">— Choose an accelerator —</option>
+        </select>
+        <span class="disclaimer-note"><i class="fas fa-circle-info"></i> Questions are approximate. Verify exact wording on the program's official portal.</span>
+      </div>
+
+      <div class="builder-main">
+        <!-- Question Cards (JS-rendered) -->
+        <div class="builder-questions" id="builderQuestions">
+          <div class="empty-state" id="builderEmptyState">
+            <i class="fas fa-arrow-up-from-bracket"></i>
+            <p>Select a program above to load its application questions.</p>
+          </div>
+        </div>
+
+        <!-- Checklist Sidebar (JS-rendered) -->
+        <aside class="builder-sidebar" id="builderSidebar" style="display:none;">
+          <div class="sidebar-header">
+            <span class="sidebar-title">Progress</span>
+            <span class="sidebar-count" id="builderProgress">0 / 0</span>
+          </div>
+          <ul class="checklist" id="builderChecklist"></ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       PANEL 2: PITCH STUDIO
+  ════════════════════════════════════════ -->
+  <section class="panel" id="panel-pitchstudio">
+    <div class="panel-header">
+      <div>
+        <h2><i class="fas fa-presentation-screen"></i> Pitch Studio</h2>
+        <p class="panel-desc">Deck checklist, elevator pitch builder, investor Q&amp;A prep, and resources.</p>
+      </div>
+    </div>
+
+    <div class="pitch-layout">
+
+      <!-- A: Deck Checklist -->
+      <div class="pitch-section">
+        <div class="section-header">
+          <h3><i class="fas fa-list-check"></i> Investor Deck Checklist</h3>
+          <span class="progress-badge" id="deckProgress">0 / 12</span>
+        </div>
+        <div class="deck-checklist" id="deckChecklist">
+          <div class="deck-item">
+            <input type="checkbox" id="deck-1" class="deck-check"/>
+            <label for="deck-1">
+              <strong>1. Problem</strong>
+              <span class="tooltip-trigger" data-tip="State the problem in 1-2 sentences. Use a specific customer story. Quantify the pain in time, money, or risk."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-2" class="deck-check"/>
+            <label for="deck-2">
+              <strong>2. Solution</strong>
+              <span class="tooltip-trigger" data-tip="Show the product — live demo or screenshots. Explain the core insight that makes it work. Keep it to one key value prop."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-3" class="deck-check"/>
+            <label for="deck-3">
+              <strong>3. Market Size</strong>
+              <span class="tooltip-trigger" data-tip="Show TAM, SAM, SOM with bottoms-up math. $1B+ TAM is the threshold. Cite your source."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-4" class="deck-check"/>
+            <label for="deck-4">
+              <strong>4. Product</strong>
+              <span class="tooltip-trigger" data-tip="Screenshots or demo video. Focus on the 'aha moment' — the one thing that makes users stick."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-5" class="deck-check"/>
+            <label for="deck-5">
+              <strong>5. Traction</strong>
+              <span class="tooltip-trigger" data-tip="Show growth charts. MRR, users, retention. Investors want to see momentum, not just numbers."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-6" class="deck-check"/>
+            <label for="deck-6">
+              <strong>6. Team</strong>
+              <span class="tooltip-trigger" data-tip="Photos, relevant past companies, domain expertise. Answer: why this team for this problem?"><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-7" class="deck-check"/>
+            <label for="deck-7">
+              <strong>7. Business Model</strong>
+              <span class="tooltip-trigger" data-tip="How do you make money? Price point, pricing model, LTV, CAC. One clear number per metric."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-8" class="deck-check"/>
+            <label for="deck-8">
+              <strong>8. Competition</strong>
+              <span class="tooltip-trigger" data-tip="2x2 matrix works well. Name real competitors. Explain your moat — not just 'better UX'."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-9" class="deck-check"/>
+            <label for="deck-9">
+              <strong>9. Financials</strong>
+              <span class="tooltip-trigger" data-tip="3-year P&amp;L projection. Key assumptions visible. Unit economics: gross margin, CAC, LTV."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-10" class="deck-check"/>
+            <label for="deck-10">
+              <strong>10. The Ask</strong>
+              <span class="tooltip-trigger" data-tip="State the round size and instrument (SAFE, equity). Current valuation if relevant. Who's already in."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-11" class="deck-check"/>
+            <label for="deck-11">
+              <strong>11. Use of Funds</strong>
+              <span class="tooltip-trigger" data-tip="3-4 buckets: eng/product, GTM, ops. Show the 18-month runway plan and what milestones each dollar unlocks."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+          <div class="deck-item">
+            <input type="checkbox" id="deck-12" class="deck-check"/>
+            <label for="deck-12">
+              <strong>12. Vision</strong>
+              <span class="tooltip-trigger" data-tip="Where is this company in 5-10 years? What does the world look like when you win? Make it memorable."><i class="fas fa-circle-question"></i></span>
+            </label>
+          </div>
+        </div>
+        <div class="deck-resources">
+          <span class="resource-label">Example decks:</span>
+          <a href="https://www.slideshare.net/slideshow/airbnb-first-pitch-deck/45437028" target="_blank" rel="noopener noreferrer" class="resource-link"><i class="fas fa-external-link"></i> Airbnb</a>
+          <a href="https://www.sequoiacap.com/article/writing-a-business-plan/" target="_blank" rel="noopener noreferrer" class="resource-link"><i class="fas fa-external-link"></i> Sequoia Template</a>
+          <a href="https://firstround.com/review/the-best-pitch-i-have-ever-seen/" target="_blank" rel="noopener noreferrer" class="resource-link"><i class="fas fa-external-link"></i> First Round Guide</a>
+        </div>
+      </div>
+
+      <!-- B: Elevator Pitch Builder -->
+      <div class="pitch-section">
+        <div class="section-header">
+          <h3><i class="fas fa-microphone"></i> Elevator Pitch Builder</h3>
+        </div>
+        <div class="pitch-tabs">
+          <button class="pitch-tab active" data-template="30s">30 sec</button>
+          <button class="pitch-tab" data-template="60s">60 sec</button>
+          <button class="pitch-tab" data-template="2min">2 min</button>
+        </div>
+
+        <div class="pitch-template-area" id="pitchTemplateArea">
+          <!-- JS-rendered based on active tab -->
+        </div>
+      </div>
+
+      <!-- C: Investor Q&A Prep -->
+      <div class="pitch-section">
+        <div class="section-header">
+          <h3><i class="fas fa-comments"></i> Investor Q&amp;A Prep</h3>
+          <span class="subtitle-note">15 hardest questions, with answer frameworks</span>
+        </div>
+        <div class="qa-categories" id="qaCategories">
+          <!-- JS-rendered -->
+        </div>
+      </div>
+
+      <!-- D: Resources -->
+      <div class="pitch-section resources-section">
+        <div class="section-header">
+          <h3><i class="fas fa-bookmark"></i> Pitch Resources</h3>
+        </div>
+        <div class="resource-grid">
+          <a class="resource-card" href="https://www.sequoiacap.com/article/writing-a-business-plan/" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-file-powerpoint"></i>
+            <span>Sequoia Pitch Template</span>
+          </a>
+          <a class="resource-card" href="https://www.ycombinator.com/apply" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-graduation-cap"></i>
+            <span>YC Application Tips</span>
+          </a>
+          <a class="resource-card" href="https://firstround.com/review/the-best-pitch-i-have-ever-seen/" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-book-open"></i>
+            <span>First Round Pitch Guide</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       PANEL 3: TRACKING
+  ════════════════════════════════════════ -->
+  <section class="panel" id="panel-tracking">
+    <div class="panel-header">
+      <div>
+        <h2><i class="fas fa-table-columns"></i> Application Tracker</h2>
+        <p class="panel-desc">Track your accelerator applications. Data stored locally in your browser.</p>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="tracker-stats" id="trackerStats">
+      <div class="stat-card"><span class="stat-num" id="statTotal">0</span><span class="stat-label">Total</span></div>
+      <div class="stat-card"><span class="stat-num" id="statApplied">0</span><span class="stat-label">Applied</span></div>
+      <div class="stat-card"><span class="stat-num" id="statInReview">0</span><span class="stat-label">In Review</span></div>
+      <div class="stat-card accent-green"><span class="stat-num" id="statAccepted">0</span><span class="stat-label">Accepted</span></div>
+      <div class="stat-card accent-red"><span class="stat-num" id="statRejected">0</span><span class="stat-label">Rejected</span></div>
+      <div class="stat-actions">
+        <button class="btn-secondary btn-sm" id="exportTrackerBtn"><i class="fas fa-download"></i> Export JSON</button>
+        <button class="btn-primary btn-sm" id="addApplicationBtn"><i class="fas fa-plus"></i> Add Program</button>
+      </div>
+    </div>
+
+    <!-- Upcoming Deadlines -->
+    <div class="deadlines-bar" id="deadlinesBar">
+      <span class="deadlines-label"><i class="fas fa-clock"></i> Upcoming Deadlines</span>
+      <div class="deadlines-list" id="deadlinesList"></div>
+      <span class="verify-note">Verify dates on program websites</span>
+    </div>
+
+    <!-- Kanban Board -->
+    <div class="kanban-board" id="kanbanBoard">
+      <div class="kanban-col" id="col-researching">
+        <div class="col-header"><span class="col-dot dot-grey"></span>Researching</div>
+        <div class="col-cards" id="cards-researching"></div>
+      </div>
+      <div class="kanban-col" id="col-applied">
+        <div class="col-header"><span class="col-dot dot-blue"></span>Applied</div>
+        <div class="col-cards" id="cards-applied"></div>
+      </div>
+      <div class="kanban-col" id="col-in-review">
+        <div class="col-header"><span class="col-dot dot-amber"></span>In Review</div>
+        <div class="col-cards" id="cards-in-review"></div>
+      </div>
+      <div class="kanban-col" id="col-decision">
+        <div class="col-header"><span class="col-dot dot-green"></span>Decision</div>
+        <div class="col-cards" id="cards-decision"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       PANEL 4: COMMUNITY
+  ════════════════════════════════════════ -->
+  <section class="panel" id="panel-community">
+    <div class="panel-header">
+      <div>
+        <h2><i class="fas fa-users"></i> Founder Network</h2>
+        <p class="panel-desc">Featured founders, community discussions, events, and curated links.</p>
+      </div>
+    </div>
+
+    <!-- A: Founder Profiles -->
+    <div class="community-section">
+      <h3 class="section-title"><i class="fas fa-id-card"></i> Featured Founders</h3>
+      <div class="founder-grid">
+        <div class="founder-card">
+          <div class="founder-avatar" style="background:#1f6feb;">KL</div>
+          <div class="founder-info">
+            <div class="founder-name">Kayla Lin</div>
+            <div class="founder-startup">NeuralDocs <span class="stage-badge seed">Seed</span></div>
+            <div class="founder-tag">AI / Legal Tech</div>
+            <div class="founder-bio">Building AI-native document workflows for mid-market law firms. Ex-Clio, Stanford CS.</div>
+          </div>
+          <a class="btn-icon" href="https://www.linkedin.com/in/kaylalin-founder" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background:#059669;">MR</div>
+          <div class="founder-info">
+            <div class="founder-name">Marcus Reid</div>
+            <div class="founder-startup">FlowOps <span class="stage-badge pre-seed">Pre-seed</span></div>
+            <div class="founder-tag">B2B SaaS / Operations</div>
+            <div class="founder-bio">Automating SOC 2 audit prep for Series A companies. Former Head of Ops at Brex.</div>
+          </div>
+          <a class="btn-icon" href="https://www.linkedin.com/in/marcusreid-ops" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background:#7c3aed;">AP</div>
+          <div class="founder-info">
+            <div class="founder-name">Ananya Patel</div>
+            <div class="founder-startup">ClearRx <span class="stage-badge seed">Seed</span></div>
+            <div class="founder-tag">HealthTech / AI</div>
+            <div class="founder-bio">Reducing prior authorization denials for independent physician groups using LLM triage.</div>
+          </div>
+          <a class="btn-icon" href="https://www.linkedin.com/in/ananya-patel-healthtech" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background:#d29922;">TW</div>
+          <div class="founder-info">
+            <div class="founder-name">Tyler Wong</div>
+            <div class="founder-startup">GridPath <span class="stage-badge series-a">Series A</span></div>
+            <div class="founder-tag">CleanTech / Energy</div>
+            <div class="founder-bio">Energy grid optimization software for commercial real estate. YC W24 alum. $4.2M ARR.</div>
+          </div>
+          <a class="btn-icon" href="https://www.linkedin.com/in/tylerwong-gridpath" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background:#e11d48;">SN</div>
+          <div class="founder-info">
+            <div class="founder-name">Sofia Nakamura</div>
+            <div class="founder-startup">TradeDesk AI <span class="stage-badge pre-seed">Pre-seed</span></div>
+            <div class="founder-tag">FinTech / AI</div>
+            <div class="founder-bio">AI-powered RFQ automation for mid-market import/export businesses. Ex-Goldman, MIT Sloan.</div>
+          </div>
+          <a class="btn-icon" href="https://www.linkedin.com/in/sofianakamura-fintech" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background:#0891b2;">JO</div>
+          <div class="founder-info">
+            <div class="founder-name">James Okoye</div>
+            <div class="founder-startup">SkillBridge <span class="stage-badge seed">Seed</span></div>
+            <div class="founder-tag">EdTech / HR Tech</div>
+            <div class="founder-bio">Closing skills gaps in enterprise teams with AI-personalized microlearning tracks. $180K MRR.</div>
+          </div>
+          <a class="btn-icon" href="https://www.linkedin.com/in/jamesokoye-skillbridge" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- B: Discussion Threads -->
+    <div class="community-section">
+      <h3 class="section-title"><i class="fas fa-comments"></i> Discussion Threads</h3>
+      <div class="threads-list">
+        <div class="thread-item">
+          <div class="thread-content">
+            <div class="thread-title">How did you nail your YC application?</div>
+            <div class="thread-meta"><span>142 replies</span><span>•</span><span>↑ 389</span></div>
+          </div>
+          <a class="btn-thread" href="https://www.startupschool.org/forum" target="_blank" rel="noopener noreferrer">Join Discussion</a>
+        </div>
+        <div class="thread-item">
+          <div class="thread-content">
+            <div class="thread-title">Best AI tools for early-stage B2B SaaS in 2026?</div>
+            <div class="thread-meta"><span>87 replies</span><span>•</span><span>↑ 214</span></div>
+          </div>
+          <a class="btn-thread" href="https://www.indiehackers.com/group/ai-tools" target="_blank" rel="noopener noreferrer">Join Discussion</a>
+        </div>
+        <div class="thread-item">
+          <div class="thread-content">
+            <div class="thread-title">Co-founder equity split — what's actually fair?</div>
+            <div class="thread-meta"><span>203 replies</span><span>•</span><span>↑ 567</span></div>
+          </div>
+          <a class="btn-thread" href="https://news.ycombinator.com/item?id=cofounders" target="_blank" rel="noopener noreferrer">Join Discussion</a>
+        </div>
+        <div class="thread-item">
+          <div class="thread-content">
+            <div class="thread-title">Cold outreach to VCs — what actually works?</div>
+            <div class="thread-meta"><span>119 replies</span><span>•</span><span>↑ 301</span></div>
+          </div>
+          <a class="btn-thread" href="https://www.indiehackers.com/group/venture-capital" target="_blank" rel="noopener noreferrer">Join Discussion</a>
+        </div>
+        <div class="thread-item">
+          <div class="thread-content">
+            <div class="thread-title">When to apply vs. wait for more traction?</div>
+            <div class="thread-meta"><span>76 replies</span><span>•</span><span>↑ 188</span></div>
+          </div>
+          <a class="btn-thread" href="https://www.startupschool.org/forum" target="_blank" rel="noopener noreferrer">Join Discussion</a>
+        </div>
+        <div class="thread-item">
+          <div class="thread-content">
+            <div class="thread-title">What's your MRR target before applying to Techstars?</div>
+            <div class="thread-meta"><span>54 replies</span><span>•</span><span>↑ 143</span></div>
+          </div>
+          <a class="btn-thread" href="https://www.reddit.com/r/startups/" target="_blank" rel="noopener noreferrer">Join Discussion</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- C: Where to Find Events -->
+    <div class="community-section">
+      <h3 class="section-title"><i class="fas fa-calendar-days"></i> Where to Find Events</h3>
+      <div class="events-grid">
+        <a class="event-source-card" href="https://www.f6s.com/events" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-globe"></i><span>F6S Events</span>
+        </a>
+        <a class="event-source-card" href="https://lu.ma/startup" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-calendar-star"></i><span>Luma Startup</span>
+        </a>
+        <a class="event-source-card" href="https://www.eventbrite.com/d/online/startup/" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-ticket"></i><span>Eventbrite Startup</span>
+        </a>
+        <a class="event-source-card" href="https://www.startupschool.org/events" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-graduation-cap"></i><span>YC Startup School</span>
+        </a>
+        <a class="event-source-card" href="https://beondeck.com/events" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-ship"></i><span>On Deck Events</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- D: Community Links -->
+    <div class="community-section">
+      <h3 class="section-title"><i class="fas fa-link"></i> Community Links</h3>
+      <div class="community-links">
+        <a class="comm-link" href="https://www.ycombinator.com/blog" target="_blank" rel="noopener noreferrer"><i class="fas fa-circle-y"></i> YC Founder Forum</a>
+        <a class="comm-link" href="https://www.indiehackers.com" target="_blank" rel="noopener noreferrer"><i class="fas fa-code"></i> Indie Hackers</a>
+        <a class="comm-link" href="https://news.ycombinator.com" target="_blank" rel="noopener noreferrer"><i class="fab fa-hacker-news"></i> Hacker News</a>
+        <a class="comm-link" href="https://www.startupschool.org" target="_blank" rel="noopener noreferrer"><i class="fas fa-school"></i> Startup School</a>
+        <a class="comm-link" href="https://wip.co" target="_blank" rel="noopener noreferrer"><i class="fas fa-hammer"></i> WIP.co</a>
+        <a class="comm-link" href="https://www.producthunt.com/ship" target="_blank" rel="noopener noreferrer"><i class="fab fa-product-hunt"></i> Product Hunt Ship</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       PANEL 5: ASSISTANT
+  ════════════════════════════════════════ -->
+  <section class="panel" id="panel-assistant">
+    <div class="panel-header">
+      <div>
+        <h2><i class="fas fa-wand-magic-sparkles"></i> Application Assistant</h2>
+        <p class="panel-desc">One-liner generator, YC answer templates, document checklist, and resource links.</p>
+      </div>
+    </div>
+
+    <div class="assistant-layout">
+
+      <!-- A: One-Liner Generator -->
+      <div class="assistant-section hero-section">
+        <div class="section-header">
+          <h3><i class="fas fa-bolt"></i> One-Liner Generator</h3>
+          <span class="subtitle-note">Fill in the blanks → get 3 company description variants</span>
+        </div>
+        <div class="oneliner-form">
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label">Target Customer</label>
+              <input type="text" class="field-input" id="ol-customer" placeholder="e.g. Series A SaaS companies"/>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Problem They Face</label>
+              <input type="text" class="field-input" id="ol-problem" placeholder="e.g. manual SOC 2 audit prep"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label">Your Solution</label>
+              <input type="text" class="field-input" id="ol-solution" placeholder="e.g. AI that automates evidence collection"/>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Main Competitor</label>
+              <input type="text" class="field-input" id="ol-competitor" placeholder="e.g. Vanta, spreadsheets"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label">Key Differentiator</label>
+              <input type="text" class="field-input" id="ol-differentiator" placeholder="e.g. 10x faster with zero consultants"/>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Traction (optional)</label>
+              <input type="text" class="field-input" id="ol-traction" placeholder="e.g. $40K MRR, 12 paying customers"/>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" id="generateOneliner"><i class="fas fa-wand-sparkles"></i> Generate Variants</button>
+            <button class="btn-secondary" id="shuffleOneliner" style="display:none;"><i class="fas fa-shuffle"></i> Shuffle Templates</button>
+          </div>
+        </div>
+        <div class="oneliner-results" id="onelinerResults" style="display:none;"></div>
+      </div>
+
+      <!-- B: YC Question Templates -->
+      <div class="assistant-section">
+        <div class="section-header">
+          <h3><i class="fas fa-file-lines"></i> YC Answer Templates</h3>
+          <span class="subtitle-note">Top 5 YC questions with fill-in frameworks</span>
+        </div>
+        <div class="qa-accordion" id="ycTemplates">
+          <!-- JS-rendered -->
+        </div>
+      </div>
+
+      <!-- C: Document Checklist -->
+      <div class="assistant-section">
+        <div class="section-header">
+          <h3><i class="fas fa-clipboard-check"></i> Application Document Checklist</h3>
+          <span class="subtitle-note">Prepare these before submitting any application</span>
+        </div>
+        <div class="doc-checklist" id="docChecklist">
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="deck"/> Pitch deck (10–12 slides)</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="demo"/> 2-minute demo video</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="financials"/> Financial model (3-year projection)</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="captable"/> Cap table summary</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="lois"/> Letters of intent / LOIs (if any)</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="linkedin"/> LinkedIn profiles for all founders</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="github"/> GitHub / portfolio / product links</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="references"/> Customer references (2–3 contacts)</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="onepager"/> Company one-pager PDF</label>
+          <label class="doc-item"><input type="checkbox" class="doc-check" data-id="legal"/> Legal entity formation docs</label>
+        </div>
+      </div>
+
+      <!-- D: Resource Links -->
+      <div class="assistant-section">
+        <div class="section-header">
+          <h3><i class="fas fa-arrow-up-right-from-square"></i> Quick Links</h3>
+        </div>
+        <div class="resource-grid">
+          <a class="resource-card" href="https://www.ycombinator.com/apply" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-rocket"></i><span>YC Application Portal</span>
+          </a>
+          <a class="resource-card" href="https://www.startupschool.org" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-school"></i><span>YC Startup School</span>
+          </a>
+          <a class="resource-card" href="https://www.ycombinator.com/cofounder-matching" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-handshake"></i><span>YC Co-founder Matching</span>
+          </a>
+          <a class="resource-card" href="https://www.hatcher.com" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-people-arrows"></i><span>Hatcher Co-founder Match</span>
+          </a>
+          <a class="resource-card" href="https://www.clerky.com" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-file-contract"></i><span>Clerky (Incorporation)</span>
+          </a>
+          <a class="resource-card" href="https://mercury.com" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-building-columns"></i><span>Mercury (Banking)</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════
+       PANEL 6: CONCEPT REFINEMENT
+  ════════════════════════════════════════ -->
+  <section class="panel" id="panel-concept">
+    <div class="panel-header">
+      <div>
+        <h2><i class="fas fa-diagram-project"></i> Concept Refinement</h2>
+        <p class="panel-desc">Lean Canvas and Ideal Customer Profile builder. Auto-saved locally.</p>
+      </div>
+      <div class="concept-actions">
+        <button class="btn-secondary" id="clearCanvasBtn"><i class="fas fa-eraser"></i> Clear Canvas</button>
+        <button class="btn-primary" id="saveCanvasBtn"><i class="fas fa-floppy-disk"></i> Save Canvas</button>
+      </div>
+    </div>
+
+    <!-- A: Lean Canvas -->
+    <div class="concept-section">
+      <h3 class="section-title"><i class="fas fa-grid-2"></i> Lean Canvas</h3>
+      <div class="lean-canvas" id="leanCanvas">
+        <div class="canvas-box box-problem" data-id="problem">
+          <div class="box-label">Problem</div>
+          <textarea class="box-textarea" placeholder="Top 3 problems your customers face..."></textarea>
+        </div>
+        <div class="canvas-box box-uvp" data-id="uvp">
+          <div class="box-label">Unique Value Proposition</div>
+          <textarea class="box-textarea" placeholder="Single, clear, compelling message that states why you are different and worth buying..."></textarea>
+        </div>
+        <div class="canvas-box box-segments" data-id="segments">
+          <div class="box-label">Customer Segments</div>
+          <textarea class="box-textarea" placeholder="Target customers and users. Early adopters..."></textarea>
+        </div>
+        <div class="canvas-box box-solution" data-id="solution">
+          <div class="box-label">Solution</div>
+          <textarea class="box-textarea" placeholder="Top 3 features or capabilities that solve the problem..."></textarea>
+        </div>
+        <div class="canvas-box box-channels" data-id="channels">
+          <div class="box-label">Channels</div>
+          <textarea class="box-textarea" placeholder="Path to customers: inbound, outbound, partnerships, events..."></textarea>
+        </div>
+        <div class="canvas-box box-metrics" data-id="metrics">
+          <div class="box-label">Key Metrics</div>
+          <textarea class="box-textarea" placeholder="Key activities you measure: activation, retention, revenue, referral..."></textarea>
+        </div>
+        <div class="canvas-box box-advantage" data-id="advantage">
+          <div class="box-label">Unfair Advantage</div>
+          <textarea class="box-textarea" placeholder="Something that cannot be easily copied or bought: insider access, proprietary data, expert team..."></textarea>
+        </div>
+        <div class="canvas-box box-cost" data-id="cost">
+          <div class="box-label">Cost Structure</div>
+          <textarea class="box-textarea" placeholder="Customer acquisition costs, distribution, hosting, team, etc..."></textarea>
+        </div>
+        <div class="canvas-box box-revenue" data-id="revenue">
+          <div class="box-label">Revenue Streams</div>
+          <textarea class="box-textarea" placeholder="Revenue model, LTV, gross margin, pricing..."></textarea>
+        </div>
+      </div>
+      <div class="canvas-status" id="canvasStatus"></div>
+    </div>
+
+    <!-- B: ICP Builder -->
+    <div class="concept-section">
+      <div class="section-header">
+        <h3><i class="fas fa-person-circle-check"></i> Ideal Customer Profile (ICP)</h3>
+        <div class="icp-actions">
+          <button class="btn-secondary btn-sm" id="editIcpBtn" style="display:none;"><i class="fas fa-pen"></i> Edit</button>
+          <button class="btn-primary btn-sm" id="saveIcpBtn"><i class="fas fa-floppy-disk"></i> Save ICP</button>
+        </div>
+      </div>
+      <div class="icp-form" id="icpForm">
+        <div class="icp-grid">
+          <div class="field-group">
+            <label class="field-label">Job Title / Role</label>
+            <input type="text" class="field-input" id="icp-role" placeholder="e.g. VP of Engineering"/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Industry</label>
+            <input type="text" class="field-input" id="icp-industry" placeholder="e.g. B2B SaaS"/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Company Size</label>
+            <select class="field-input" id="icp-size">
+              <option value="">Select range</option>
+              <option>1–10 employees</option>
+              <option>11–50 employees</option>
+              <option>51–200 employees</option>
+              <option>201–1,000 employees</option>
+              <option>1,000+ employees</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Annual Revenue Range</label>
+            <input type="text" class="field-input" id="icp-revenue" placeholder="e.g. $1M–$10M ARR"/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Primary Pain Point</label>
+            <input type="text" class="field-input" id="icp-pain" placeholder="e.g. Manual SOC 2 prep takes 3+ months"/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Current Solution They Use</label>
+            <input type="text" class="field-input" id="icp-currentsolution" placeholder="e.g. Vanta + external consultants"/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Buying Authority</label>
+            <select class="field-input" id="icp-authority">
+              <option value="">Select role</option>
+              <option>Decision Maker</option>
+              <option>Influencer</option>
+              <option>End User</option>
+              <option>Champion</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">How They Measure Success</label>
+            <input type="text" class="field-input" id="icp-success" placeholder="e.g. Audit completed in &lt;4 weeks, zero findings"/>
+          </div>
+        </div>
+      </div>
+      <div class="icp-summary" id="icpSummary" style="display:none;"></div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ══════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" style="display:none;">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Edit Application</h3>
+      <button class="modal-close" id="modalClose"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="modalCancel">Cancel</button>
+      <button class="btn-primary" id="modalConfirm">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Tooltip -->
+<div class="tooltip-box" id="tooltipBox" style="display:none;"></div>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
