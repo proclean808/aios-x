@@ -4,6 +4,7 @@ import { initTracking } from './tabs/tracking.js';
 import { initCommunity } from './tabs/community.js';
 import { initAssistant } from './tabs/assistant.js';
 import { initConcept } from './tabs/concept.js';
+import { initShoutReach } from './tabs/shoutreach.js';
 
 const TAB_INITS = {
   builder: initBuilder,
@@ -11,7 +12,8 @@ const TAB_INITS = {
   tracking: initTracking,
   community: initCommunity,
   assistant: initAssistant,
-  concept: initConcept
+  concept: initConcept,
+  shoutreach: initShoutReach
 };
 
 const initialized = new Set();
@@ -37,12 +39,12 @@ function initNav() {
     btn.addEventListener('click', () => activatePanel(btn.dataset.panel));
   });
 
-  // Keyboard shortcuts 1-6
+  // Keyboard shortcuts 1-7
   document.addEventListener('keydown', e => {
     if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
     const num = parseInt(e.key);
-    if (num >= 1 && num <= 6) {
-      const panels = ['builder','pitchstudio','tracking','community','assistant','concept'];
+    if (num >= 1 && num <= 7) {
+      const panels = ['builder','pitchstudio','tracking','community','assistant','concept','shoutreach'];
       activatePanel(panels[num - 1]);
     }
     if (e.key === 'Escape') {
