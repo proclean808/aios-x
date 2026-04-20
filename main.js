@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDebate();
   initMemory();
   initSecurity();
+  initFounderMatcher();
 
   // ── INIT EXECUTION CANVAS (when panel is first opened) ──
   // Done via onPanelActivate
@@ -122,6 +123,7 @@ window.runSecurityScan = typeof runSecurityScan !== 'undefined' ? runSecuritySca
 window.simulateAttack = typeof simulateAttack !== 'undefined' ? simulateAttack : () => {};
 window.probeModel = typeof probeModel !== 'undefined' ? probeModel : () => {};
 window.clearLog = typeof clearLog !== 'undefined' ? clearLog : () => {};
+window.initFounderMatcher = typeof initFounderMatcher !== 'undefined' ? initFounderMatcher : () => {};
 window.closeModal = typeof closeModal !== 'undefined' ? closeModal : () => {};
 window.previewMemoryNode = typeof previewMemoryNode !== 'undefined' ? previewMemoryNode : () => {};
 window.showVerticalDetail = typeof showVerticalDetail !== 'undefined' ? showVerticalDetail : () => {};

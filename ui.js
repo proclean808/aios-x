@@ -220,7 +220,7 @@ function fmtNum(n) {
 function initShortcuts() {
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    const map = { '1':'orchestrator','2':'debate','3':'memory','4':'execution','5':'market','6':'security' };
+    const map = { '1':'orchestrator','2':'debate','3':'memory','4':'execution','5':'market','6':'security','7':'founder-matching' };
     if (map[e.key]) {
       const btn = document.querySelector(`.nav-btn[data-panel="${map[e.key]}"]`);
       if (btn) btn.click();

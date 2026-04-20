@@ -39,6 +39,7 @@
       <button class="nav-btn" data-panel="execution"><i class="fas fa-bolt"></i> Execution</button>
       <button class="nav-btn" data-panel="market"><i class="fas fa-chart-line"></i> Market Intel</button>
       <button class="nav-btn" data-panel="security"><i class="fas fa-shield-alt"></i> Security</button>
+      <button class="nav-btn" data-panel="founder-matching"><i class="fas fa-handshake"></i> Founder Match</button>
     </nav>
     <div class="header-status">
       <div class="status-indicator active" id="systemStatus">
@@ -857,6 +858,125 @@
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════
+       PANEL 7: FOUNDER MATCHING ORCHESTRATOR
+  ══════════════════════════════════════ -->
+  <section class="panel" id="panel-founder-matching">
+    <div class="panel-header">
+      <h2><i class="fas fa-handshake"></i> FoneClaw Swarm Orchestrator</h2>
+      <p class="panel-desc">PlatFormula.ONE · Deterministic founder–accelerator matching · FinishLine routing protocol</p>
+    </div>
+
+    <div class="fm-container">
+
+      <!-- Preset Profiles -->
+      <div class="fm-presets">
+        <span class="fm-presets-label">QUICK PROFILES:</span>
+        <span class="preset-pill active" data-preset="0">AI/DevTools Unicorn Track</span>
+        <span class="preset-pill" data-preset="1">Early-Stage HealthTech</span>
+        <span class="preset-pill" data-preset="2">FinTech Scale-Up</span>
+      </div>
+
+      <!-- Founder Profile Input -->
+      <div class="fm-input-grid">
+        <div class="fm-field">
+          <label class="fm-label">FOUNDER ID</label>
+          <input type="text" id="fm-founder-id" class="fm-input" placeholder="USR_992_ALPHA"/>
+        </div>
+        <div class="fm-field">
+          <label class="fm-label">TAM SIZE ($)</label>
+          <input type="number" id="fm-tam" class="fm-input" placeholder="5000000000" min="0"/>
+        </div>
+        <div class="fm-field">
+          <label class="fm-label">MRR ($)</label>
+          <input type="number" id="fm-mrr" class="fm-input" placeholder="15000" min="0"/>
+        </div>
+        <div class="fm-field">
+          <label class="fm-label">VERTICAL</label>
+          <input type="text" id="fm-vertical" class="fm-input" placeholder="AI/DevTools"/>
+        </div>
+        <div class="fm-field">
+          <label class="fm-label">TECHNICAL DENSITY SCORE <span class="fm-hint">(0.0 – 1.0)</span></label>
+          <input type="number" id="fm-tds" class="fm-input" placeholder="0.91" min="0" max="1" step="0.01"/>
+        </div>
+        <div class="fm-field fm-actions">
+          <button class="btn-primary fm-run-btn" id="runFounderMatch">
+            <i class="fas fa-play"></i> Run FoneClaw Match
+            <div class="btn-glow"></div>
+          </button>
+          <button class="btn-secondary fm-reset-btn" id="resetFounderMatch">
+            <i class="fas fa-redo"></i> Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Swarm Telemetry -->
+      <div class="swarm-section">
+        <div class="swarm-header"><i class="fas fa-network-wired"></i> SWARM TELEMETRY</div>
+        <div class="swarm-grid">
+
+          <div class="swarm-agent-card state-idle" id="swarm-YC_AlignmentAgent" style="--agent-color:#f97316">
+            <div class="sac-header">
+              <div class="sac-icon"><i class="fas fa-rocket"></i></div>
+              <div class="sac-info">
+                <div class="sac-name">YC_AlignmentAgent</div>
+                <div class="sac-desc">TAM ≥ $1B · Tech Density ≥ 0.85 · confidence 0.92</div>
+              </div>
+              <div class="sac-status">IDLE</div>
+            </div>
+            <div class="sac-telemetry">
+              <span class="sac-tel-empty">Awaiting dispatch...</span>
+            </div>
+          </div>
+
+          <div class="swarm-agent-card state-idle" id="swarm-TractionVelocityAgent" style="--agent-color:#34d399">
+            <div class="sac-header">
+              <div class="sac-icon"><i class="fas fa-chart-line"></i></div>
+              <div class="sac-info">
+                <div class="sac-name">TractionVelocityAgent</div>
+                <div class="sac-desc">MRR > $10K → SCALING · else PRE-SEED</div>
+              </div>
+              <div class="sac-status">IDLE</div>
+            </div>
+            <div class="sac-telemetry">
+              <span class="sac-tel-empty">Awaiting dispatch...</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Match Result -->
+      <div class="fm-result" id="fmResult" style="--result-color:#38bdf8">
+        <div class="fm-result-header">
+          <div class="fm-result-icon"><i class="fas fa-trophy"></i></div>
+          <div class="fm-result-meta">
+            <div class="fm-result-tier">TIER 1</div>
+            <div class="fm-result-name">Y Combinator (Core)</div>
+          </div>
+          <div class="fm-result-badge">
+            <span class="fm-result-status">ORCHESTRATED</span>
+          </div>
+        </div>
+        <div class="fm-result-desc"></div>
+        <div class="fm-result-tags"></div>
+        <div class="fm-result-id"></div>
+      </div>
+
+      <!-- Execution Log -->
+      <div class="log-panel">
+        <div class="log-header">
+          <span><i class="fas fa-terminal"></i> FONECLAW EXECUTION LOG</span>
+          <button class="log-clear" onclick="clearLog('fmLog')"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="log-body" id="fmLogBody">
+          <div class="log-entry info"><span class="log-msg">FoneClaw Swarm Orchestrator ready. Select a profile and run match.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- ── TOAST NOTIFICATION ── -->
@@ -880,6 +1000,7 @@
 <script src="execution.js"></script>
 <script src="market.js"></script>
 <script src="security.js"></script>
+<script src="founder-matching.js"></script>
 <script src="ui.js"></script>
 <script src="main.js"></script>
 </body>
