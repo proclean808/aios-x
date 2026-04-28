@@ -1,0 +1,240 @@
+# BotCast Arena · Debate Graph Definition
+# Version: 1.0.0
+# Framework: Microsoft Agent Framework 1.0 (GraphFlow pattern)
+# Protocol: TurnSignal Protocol — out-of-band deterministic multi-agent turn-taking
+# Entity: Venture Vision / PlatFormula.ONE
+# Classification: CONFIDENTIAL / IP
+
+metadata:
+  name: BotCast Arena Debate Graph
+  version: 1.0.0
+  created: "2026-04-28"
+  entity: Venture Vision / PlatFormula.ONE
+  framework: Microsoft Agent Framework 1.0
+  protocol: TurnSignal v1.0
+
+graph:
+  mode: sequential_graph_flow
+  checkpoint_enabled: true
+  replayable: true
+  human_injection_points:
+    - before_cross_exam
+    - before_synthesis
+
+# ── NODES ──────────────────────────────────────────────────────────────────
+nodes:
+
+  - id: opening
+    label: OPENING ARGUMENTS
+    icon: door-open
+    sequence: 1
+    objective: >
+      Each persona makes a structured opening argument. Must state:
+      (1) primary claim, (2) primary evidence citation, (3) key assumption.
+    turn_order: sequential
+    evidence_access: true
+    token_ceiling: 400
+    cost_ceiling_usd: 0.02
+    score_contribution: 0.15
+    input_schema: schemas/opening.schema.json
+    output_schema: schemas/opening.schema.json
+    failure_fallback: skip_with_log
+    allowed_agents:
+      - claude-skeptic
+      - local-redteam
+      - venture-bull
+      - technical-bear
+      - market-analyst
+
+  - id: rebuttal
+    label: REBUTTAL
+    icon: reply-all
+    sequence: 2
+    objective: >
+      Each persona rebuts the single strongest opposing claim from the opening stage.
+      Must: (1) name the claim being rebutted, (2) state the logical flaw,
+      (3) provide counter-evidence.
+    turn_order: sequential
+    evidence_access: true
+    token_ceiling: 400
+    cost_ceiling_usd: 0.02
+    score_contribution: 0.20
+    input_schema: schemas/rebuttal.schema.json
+    output_schema: schemas/rebuttal.schema.json
+    failure_fallback: skip_with_log
+    allowed_agents:
+      - claude-skeptic
+      - local-redteam
+      - venture-bull
+      - technical-bear
+      - market-analyst
+
+  - id: cross_exam
+    label: CROSS-EXAMINATION
+    icon: question-circle
+    sequence: 3
+    objective: >
+      TALON Moderator poses one probing question to each persona.
+      Personas must answer directly — no redirecting, no counter-questioning.
+      Questions target the weakest assumption in each persona's opening.
+    turn_order: moderator_then_respondents
+    evidence_access: true
+    token_ceiling: 300
+    cost_ceiling_usd: 0.015
+    score_contribution: 0.20
+    input_schema: schemas/cross_exam.schema.json
+    output_schema: schemas/cross_exam.schema.json
+    failure_fallback: skip_with_log
+    allowed_agents:
+      - talon-moderator
+      - claude-skeptic
+      - local-redteam
+      - venture-bull
+      - technical-bear
+      - market-analyst
+
+  - id: risk_discovery
+    label: RISK DISCOVERY
+    icon: exclamation-triangle
+    sequence: 4
+    objective: >
+      Each persona surfaces the single highest-risk element in the dominant
+      opposing argument. Produces a structured risk registry entry with:
+      (1) risk type, (2) likelihood (HIGH/MED/LOW), (3) impact, (4) mitigation.
+    turn_order: sequential
+    evidence_access: true
+    token_ceiling: 300
+    cost_ceiling_usd: 0.015
+    score_contribution: 0.15
+    input_schema: schemas/risk_discovery.schema.json
+    output_schema: schemas/risk_discovery.schema.json
+    failure_fallback: skip_with_log
+    allowed_agents:
+      - claude-skeptic
+      - local-redteam
+      - venture-bull
+      - technical-bear
+      - market-analyst
+
+  - id: synthesis
+    label: SYNTHESIS
+    icon: compress-arrows-alt
+    sequence: 5
+    objective: >
+      TALON Moderator synthesizes the full debate into structured consensus.
+      Produces: (1) high-conviction conclusions (≥2), (2) contested claims (≥1),
+      (3) risk registry summary, (4) recommended position with confidence level.
+    turn_order: moderator_only
+    evidence_access: true
+    token_ceiling: 600
+    cost_ceiling_usd: 0.03
+    score_contribution: 0.10
+    input_schema: schemas/synthesis.schema.json
+    output_schema: schemas/synthesis.schema.json
+    failure_fallback: generate_static
+    allowed_agents:
+      - talon-moderator
+
+  - id: judge
+    label: JUDGE SCORING
+    icon: gavel
+    sequence: 6
+    objective: >
+      Judge Engine scores each debating agent on five dimensions:
+      claim_strength, rebuttal_effectiveness, evidence_quality,
+      reasoning_rigor, novel_insight. Produces ranked scorecard.
+    turn_order: automated
+    evidence_access: false
+    token_ceiling: 0
+    cost_ceiling_usd: 0.0
+    score_contribution: 0.20
+    input_schema: schemas/judge.schema.json
+    output_schema: schemas/judge.schema.json
+    failure_fallback: use_deterministic_fallback
+    allowed_agents:
+      - judge-engine
+
+  - id: decision_memo
+    label: DECISION MEMO
+    icon: file-contract
+    sequence: 7
+    objective: >
+      Export complete structured decision memo as Markdown artifact.
+      Includes: topic, debate summary, claim table, risk registry,
+      synthesis consensus, judge rankings, final recommendation.
+    turn_order: automated
+    evidence_access: true
+    token_ceiling: 0
+    cost_ceiling_usd: 0.0
+    score_contribution: 0.0
+    input_schema: null
+    output_schema: null
+    failure_fallback: generate_partial
+    allowed_agents:
+      - export-engine
+
+# ── EDGES ──────────────────────────────────────────────────────────────────
+edges:
+  - from: opening
+    to: rebuttal
+    condition: all_agents_completed_or_fallback
+  - from: rebuttal
+    to: cross_exam
+    condition: all_agents_completed_or_fallback
+  - from: cross_exam
+    to: risk_discovery
+    condition: all_agents_completed_or_fallback
+  - from: risk_discovery
+    to: synthesis
+    condition: all_agents_completed_or_fallback
+  - from: synthesis
+    to: judge
+    condition: synthesis_completed
+  - from: judge
+    to: decision_memo
+    condition: scoring_completed
+
+# ── CHECKPOINTS ────────────────────────────────────────────────────────────
+checkpoints:
+  - after: opening
+    storage: localStorage_or_file
+  - after: rebuttal
+    storage: localStorage_or_file
+  - after: cross_exam
+    storage: localStorage_or_file
+  - before: synthesis
+    storage: localStorage_or_file
+
+# ── TURNSIGNAL PROTOCOL ────────────────────────────────────────────────────
+turnsignal:
+  protocol_version: "1.0"
+  channel_type: out_of_band_metadata
+  vad_bypass: true
+  description: >
+    Agents do not rely on acoustic silence to take turns.
+    Each agent submits a TurnIntent signal via the metadata channel.
+    The TALON Moderator dequeues signals and grants floor based on
+    stage priority, agent role, and signal urgency.
+  signal_types:
+    SPEAK_REQUEST:
+      priority_base: 50
+      description: Standard floor request to make an argument
+    EVIDENCE_CITE:
+      priority_base: 60
+      description: Request to cite a specific evidence node from MemSmart
+    REBUTTAL_REQUEST:
+      priority_base: 70
+      description: Urgent request to rebut a specific claim just made
+    CROSS_EXAM_ANSWER:
+      priority_base: 80
+      description: Response to a cross-examination question
+    YIELD:
+      priority_base: 10
+      description: Agent voluntarily yields the floor
+    INTERRUPT_REQUEST:
+      priority_base: 90
+      description: High-priority interrupt (only for critical factual corrections)
+  queue_policy: priority_fifo
+  moderator_agent: talon-moderator
+  max_queue_depth: 10
+  signal_ttl_ms: 30000

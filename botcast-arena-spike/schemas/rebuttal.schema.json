@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "botcast-arena/schemas/rebuttal",
+  "title": "Rebuttal Argument",
+  "description": "Schema for Rebuttal stage. Each agent rebuts the strongest opposing claim from the opening.",
+  "type": "object",
+  "required": ["agent_id", "stage", "rebuttal"],
+  "properties": {
+    "agent_id": { "type": "string" },
+    "stage": { "type": "string", "const": "rebuttal" },
+    "topic": { "type": "string" },
+    "turn_signal": {
+      "type": "object",
+      "properties": {
+        "signal_type": { "type": "string", "const": "REBUTTAL_REQUEST" },
+        "target_agent_id": { "type": "string", "description": "Which agent's claim is being rebutted" },
+        "granted_by": { "type": "string" },
+        "queue_position": { "type": "integer" },
+        "granted_at_ms": { "type": "integer" }
+      }
+    },
+    "rebuttal": {
+      "type": "object",
+      "required": ["text", "target_claim", "logical_flaw", "counter_evidence"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Full rebuttal text",
+          "maxLength": 2000
+        },
+        "target_agent_id": {
+          "type": "string",
+          "description": "ID of the agent whose claim is being rebutted"
+        },
+        "target_claim": {
+          "type": "string",
+          "description": "Verbatim or paraphrased claim being rebutted",
+          "maxLength": 300
+        },
+        "logical_flaw": {
+          "type": "string",
+          "description": "Specific logical flaw identified in the target claim",
+          "maxLength": 300
+        },
+        "counter_evidence": {
+          "type": "string",
+          "description": "Evidence that contradicts or weakens the target claim",
+          "maxLength": 300
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"]
+        }
+      }
+    },
+    "tokens_used": { "type": "integer" },
+    "latency_ms": { "type": "integer" },
+    "provider": { "type": "string" },
+    "fallback_used": { "type": "boolean", "default": false }
+  }
+}

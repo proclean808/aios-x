@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "botcast-arena/schemas/judge",
+  "title": "Judge Scoring",
+  "description": "Schema for Judge Engine output. Scores each agent across five dimensions.",
+  "type": "object",
+  "required": ["stage", "scores", "rankings"],
+  "properties": {
+    "stage": { "type": "string", "const": "judge" },
+    "topic": { "type": "string" },
+    "scores": {
+      "type": "object",
+      "description": "Map of agent_id → score breakdown",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["claim_strength", "rebuttal_effectiveness", "evidence_quality", "reasoning_rigor", "novel_insight", "total"],
+        "properties": {
+          "claim_strength": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "How well-supported are the primary claims? (weight: 0.25)"
+          },
+          "rebuttal_effectiveness": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "How effectively were opposing claims challenged? (weight: 0.25)"
+          },
+          "evidence_quality": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Quality and relevance of cited evidence (weight: 0.20)"
+          },
+          "reasoning_rigor": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Logical consistency and chain-of-thought quality (weight: 0.20)"
+          },
+          "novel_insight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Genuinely novel analysis surfaced (weight: 0.10)"
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Weighted total score"
+          },
+          "rubric_confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Judge Engine confidence in this scoring"
+          },
+          "stage_scores": {
+            "type": "object",
+            "description": "Breakdown by debate stage",
+            "properties": {
+              "opening": { "type": "number" },
+              "rebuttal": { "type": "number" },
+              "cross_exam": { "type": "number" },
+              "risk_discovery": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "rankings": {
+      "type": "array",
+      "description": "Ordered list of agents from highest to lowest total score",
+      "items": {
+        "type": "object",
+        "required": ["rank", "agent_id", "total_score"],
+        "properties": {
+          "rank": { "type": "integer", "minimum": 1 },
+          "agent_id": { "type": "string" },
+          "total_score": { "type": "number" },
+          "strongest_dimension": { "type": "string" },
+          "weakest_dimension": { "type": "string" }
+        }
+      }
+    },
+    "debate_quality_metrics": {
+      "type": "object",
+      "description": "Overall debate quality assessment",
+      "properties": {
+        "logic_coherence": { "type": "number", "minimum": 0, "maximum": 100 },
+        "factual_grounding": { "type": "number", "minimum": 0, "maximum": 100 },
+        "hallucination_risk": { "type": "number", "minimum": 0, "maximum": 100 },
+        "consensus_strength": { "type": "number", "minimum": 0, "maximum": 100 },
+        "adversarial_rigor": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    }
+  }
+}

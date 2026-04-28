@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initDebate();
   initMemory();
   initSecurity();
+  if (typeof initBotcast === 'function') initBotcast();
 
   // ── INIT EXECUTION CANVAS (when panel is first opened) ──
   // Done via onPanelActivate
@@ -105,7 +106,13 @@ window.onerror = (msg, src, line) => {
 
 // ── EXPOSE GLOBALS FOR HTML ONCLICK HANDLERS ──
 window.launchOrchestration = typeof launchOrchestration !== 'undefined' ? launchOrchestration : () => {};
-window.startDebate = typeof startDebate !== 'undefined' ? startDebate : () => {};
+window.startDebate    = typeof startDebate    !== 'undefined' ? startDebate    : () => {};
+window.startBotcast   = typeof startBotcast   !== 'undefined' ? startBotcast   : () => {};
+window.setBotcastTopic = typeof setBotcastTopic !== 'undefined' ? setBotcastTopic : () => {};
+window.exportTranscriptJSON = typeof exportTranscriptJSON !== 'undefined' ? exportTranscriptJSON : () => {};
+window.exportScorecardJSON  = typeof exportScorecardJSON  !== 'undefined' ? exportScorecardJSON  : () => {};
+window.exportDecisionMemoMD = typeof exportDecisionMemoMD !== 'undefined' ? exportDecisionMemoMD : () => {};
+window.updateActivePersonaCount = typeof updateActivePersonaCount !== 'undefined' ? updateActivePersonaCount : () => {};
 window.setDebateTopic = typeof setDebateTopic !== 'undefined' ? setDebateTopic : () => {};
 window.seedMemory = typeof seedMemory !== 'undefined' ? seedMemory : () => {};
 window.compressMemory = typeof compressMemory !== 'undefined' ? compressMemory : () => {};

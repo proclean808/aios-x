@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "botcast-arena/schemas/risk_discovery",
+  "title": "Risk Discovery",
+  "description": "Schema for Risk Discovery stage. Each agent surfaces the top risk in the dominant opposing argument.",
+  "type": "object",
+  "required": ["agent_id", "stage", "risk_entry"],
+  "properties": {
+    "agent_id": { "type": "string" },
+    "stage": { "type": "string", "const": "risk_discovery" },
+    "topic": { "type": "string" },
+    "turn_signal": {
+      "type": "object",
+      "properties": {
+        "signal_type": { "type": "string", "const": "SPEAK_REQUEST" },
+        "granted_by": { "type": "string" },
+        "queue_position": { "type": "integer" },
+        "granted_at_ms": { "type": "integer" }
+      }
+    },
+    "risk_entry": {
+      "type": "object",
+      "required": ["text", "risk_type", "likelihood", "impact", "mitigation", "target_position"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Full risk analysis text",
+          "maxLength": 1500
+        },
+        "target_position": {
+          "type": "string",
+          "description": "The opposing argument or position this risk challenges",
+          "maxLength": 300
+        },
+        "risk_type": {
+          "type": "string",
+          "enum": ["TECHNICAL", "MARKET", "REGULATORY", "EXECUTION", "FINANCIAL", "SECURITY", "ADOPTION"],
+          "description": "Category of risk"
+        },
+        "risk_title": {
+          "type": "string",
+          "description": "Short label for this risk (e.g. 'VAD Collision at Scale')",
+          "maxLength": 100
+        },
+        "likelihood": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"],
+          "description": "Probability of risk materializing"
+        },
+        "impact": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"],
+          "description": "Severity if risk materializes"
+        },
+        "mitigation": {
+          "type": "string",
+          "description": "Proposed mitigation or hedge",
+          "maxLength": 300
+        },
+        "time_horizon": {
+          "type": "string",
+          "enum": ["IMMEDIATE", "6_MONTHS", "12_MONTHS", "24_MONTHS", "LONG_TERM"],
+          "description": "When this risk is most likely to materialize"
+        }
+      }
+    },
+    "tokens_used": { "type": "integer" },
+    "latency_ms": { "type": "integer" },
+    "provider": { "type": "string" },
+    "fallback_used": { "type": "boolean", "default": false }
+  }
+}

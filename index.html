@@ -39,6 +39,7 @@
       <button class="nav-btn" data-panel="execution"><i class="fas fa-bolt"></i> Execution</button>
       <button class="nav-btn" data-panel="market"><i class="fas fa-chart-line"></i> Market Intel</button>
       <button class="nav-btn" data-panel="security"><i class="fas fa-shield-alt"></i> Security</button>
+      <button class="nav-btn botcast-nav-btn" data-panel="botcast"><i class="fas fa-broadcast-tower"></i> BotCast Arena</button>
     </nav>
     <div class="header-status">
       <div class="status-indicator active" id="systemStatus">
@@ -857,6 +858,193 @@
     </div>
   </section>
 
+  <!-- ══════════════════════════════════════
+       PANEL 7: BOTCAST ARENA
+  ══════════════════════════════════════ -->
+  <section class="panel" id="panel-botcast">
+    <div class="panel-header">
+      <h2><i class="fas fa-broadcast-tower"></i> BotCast Arena
+        <span class="bc-live-badge" id="broadcastBadge">STANDBY</span>
+        <span class="bc-dot" id="broadcastDot"></span>
+      </h2>
+      <p class="panel-desc">TALON Orchestration Mesh · TurnSignal Protocol v1.0 · Deterministic Adversarial Debate Graph · LinkedIn Live</p>
+    </div>
+
+    <div class="botcast-container">
+
+      <!-- ── CONFIG ROW ── -->
+      <div class="bc-config-row">
+        <div class="bc-topic-block">
+          <label class="input-label">DEBATE TOPIC <span class="badge">TurnSignal</span></label>
+          <div class="bc-topic-pills">
+            <span class="bc-topic-pill" onclick="setBotcastTopic(this)">Should enterprise AI adopt open-source models or proprietary APIs?</span>
+            <span class="bc-topic-pill" onclick="setBotcastTopic(this)">Is multi-agent orchestration the missing layer in the AI stack?</span>
+            <span class="bc-topic-pill" onclick="setBotcastTopic(this)">Is $189B in Q1 2026 VC funding a bubble or genuine infrastructure?</span>
+            <span class="bc-topic-pill" onclick="setBotcastTopic(this)">Do AI debate engines produce better venture decisions than human analysts?</span>
+            <span class="bc-topic-pill" onclick="setBotcastTopic(this)">Is the EU AI Act a compliance moat or a market access barrier?</span>
+          </div>
+          <input type="text" id="botcastTopic" class="debate-input"
+            placeholder="Enter debate topic or select above... (Ctrl+Enter to start)"
+            value="Should enterprise AI adopt open-source models or proprietary APIs?"/>
+        </div>
+        <div class="bc-controls-block">
+          <button class="btn-primary bc-start-btn" id="startBotcast">
+            <i class="fas fa-broadcast-tower"></i> Start BotCast
+            <div class="btn-glow"></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── PERSONA SELECTOR ── -->
+      <div class="bc-persona-selector-wrap">
+        <div class="bc-ps-header">
+          <i class="fas fa-users"></i> PERSONA REGISTRY
+          <span class="badge" id="activePersonaCount">5 active</span>
+        </div>
+        <div class="bc-persona-selector" id="personaSelector">
+          <!-- Populated by botcast.js initBotcast() -->
+        </div>
+      </div>
+
+      <!-- ── MAIN GRID: BROADCAST MONITOR + TURNSIGNAL PANEL ── -->
+      <div class="bc-main-grid">
+
+        <!-- Left: Broadcast Monitor -->
+        <div class="bc-broadcast-monitor">
+
+          <!-- Current Speaker Display -->
+          <div class="bc-speaker-card" id="currentSpeakerCard">
+            <div class="bc-speaker-cs" id="currentSpeakerCallsign">?</div>
+            <div class="bc-speaker-info">
+              <div class="bc-speaker-name" id="currentSpeakerName">—</div>
+              <div class="bc-speaker-role" id="currentSpeakerRole"></div>
+            </div>
+            <div class="bc-speaker-status">
+              <span class="bc-speaker-dot"></span>SPEAKING
+            </div>
+          </div>
+
+          <!-- Debate Graph Progress -->
+          <div class="bc-graph-progress">
+            <div class="bc-gp-label"><i class="fas fa-project-diagram"></i> DEBATE GRAPH — TALON GraphFlow</div>
+            <div class="bc-graph-nodes">
+              <div class="stage-node pending" id="stage-node-opening">
+                <i class="fas fa-door-open"></i>
+                <span>Opening</span>
+              </div>
+              <div class="stage-node-arrow">→</div>
+              <div class="stage-node pending" id="stage-node-rebuttal">
+                <i class="fas fa-reply-all"></i>
+                <span>Rebuttal</span>
+              </div>
+              <div class="stage-node-arrow">→</div>
+              <div class="stage-node pending" id="stage-node-cross_exam">
+                <i class="fas fa-question-circle"></i>
+                <span>Cross-Exam</span>
+              </div>
+              <div class="stage-node-arrow">→</div>
+              <div class="stage-node pending" id="stage-node-risk_discovery">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Risk</span>
+              </div>
+              <div class="stage-node-arrow">→</div>
+              <div class="stage-node pending" id="stage-node-synthesis">
+                <i class="fas fa-compress-arrows-alt"></i>
+                <span>Synthesis</span>
+              </div>
+              <div class="stage-node-arrow">→</div>
+              <div class="stage-node pending" id="stage-node-judge">
+                <i class="fas fa-gavel"></i>
+                <span>Judge</span>
+              </div>
+              <div class="stage-node-arrow">→</div>
+              <div class="stage-node pending" id="stage-node-decision_memo">
+                <i class="fas fa-file-contract"></i>
+                <span>Memo</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Synthesis Output -->
+          <div class="bc-synthesis-panel">
+            <div class="bc-sp-header"><i class="fas fa-compress-arrows-alt"></i> TALON SYNTHESIS</div>
+            <div class="bc-sp-body" id="botcastSynthesisText">Awaiting synthesis...</div>
+          </div>
+        </div>
+
+        <!-- Right: TurnSignal Queue + Log -->
+        <div class="bc-right-panel">
+          <!-- TurnSignal Queue -->
+          <div class="bc-turnsignal-panel">
+            <div class="bc-ts-header">
+              <i class="fas fa-network-wired"></i> TURNSIGNAL QUEUE
+              <span class="badge-small">Out-of-band · VAD bypass</span>
+            </div>
+            <div class="bc-ts-desc">Agents submit floor requests via metadata channel. TALON grants floor sequentially — no audio collision.</div>
+            <div class="bc-queue-body" id="botcastQueue">
+              <div class="tsq-empty">Queue empty — broadcast not started</div>
+            </div>
+          </div>
+
+          <!-- TALON Moderator Status -->
+          <div class="bc-moderator-status">
+            <div class="bc-mod-header">
+              <span class="bc-mod-callsign" style="color:#a78bfa">TM</span>
+              <span>TALON Moderator</span>
+              <span class="badge" style="background:rgba(167,139,250,0.15);color:#a78bfa">Orchestration Node</span>
+            </div>
+            <div class="bc-mod-desc">GraphFlow state machine · Evidence injection · Floor dealer · Synthesis engine</div>
+          </div>
+
+          <!-- BotCast Log -->
+          <div class="log-panel bc-log">
+            <div class="log-header">
+              <span><i class="fas fa-terminal"></i> BOTCAST LOG</span>
+              <button class="log-clear" onclick="clearLog('botcastLog')"><i class="fas fa-trash"></i></button>
+            </div>
+            <div class="log-body" id="botcastLogBody"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── DEBATE TRANSCRIPT ── -->
+      <div class="bc-transcript-panel">
+        <div class="bc-tp-header">
+          <i class="fas fa-scroll"></i> DEBATE TRANSCRIPT
+          <span class="badge-small">Real-time · All stages</span>
+        </div>
+        <div class="bc-transcript" id="botcastTranscript">
+          <div class="bc-transcript-empty">Start BotCast to see debate transcript...</div>
+        </div>
+      </div>
+
+      <!-- ── ARTIFACTS (revealed after debate) ── -->
+      <div class="bc-artifacts bc-hidden" id="botcastArtifacts">
+        <div class="bc-art-header">
+          <i class="fas fa-archive"></i> DEBATE ARTIFACTS
+          <div class="bc-art-exports">
+            <button class="mp-btn" onclick="exportTranscriptJSON()"><i class="fas fa-download"></i> transcript.json</button>
+            <button class="mp-btn" onclick="exportScorecardJSON()"><i class="fas fa-download"></i> scorecard.json</button>
+            <button class="mp-btn" onclick="exportDecisionMemoMD()"><i class="fas fa-download"></i> decision_memo.md</button>
+          </div>
+        </div>
+
+        <!-- Judge Scorecard -->
+        <div class="bc-art-section">
+          <div class="bc-art-section-title"><i class="fas fa-gavel"></i> JUDGE SCORECARD</div>
+          <div class="bc-scorecard-grid" id="botcastScorecard"></div>
+        </div>
+
+        <!-- Decision Memo -->
+        <div class="bc-art-section">
+          <div class="bc-art-section-title"><i class="fas fa-file-contract"></i> DECISION MEMO</div>
+          <pre class="bc-memo-output" id="botcastMemo"></pre>
+        </div>
+      </div>
+
+    </div><!-- /botcast-container -->
+  </section>
+
 </main>
 
 <!-- ── TOAST NOTIFICATION ── -->
@@ -881,6 +1069,8 @@
 <script src="market.js"></script>
 <script src="security.js"></script>
 <script src="ui.js"></script>
+<script src="personas.js"></script>
+<script src="botcast.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

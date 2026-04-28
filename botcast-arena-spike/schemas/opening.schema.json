@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "botcast-arena/schemas/opening",
+  "title": "Opening Argument",
+  "description": "Schema for Opening stage input/output. Each agent makes a structured opening argument.",
+  "type": "object",
+  "required": ["agent_id", "stage", "argument"],
+  "properties": {
+    "agent_id": {
+      "type": "string",
+      "description": "Persona ID from persona registry"
+    },
+    "stage": {
+      "type": "string",
+      "const": "opening"
+    },
+    "topic": {
+      "type": "string",
+      "description": "The debate topic"
+    },
+    "turn_signal": {
+      "type": "object",
+      "description": "TurnSignal metadata for this turn",
+      "properties": {
+        "signal_type": { "type": "string", "const": "SPEAK_REQUEST" },
+        "granted_by": { "type": "string" },
+        "queue_position": { "type": "integer" },
+        "granted_at_ms": { "type": "integer" }
+      }
+    },
+    "argument": {
+      "type": "object",
+      "required": ["text", "primary_claim", "primary_evidence", "key_assumption"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Full argument text",
+          "maxLength": 2000
+        },
+        "primary_claim": {
+          "type": "string",
+          "description": "Single-sentence statement of the primary claim",
+          "maxLength": 200
+        },
+        "primary_evidence": {
+          "type": "string",
+          "description": "Key evidence citation or data point",
+          "maxLength": 300
+        },
+        "key_assumption": {
+          "type": "string",
+          "description": "The most load-bearing assumption in the argument",
+          "maxLength": 200
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"],
+          "description": "Agent-reported confidence level"
+        }
+      }
+    },
+    "tokens_used": {
+      "type": "integer",
+      "description": "Tokens consumed by this turn"
+    },
+    "latency_ms": {
+      "type": "integer",
+      "description": "Provider call latency"
+    },
+    "provider": {
+      "type": "string",
+      "description": "Which provider adapter was used"
+    },
+    "fallback_used": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether a fallback provider was used"
+    }
+  }
+}

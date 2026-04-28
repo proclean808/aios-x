@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "botcast-arena/schemas/synthesis",
+  "title": "Synthesis",
+  "description": "Schema for Synthesis stage output from TALON Moderator.",
+  "type": "object",
+  "required": ["agent_id", "stage", "synthesis"],
+  "properties": {
+    "agent_id": { "type": "string", "const": "talon-moderator" },
+    "stage": { "type": "string", "const": "synthesis" },
+    "topic": { "type": "string" },
+    "synthesis": {
+      "type": "object",
+      "required": ["text", "high_conviction_conclusions", "contested_claims", "recommended_position", "confidence_level"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Full synthesis narrative",
+          "maxLength": 3000
+        },
+        "high_conviction_conclusions": {
+          "type": "array",
+          "description": "Claims supported by ≥3 agents or strong evidence",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["claim", "supporting_agents", "evidence_strength"],
+            "properties": {
+              "claim": { "type": "string", "maxLength": 300 },
+              "supporting_agents": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "evidence_strength": {
+                "type": "string",
+                "enum": ["STRONG", "MODERATE", "WEAK"]
+              }
+            }
+          }
+        },
+        "contested_claims": {
+          "type": "array",
+          "description": "Claims where significant disagreement exists",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["claim", "pro_agents", "con_agents"],
+            "properties": {
+              "claim": { "type": "string", "maxLength": 300 },
+              "pro_agents": { "type": "array", "items": { "type": "string" } },
+              "con_agents": { "type": "array", "items": { "type": "string" } },
+              "resolution": { "type": "string", "maxLength": 200 }
+            }
+          }
+        },
+        "risk_summary": {
+          "type": "array",
+          "description": "Top risks surfaced during risk discovery stage",
+          "items": {
+            "type": "object",
+            "properties": {
+              "risk_title": { "type": "string" },
+              "likelihood": { "type": "string" },
+              "impact": { "type": "string" },
+              "surfaced_by": { "type": "string" }
+            }
+          }
+        },
+        "recommended_position": {
+          "type": "string",
+          "description": "TALON's synthesized recommendation",
+          "maxLength": 500
+        },
+        "confidence_level": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"],
+          "description": "TALON's confidence in the recommended position"
+        },
+        "confidence_percentage": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Numeric confidence score"
+        }
+      }
+    },
+    "tokens_used": { "type": "integer" },
+    "latency_ms": { "type": "integer" },
+    "provider": { "type": "string" }
+  }
+}
