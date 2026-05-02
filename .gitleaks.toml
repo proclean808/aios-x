@@ -1,0 +1,108 @@
+# BotCast Arena / PlatFormula.ONE — Gitleaks Configuration
+# Blocks secrets from entering commits and CI pipelines.
+# Run: gitleaks detect --source . -v
+
+title = "PlatFormula.ONE Secret Scanner"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id          = "anthropic-api-key"
+description = "Anthropic API Key"
+regex       = '''sk-ant-[a-zA-Z0-9\-_]{32,}'''
+keywords    = ["sk-ant"]
+
+[[rules]]
+id          = "openai-api-key"
+description = "OpenAI API Key"
+regex       = '''sk-[a-zA-Z0-9]{32,}'''
+keywords    = ["openai", "sk-"]
+
+[[rules]]
+id          = "gemini-api-key"
+description = "Google Gemini / AI Studio Key"
+regex       = '''AIza[a-zA-Z0-9_\-]{35}'''
+keywords    = ["AIza", "gemini"]
+
+[[rules]]
+id          = "groq-api-key"
+description = "Groq API Key"
+regex       = '''gsk_[a-zA-Z0-9]{32,}'''
+keywords    = ["groq", "gsk_"]
+
+[[rules]]
+id          = "xai-grok-key"
+description = "xAI Grok API Key"
+regex       = '''xai-[a-zA-Z0-9]{32,}'''
+keywords    = ["xai-"]
+
+[[rules]]
+id          = "supabase-service-key"
+description = "Supabase Service Role Key (JWT)"
+regex       = '''eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[a-zA-Z0-9_\-]+\.[a-zA-Z0-9_\-]+'''
+keywords    = ["supabase", "service_role", "anon"]
+
+[[rules]]
+id          = "supabase-url"
+description = "Supabase Project URL"
+regex       = '''https://[a-z0-9]+\.supabase\.co'''
+keywords    = ["supabase.co"]
+
+[[rules]]
+id          = "stripe-key"
+description = "Stripe Secret or Restricted Key"
+regex       = '''sk_(?:live|test)_[a-zA-Z0-9]{24,}'''
+keywords    = ["stripe", "sk_live", "sk_test"]
+
+[[rules]]
+id          = "stripe-webhook-secret"
+description = "Stripe Webhook Signing Secret"
+regex       = '''whsec_[a-zA-Z0-9]{32,}'''
+keywords    = ["whsec_"]
+
+[[rules]]
+id          = "ngrok-token"
+description = "ngrok Auth Token"
+regex       = '''[0-9a-zA-Z]{20,}_[0-9a-zA-Z]{20,}'''
+keywords    = ["ngrok", "authtoken"]
+
+[[rules]]
+id          = "github-pat"
+description = "GitHub Personal Access Token"
+regex       = '''gh[pousr]_[a-zA-Z0-9]{36,}'''
+keywords    = ["github_token", "ghp_", "gho_", "ghu_", "ghs_", "ghr_"]
+
+[[rules]]
+id          = "database-url"
+description = "Database connection string with credentials"
+regex       = '''(?:postgres|postgresql|mysql|mongodb)(?:ql)?://[^:]+:[^@]+@'''
+keywords    = ["DATABASE_URL", "POSTGRES_URL", "MONGO_URI"]
+
+[[rules]]
+id          = "jwt-secret"
+description = "JWT signing secret"
+regex       = '''(?i)jwt[_\-]?secret\s*[:=]\s*["']?[a-zA-Z0-9+/=_\-]{16,}'''
+keywords    = ["JWT_SECRET", "jwt_secret"]
+
+[[rules]]
+id          = "smtp-credentials"
+description = "SMTP password in URL or env"
+regex       = '''smtp://[^:]+:[^@]{6,}@'''
+keywords    = ["smtp", "SMTP_PASS"]
+
+[allowlist]
+description = "Global allowlist"
+paths       = [
+  ".gitleaks.toml",
+  "security/credential-rotation-checklist.md",
+  ".env.example",
+  "tests/setup/test-utils.js",
+]
+regexes     = [
+  # Test / example key patterns
+  '''sk-ant-test[a-zA-Z0-9]{20,}''',
+  '''sk-test-[a-zA-Z0-9]{20,}''',
+  '''REPLACE_WITH_.*''',
+  '''your[-_].*[-_]here''',
+]

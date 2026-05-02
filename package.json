@@ -2,13 +2,36 @@
   "name": "aios-x",
   "version": "1.0.1",
   "type": "module",
-  "description": "AIOS-X - Agentic Intelligence Orchestration System",
+  "description": "PlatFormula.ONE / BotCast Arena — AI founder platform",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node src/api/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:gates": "vitest run tests/gates/",
+    "test:botcast": "vitest run tests/botcast/",
+    "test:api": "vitest run tests/api/",
+    "test:e2e": "vitest run tests/botcast/end_to_end.test.js",
+    "test:coverage": "vitest run --coverage",
+    "test:redundancy": "vitest run tests/botcast/redundancy_failure.test.js --reporter=verbose"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "stripe": "^15.7.0"
   },
   "devDependencies": {
-    "vite": "^5.0.0"
+    "@vitest/coverage-v8": "^1.6.0",
+    "supertest": "^7.0.0",
+    "vite": "^5.0.0",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

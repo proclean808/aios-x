@@ -1,0 +1,53 @@
+# BotCast Arena / PlatFormula.ONE — Pre-commit Hook Configuration
+# Install: pre-commit install && pre-commit install --hook-type commit-msg
+# Run manually: pre-commit run --all-files
+
+default_language_version:
+  node: system
+
+repos:
+  # ── Secret scanning (primary defense) ────────────────────────────────────
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.2
+    hooks:
+      - id: gitleaks
+        name: Scan for secrets (gitleaks)
+        args: ["--config", ".gitleaks.toml"]
+
+  # ── General file hygiene ──────────────────────────────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: "\\.(md|txt)$"
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: ["--unsafe"]
+      - id: check-json
+        exclude: "tsconfig.*\\.json$"
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: detect-private-key
+      - id: no-commit-to-branch
+        args: ["--branch", "main", "--branch", "master"]
+
+  # ── JavaScript / Node ─────────────────────────────────────────────────────
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.57.0
+    hooks:
+      - id: eslint
+        files: \.(js|mjs|cjs)$
+        additional_dependencies:
+          - eslint@8.57.0
+        args: ["--max-warnings=0"]
+        exclude: "botcast-arena-spike/"
+
+  # ── Commit message format ─────────────────────────────────────────────────
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.20.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+        additional_dependencies: [commitizen]

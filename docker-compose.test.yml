@@ -1,0 +1,21 @@
+version: "3.9"
+# Test-only compose — used by CI for integration tests
+
+services:
+  api-test:
+    build:
+      context: .
+      target: deps
+    container_name: platformula-api-test
+    command: npm run test -- --reporter=verbose
+    environment:
+      NODE_ENV: test
+      PORT: 3001
+      SUPABASE_URL: ${SUPABASE_URL:-http://localhost:54321}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-test-anon-key}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-test-service-key}
+      JWT_SECRET: test-jwt-secret-minimum-64-chars-padded-to-required-length-000000000
+      OLLAMA_BASE_URL: http://localhost:11434
+    volumes:
+      - .:/app
+      - /app/node_modules
