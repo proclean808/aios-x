@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexusflow.io/schemas/ingest-event.schema.json",
+  "title": "IngestEvent",
+  "description": "Canonical edge event emitted by the gateway for every inbound conversation payload.",
+  "type": "object",
+  "required": ["event_id", "tenant_id", "platform_source", "ingest_mode", "received_at", "payload"],
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "tenant_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "platform_source": {
+      "type": "string",
+      "enum": [
+        "openai_chatgpt",
+        "openai_agent",
+        "anthropic_claude",
+        "google_gemini",
+        "microsoft_copilot",
+        "meta_llama",
+        "perplexity",
+        "poe",
+        "slack_bot",
+        "discord_bot",
+        "custom_app",
+        "local_model"
+      ]
+    },
+    "ingest_mode": {
+      "type": "string",
+      "enum": ["realtime", "batch"]
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ingestion_source_id": {
+      "type": "string",
+      "description": "Connector / integration identifier configured per tenant"
+    },
+    "provider_metadata": {
+      "type": "object",
+      "description": "Raw provider-specific metadata preserved for audit"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Raw provider conversation payload as received from source"
+    }
+  }
+}

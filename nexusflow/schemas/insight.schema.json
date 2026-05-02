@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexusflow.io/schemas/insight.schema.json",
+  "title": "Insight",
+  "description": "Structured intelligence extracted from one or more sanitized conversation threads.",
+  "type": "object",
+  "required": ["insight_id", "tenant_id", "insight_type", "content", "status", "created_at"],
+  "additionalProperties": false,
+  "properties": {
+    "insight_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "source_thread_ids": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" }
+    },
+    "source_message_ids": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" }
+    },
+    "insight_type": {
+      "type": "string",
+      "enum": [
+        "decision",
+        "feature_request",
+        "risk",
+        "finding",
+        "action_item",
+        "knowledge_gap",
+        "requirement",
+        "blocker",
+        "customer_signal",
+        "architecture_note"
+      ]
+    },
+    "content": { "type": "string" },
+    "summary": { "type": "string" },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "evidence_links": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "id": { "type": "string" },
+          "url": { "type": "string" },
+          "verified": { "type": "boolean" }
+        }
+      }
+    },
+    "assigned_to": { "type": ["string", "null"], "format": "uuid" },
+    "due_date": { "type": ["string", "null"], "format": "date-time" },
+    "status": {
+      "type": "string",
+      "enum": ["new", "in_review", "verified", "rejected", "implemented"]
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "external_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "system": { "type": "string" },
+          "external_id": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    }
+  }
+}

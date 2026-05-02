@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexusflow.io/schemas/user.schema.json",
+  "title": "User",
+  "description": "NexusFlow user record. email_hash is stored instead of plaintext email.",
+  "type": "object",
+  "required": ["user_id", "tenant_id", "role", "created_at"],
+  "additionalProperties": false,
+  "properties": {
+    "user_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "email_hash": { "type": "string" },
+    "role": {
+      "type": "string",
+      "enum": ["admin", "analyst", "user", "viewer"]
+    },
+    "project_access": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" }
+    },
+    "platform_accounts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "platform": { "type": "string" },
+          "account_id": { "type": "string" },
+          "metadata": { "type": "object" }
+        }
+      }
+    },
+    "preferences": { "type": "object" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "last_login_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

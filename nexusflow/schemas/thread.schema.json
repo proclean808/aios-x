@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexusflow.io/schemas/thread.schema.json",
+  "title": "Thread",
+  "description": "Canonical representation of a normalized conversation thread.",
+  "type": "object",
+  "required": ["thread_id", "tenant_id", "platform_source", "status", "created_at"],
+  "additionalProperties": false,
+  "properties": {
+    "thread_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "platform_source": { "type": "string" },
+    "model_id": { "type": "string" },
+    "user_id": { "type": "string", "format": "uuid" },
+    "project_id": { "type": "string", "format": "uuid" },
+    "topic_tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "classification": {
+      "type": "string",
+      "enum": ["Public", "Internal", "Confidential", "Restricted", "Critical"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "archived", "quarantined", "deleted"]
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "last_activity": { "type": "string", "format": "date-time" },
+    "message_count": { "type": "integer", "minimum": 0 },
+    "token_count": { "type": "integer", "minimum": 0 },
+    "extracted_entities": {
+      "type": "object",
+      "description": "Named entities extracted from the thread"
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "risk_tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

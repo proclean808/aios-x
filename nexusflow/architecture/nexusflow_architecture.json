@@ -1,0 +1,125 @@
+{
+  "system_architecture": {
+    "system_name": "NexusFlow",
+    "full_name": "NexusFlow — Cross-Channel AI Thread Intelligence Orchestration Layer",
+    "version": "1.0.0",
+    "description": "A real-time cross-channel AI thread export, sanitization, classification, and intelligence-routing system that connects disconnected multi-model chat environments into a unified processing backbone.",
+    "generated_at": "2026-05-02"
+  },
+  "functional_layers": [
+    {
+      "layer": "ingestion",
+      "service": "nexusflow-gateway",
+      "description": "Multi-channel connector accepting webhooks, REST pull, WebSocket streaming, SSE, GraphQL, gRPC, and batch imports from all supported AI platforms.",
+      "input": "raw provider payloads",
+      "output": "IngestEvent on nexusflow.ingest.event_received",
+      "supported_sources": [
+        "openai_chatgpt", "openai_agent", "anthropic_claude", "google_gemini",
+        "microsoft_copilot", "meta_llama", "perplexity", "poe",
+        "slack_bot", "discord_bot", "custom_app", "local_model"
+      ]
+    },
+    {
+      "layer": "normalization",
+      "service": "nexusflow-normalizer",
+      "description": "Converts provider-specific payloads into canonical Thread and Message records. Preserves source metadata, model metadata, parent-child message relationships, tool calls, citations, and attachments.",
+      "input": "IngestEvent",
+      "output": "Thread, Message records + ThreadCreated / MessageCreated events"
+    },
+    {
+      "layer": "sanitization",
+      "service": "nexusflow-sanitizer",
+      "description": "TALON policy gate enforcing PII detection, secret scanning, credential quarantine, sensitive-topic classification, redaction, hashing, tokenization, and audit trail generation.",
+      "input": "MessageCreated events",
+      "output": "MessageSanitized events with redaction_log, risk_tags, policy_decision",
+      "policy_decisions": [
+        "ALLOW", "ALLOW_WITH_REDACTION", "HASH_FIELDS",
+        "TOKENIZE_FIELDS", "QUARANTINE", "BLOCK", "REVIEW_REQUIRED"
+      ]
+    },
+    {
+      "layer": "intelligence",
+      "service": "nexusflow-intelligence",
+      "description": "Extracts structured Insight entities from sanitized content. Identifies decisions, feature requests, risks, action items, findings, blockers, and architecture notes. Generates vector embeddings for semantic search.",
+      "input": "MessageSanitized events",
+      "output": "Insight records + InsightCreated events + Qdrant embeddings"
+    },
+    {
+      "layer": "routing",
+      "service": "nexusflow-router",
+      "description": "Policy-based routing engine that dispatches sanitized intelligence to downstream systems via durable Temporal workflows. Supports retries, backoff, idempotency, fan-out, and dead-letter handling.",
+      "input": "InsightCreated events",
+      "output": "RoutingEvent records + external system sync"
+    },
+    {
+      "layer": "dashboard",
+      "service": "nexusflow-dashboard",
+      "description": "Unified operational interface providing conversation explorer, insight review, action tracker, evidence trail, routing monitor, policy admin, connector management, and model performance views."
+    }
+  ],
+  "data_model": {
+    "entities": ["IngestEvent", "Thread", "Message", "Insight", "User", "RoutingEvent", "PlatformConnector"],
+    "schema_files": [
+      "nexusflow/schemas/ingest-event.schema.json",
+      "nexusflow/schemas/thread.schema.json",
+      "nexusflow/schemas/message.schema.json",
+      "nexusflow/schemas/insight.schema.json",
+      "nexusflow/schemas/user.schema.json",
+      "nexusflow/schemas/routing-event.schema.json"
+    ]
+  },
+  "event_bus": {
+    "technology": "NATS JetStream",
+    "stream": "NEXUSFLOW",
+    "subjects": {
+      "ingest": "nexusflow.ingest.>",
+      "thread": "nexusflow.thread.>",
+      "message": "nexusflow.message.>",
+      "insight": "nexusflow.insight.>",
+      "routing": "nexusflow.routing.>"
+    }
+  },
+  "stack": {
+    "frontend": "Next.js + React + Tailwind",
+    "api_gateway": "FastAPI",
+    "event_bus": "NATS JetStream",
+    "workflow_engine": "Temporal",
+    "metadata_db": "PostgreSQL 16",
+    "vector_store": "Qdrant",
+    "graph_layer": "Neo4j or PostgreSQL graph extension",
+    "object_storage": "MinIO / S3",
+    "search": "OpenSearch",
+    "auth": "WorkOS / Clerk / Auth0 / OIDC",
+    "observability": "OpenTelemetry + Grafana + Prometheus",
+    "policy_gate": "TALON",
+    "memory_layer": "MemBRAIN"
+  },
+  "security": {
+    "encryption_at_rest": "AES-256-GCM",
+    "encryption_in_transit": "TLS 1.3",
+    "field_level_encryption": "Deterministic encryption for sensitive identifiers",
+    "secrets_management": "Vault-backed secret storage",
+    "access_control": ["RBAC", "ABAC", "SSO via SAML 2.0 / OIDC", "Tenant isolation"],
+    "compliance": ["GDPR", "CCPA", "SOC 2", "ISO 27001", "HIPAA-ready"]
+  },
+  "performance_targets": {
+    "ingestion_latency_ms": 500,
+    "sanitization_and_classification_ms": 2000,
+    "routing_latency_ms": 1000,
+    "search_response_ms": 200,
+    "availability_percent": 99.99,
+    "throughput_messages_per_second": 10000
+  },
+  "mvp_v1_scope": [
+    "Chat thread import/export",
+    "Canonical schema normalization",
+    "PII and secret redaction",
+    "Thread and message storage",
+    "Insight extraction",
+    "Vector search",
+    "Manual review dashboard",
+    "Routing to one memory store and one knowledge base",
+    "Audit log",
+    "Admin source connector management"
+  ]
+}

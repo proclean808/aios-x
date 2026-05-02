@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexusflow.io/schemas/routing-event.schema.json",
+  "title": "RoutingEvent",
+  "description": "Event emitted by the router when an insight or thread is dispatched to a destination.",
+  "type": "object",
+  "required": ["routing_event_id", "tenant_id", "source_id", "source_type", "destination", "status", "created_at"],
+  "additionalProperties": false,
+  "properties": {
+    "routing_event_id": { "type": "string", "format": "uuid" },
+    "tenant_id": { "type": "string", "format": "uuid" },
+    "source_id": { "type": "string", "format": "uuid" },
+    "source_type": {
+      "type": "string",
+      "enum": ["thread", "message", "insight"]
+    },
+    "destination": {
+      "type": "object",
+      "required": ["system", "destination_type"],
+      "properties": {
+        "system": { "type": "string" },
+        "destination_type": {
+          "type": "string",
+          "enum": ["memory", "knowledge_base", "crm", "analytics", "project_management", "audit", "workflow", "communication"]
+        },
+        "endpoint": { "type": "string" },
+        "external_id": { "type": "string" }
+      }
+    },
+    "payload_summary": { "type": "object" },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "in_progress", "completed", "failed", "dead_lettered"]
+    },
+    "attempt_count": { "type": "integer", "minimum": 0 },
+    "error": { "type": ["string", "null"] },
+    "workflow_id": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

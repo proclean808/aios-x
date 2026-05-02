@@ -1,0 +1,121 @@
+# NexusFlow Routing Rules
+# Each rule is evaluated in order. First match wins.
+# destination_type must match the enum in RoutingDestination.
+
+version: "1.0"
+
+rules:
+
+  # Block all BLOCKED or QUARANTINED messages from routing anywhere except audit
+  - id: "block_quarantined"
+    description: "Route quarantined and blocked messages only to audit"
+    conditions:
+      sanitization_status:
+        - "blocked"
+        - "quarantined"
+    destinations:
+      - system: "internal_audit_ledger"
+        destination_type: "audit"
+    halt_on_match: true
+
+  # Route CRITICAL classified insights to the memory layer and audit
+  - id: "critical_to_audit"
+    description: "All CRITICAL content goes to audit log regardless of other routing"
+    conditions:
+      classification:
+        - "Critical"
+    destinations:
+      - system: "internal_audit_ledger"
+        destination_type: "audit"
+    halt_on_match: false
+
+  # Route action items to project management
+  - id: "action_items_to_pm"
+    description: "Action item insights route to Linear"
+    conditions:
+      insight_type:
+        - "action_item"
+      status:
+        - "new"
+        - "verified"
+      confidence_min: 0.70
+    destinations:
+      - system: "linear"
+        destination_type: "project_management"
+    halt_on_match: false
+
+  # Route decisions and findings to knowledge base
+  - id: "decisions_to_kb"
+    description: "Verified decisions and findings go to Notion knowledge base"
+    conditions:
+      insight_type:
+        - "decision"
+        - "finding"
+        - "architecture_note"
+      status:
+        - "verified"
+      confidence_min: 0.75
+    destinations:
+      - system: "notion"
+        destination_type: "knowledge_base"
+    halt_on_match: false
+
+  # Route risks and blockers to project management and memory
+  - id: "risks_to_pm_and_memory"
+    description: "Risks and blockers route to Linear and MemBRAIN"
+    conditions:
+      insight_type:
+        - "risk"
+        - "blocker"
+      confidence_min: 0.60
+    destinations:
+      - system: "linear"
+        destination_type: "project_management"
+      - system: "membrain"
+        destination_type: "memory"
+    halt_on_match: false
+
+  # Route all verified insights to MemBRAIN vector memory
+  - id: "all_verified_to_memory"
+    description: "All verified insights go to MemBRAIN long-term memory"
+    conditions:
+      status:
+        - "verified"
+    destinations:
+      - system: "membrain"
+        destination_type: "memory"
+    halt_on_match: false
+
+  # Route customer signals to CRM
+  - id: "customer_signals_to_crm"
+    description: "Customer signals route to HubSpot"
+    conditions:
+      insight_type:
+        - "customer_signal"
+      confidence_min: 0.65
+    destinations:
+      - system: "hubspot"
+        destination_type: "crm"
+    halt_on_match: false
+
+  # Route feature requests to project management
+  - id: "feature_requests_to_pm"
+    description: "Feature requests route to Linear backlog"
+    conditions:
+      insight_type:
+        - "feature_request"
+        - "requirement"
+      confidence_min: 0.65
+    destinations:
+      - system: "linear"
+        destination_type: "project_management"
+    halt_on_match: false
+
+  # Default: all processed insights go to audit
+  - id: "default_audit"
+    description: "All insights are written to the audit ledger"
+    conditions: {}
+    destinations:
+      - system: "internal_audit_ledger"
+        destination_type: "audit"
+    halt_on_match: false
