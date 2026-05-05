@@ -39,6 +39,7 @@
       <button class="nav-btn" data-panel="execution"><i class="fas fa-bolt"></i> Execution</button>
       <button class="nav-btn" data-panel="market"><i class="fas fa-chart-line"></i> Market Intel</button>
       <button class="nav-btn" data-panel="security"><i class="fas fa-shield-alt"></i> Security</button>
+      <button class="nav-btn" data-panel="motion"><i class="fas fa-film"></i> Motion Studio</button>
     </nav>
     <div class="header-status">
       <div class="status-indicator active" id="systemStatus">
@@ -857,6 +858,121 @@
     </div>
   </section>
 
+
+  <!-- ══════════════════════════════════════
+       PANEL 7: MOTION STUDIO
+  ══════════════════════════════════════ -->
+  <section class="panel" id="panel-motion">
+    <div class="panel-header">
+      <h2><i class="fas fa-film"></i> Motion Studio <span class="badge-new">NEW</span></h2>
+      <p class="panel-desc">Voice-driven · Deterministic seeding · TALON orchestration · Multi-model debate chain → real code motion graphics</p>
+    </div>
+
+    <div class="motion-studio">
+
+      <!-- ── TOP BAR: Prompt + Voice + Seed ── -->
+      <div class="mstudio-topbar">
+        <div class="mstudio-prompt-wrap">
+          <textarea id="motionPrompt" class="mstudio-prompt"
+            placeholder="Describe your motion graphic… e.g. 'Animate three Apple products sliding in with price and key features' · Ctrl+Enter to generate"
+            rows="2"></textarea>
+        </div>
+        <div class="mstudio-controls">
+          <button class="btn-voice" id="motionVoiceBtn">
+            <i class="fas fa-microphone"></i> Voice
+          </button>
+          <div class="mseed-wrap">
+            <label class="mseed-label">Seed</label>
+            <input type="number" id="motionSeed" class="mseed-input" value="42" min="1" max="9999">
+          </div>
+          <button class="btn-generate" id="motionGenerate">
+            <i class="fas fa-wand-magic-sparkles"></i> Generate
+          </button>
+        </div>
+        <div class="mstudio-status">
+          <span class="mstatus-dot" id="motionStatusDot"></span>
+          <span class="mstatus-txt" id="motionStatusTxt">Ready</span>
+        </div>
+      </div>
+
+      <!-- ── TEMPLATE GALLERY ── -->
+      <div class="mstudio-gallery-row">
+        <span class="mgallery-label">Templates</span>
+        <div class="mgallery-scroll" id="motionGallery">
+          <!-- Built by JS -->
+        </div>
+      </div>
+
+      <!-- ── WORKSPACE: Preview + Editor ── -->
+      <div class="mstudio-workspace">
+
+        <!-- Mobile Preview -->
+        <div class="mpreview-col">
+          <div class="mphone-frame">
+            <div class="mphone-notch"></div>
+            <div class="mphone-screen">
+              <canvas id="motionCanvas" width="390" height="692"></canvas>
+            </div>
+            <div class="mphone-bar"></div>
+          </div>
+          <div class="mplayback-bar">
+            <button class="mplay-btn" id="motionPlay"><i class="fas fa-play"></i></button>
+            <div class="mprog-track" id="motionProgressBar">
+              <div class="mprog-fill" id="motionProgFill"></div>
+            </div>
+            <span class="mtime" id="motionTime">0:00</span>
+          </div>
+        </div>
+
+        <!-- Editor Panel -->
+        <div class="meditor-col">
+          <div class="meditor-header">
+            <span class="meditor-title" id="motionTplName">Select a template</span>
+            <div class="meditor-actions">
+              <button class="mbtn-icon" id="motionRegen" title="Regenerate with new seed">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+              <button class="mbtn-icon" id="motionCopyCode" title="Copy export code">
+                <i class="fas fa-code"></i>
+              </button>
+              <button class="mbtn-icon" id="motionExportFrame" title="Export frame as PNG">
+                <i class="fas fa-image"></i>
+              </button>
+            </div>
+          </div>
+          <div class="meditor-body" id="motionEditorBody">
+            <div class="medit-placeholder">
+              <i class="fas fa-wand-magic-sparkles"></i>
+              <p>Generate a motion graphic to start editing parameters</p>
+            </div>
+          </div>
+
+          <!-- Debate Chain Status -->
+          <div class="mdebate-bar">
+            <div class="mdebate-label"><i class="fas fa-comments"></i> Debate Chain</div>
+            <div class="mdebate-models">
+              <span class="mdebate-model" style="color:#38bdf8">DeepSeek V4</span>
+              <span class="mdebate-sep">→</span>
+              <span class="mdebate-model" style="color:#a78bfa">Llama 4</span>
+              <span class="mdebate-sep">→</span>
+              <span class="mdebate-model" style="color:#34d399">Mistral 3</span>
+              <span class="mdebate-sep">→ Consensus</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TALON PIPELINE LOG ── -->
+      <div class="mstudio-log-panel">
+        <div class="mlog-header">
+          <span><i class="fas fa-terminal"></i> TALON Orchestration Log</span>
+        </div>
+        <div class="mlog-body" id="motionLog"></div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
 <!-- ── TOAST NOTIFICATION ── -->
@@ -880,6 +996,7 @@
 <script src="execution.js"></script>
 <script src="market.js"></script>
 <script src="security.js"></script>
+<script src="motion.js"></script>
 <script src="ui.js"></script>
 <script src="main.js"></script>
 </body>

@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── KEYBOARD HINT ──
   setTimeout(() => {
-    showToast('Press 1-6 to switch panels · Ctrl+Enter to launch orchestration', 'info', 4000);
+    showToast('Press 1-7 to switch panels · 7 = Motion Studio · Ctrl+Enter to launch', 'info', 4000);
   }, 2000);
 
   // ── PULSE SYSTEM STATUS ──
@@ -123,6 +123,9 @@ window.simulateAttack = typeof simulateAttack !== 'undefined' ? simulateAttack :
 window.probeModel = typeof probeModel !== 'undefined' ? probeModel : () => {};
 window.clearLog = typeof clearLog !== 'undefined' ? clearLog : () => {};
 window.closeModal = typeof closeModal !== 'undefined' ? closeModal : () => {};
+window.initMotion = typeof initMotion !== 'undefined' ? initMotion : () => {};
+window.startVoice = typeof startVoice !== 'undefined' ? startVoice : () => {};
+window.stopVoice  = typeof stopVoice  !== 'undefined' ? stopVoice  : () => {};
 window.previewMemoryNode = typeof previewMemoryNode !== 'undefined' ? previewMemoryNode : () => {};
 window.showVerticalDetail = typeof showVerticalDetail !== 'undefined' ? showVerticalDetail : () => {};
 window.showHybridDetail = typeof showHybridDetail !== 'undefined' ? showHybridDetail : () => {};
