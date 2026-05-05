@@ -411,7 +411,10 @@ class AIAssistantServiceWorker {
           theme: 'light', autoTranslate: false,
           slackWebhookUrl: '', slackChartUrl: '',
           sheetsApiKey: '', notionToken: '', notionDatabaseId: '',
-          trelloApiKey: '', trelloToken: '', trelloListId: ''
+          trelloApiKey: '', trelloToken: '', trelloListId: '',
+          ttsProvider: 'browser',
+          elevenLabsApiKey: '', elevenLabsVoiceId: 'cgSgspJ2msm6clMCkdW9',
+          smallestApiKey: '', smallestVoiceId: 'emily'
         }
       });
     }

@@ -84,6 +84,28 @@
             <div class="provider-indicator" id="provider-indicator">OpenAI</div>
           </div>
 
+          <!-- Voice Agent Panel (shown when agent is active) -->
+          <div id="voice-agent-panel" class="voice-agent-panel hidden">
+            <div class="agent-left">
+              <div class="agent-waveform">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <span id="agent-state-text">● Ready</span>
+            </div>
+            <div class="agent-right">
+              <span id="agent-provider-badge" class="agent-provider-badge">Browser</span>
+              <div class="agent-provider-row">
+                <label>Engine:</label>
+                <select id="tts-provider-select">
+                  <option value="elevenlabs">ElevenLabs</option>
+                  <option value="smallest">Smallest.ai</option>
+                  <option value="browser">Browser (Free)</option>
+                </select>
+              </div>
+              <button id="stop-agent-btn" class="stop-agent-btn">■ Stop</button>
+            </div>
+          </div>
+
           <div class="chat-messages" id="chat-messages">
             <div class="welcome-message">
               <div class="welcome-icon">👋</div>
@@ -117,6 +139,8 @@
 
             <!-- Voice controls bar -->
             <div class="voice-controls-bar">
+              <button id="voice-agent-btn" class="voice-agent-btn" title="Start fast-conversation agent">🎙 Start Agent</button>
+
               <button id="tts-btn" class="tts-btn" title="Mute AI voice">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -363,6 +387,53 @@
           <div class="setting-group">
             <label for="trello-token">Trello Token</label>
             <input type="password" id="trello-token">
+          </div>
+
+          <div class="setting-section-header">Voice Engine</div>
+
+          <div class="setting-group">
+            <label for="tts-provider-settings">TTS Provider</label>
+            <select id="tts-provider-settings">
+              <option value="browser">Browser (Free)</option>
+              <option value="elevenlabs">ElevenLabs</option>
+              <option value="smallest">Smallest.ai</option>
+            </select>
+            <small>Used by the Voice Agent and AI response read-aloud</small>
+          </div>
+
+          <div class="setting-group">
+            <label for="elevenlabs-key">ElevenLabs API Key</label>
+            <input type="password" id="elevenlabs-key" placeholder="...">
+            <small>Get yours at elevenlabs.io</small>
+          </div>
+          <div class="setting-group">
+            <label for="elevenlabs-voice">ElevenLabs Voice ID</label>
+            <select id="elevenlabs-voice">
+              <option value="cgSgspJ2msm6clMCkdW9">Jessica (default)</option>
+              <option value="21m00Tcm4TlvDq8ikWAM">Rachel</option>
+              <option value="ErXwobaYiN019PkySvjV">Antoni</option>
+              <option value="VR6AewLTigWG4xSOukaG">Arnold</option>
+              <option value="pNInz6obpgDQGcFmaJgB">Adam</option>
+              <option value="yoZ06aMxZJJ28mfd3POQ">Sam</option>
+            </select>
+          </div>
+
+          <div class="setting-group">
+            <label for="smallest-key">Smallest.ai API Key</label>
+            <input type="password" id="smallest-key" placeholder="...">
+            <small>Get yours at smallest.ai (Lightning model)</small>
+          </div>
+          <div class="setting-group">
+            <label for="smallest-voice">Smallest.ai Voice</label>
+            <select id="smallest-voice">
+              <option value="emily">Emily (female, US)</option>
+              <option value="jasmine">Jasmine (female, US)</option>
+              <option value="theresa">Theresa (female, US)</option>
+              <option value="james">James (male, US)</option>
+              <option value="stephen">Stephen (male, US)</option>
+              <option value="raj">Raj (male, Indian)</option>
+              <option value="arman">Arman (male, Indian)</option>
+            </select>
           </div>
         </div>
         <div class="modal-footer">

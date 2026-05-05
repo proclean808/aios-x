@@ -20,7 +20,9 @@
     "https://api.giphy.com/*",
     "https://sheets.googleapis.com/*",
     "https://api.notion.com/*",
-    "https://api.trello.com/*"
+    "https://api.trello.com/*",
+    "https://api.elevenlabs.io/*",
+    "https://waves-api.smallest.ai/*"
   ],
   "background": {
     "service_worker": "background/service-worker.js"

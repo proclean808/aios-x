@@ -1837,3 +1837,176 @@ body.dark-mode .chat-messages::-webkit-scrollbar-thumb:hover {
 .dark-mode .tts-btn:hover { background: #1f2937; color: #f9fafb; }
 .dark-mode .toggle-switch { background: #374151; }
 .dark-mode .interim-transcript { color: #6b7280; }
+
+/* ============================================================
+   Voice Agent Layer — ElevenLabs + Smallest.ai fast conversation
+   ============================================================ */
+
+/* Agent panel */
+.voice-agent-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--agent-bg, linear-gradient(135deg, #0f172a, #1e1b4b));
+  border-bottom: 1px solid rgba(99, 102, 241, 0.25);
+  border-top: 1px solid rgba(99, 102, 241, 0.25);
+  transition: opacity 0.2s;
+}
+
+.voice-agent-panel.hidden { display: none; }
+
+/* Waveform bars */
+.agent-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.agent-waveform {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+}
+
+.agent-waveform span {
+  display: block;
+  width: 3px;
+  border-radius: 2px;
+  background: #6366f1;
+  height: 6px;
+  transition: height 0.1s;
+}
+
+/* Animate bars when listening or speaking */
+.voice-agent-panel[data-state="listening"] .agent-waveform span,
+.voice-agent-panel[data-state="speaking"]  .agent-waveform span {
+  animation: agent-wave 0.8s ease-in-out infinite alternate;
+}
+
+.voice-agent-panel[data-state="listening"] .agent-waveform span { background: #22c55e; }
+.voice-agent-panel[data-state="speaking"]  .agent-waveform span { background: #f59e0b; }
+.voice-agent-panel[data-state="thinking"]  .agent-waveform span { background: #8b5cf6; animation: agent-pulse 1.2s ease-in-out infinite; }
+
+.agent-waveform span:nth-child(1) { animation-delay: 0s;    animation-duration: 0.6s; }
+.agent-waveform span:nth-child(2) { animation-delay: 0.1s;  animation-duration: 0.9s; }
+.agent-waveform span:nth-child(3) { animation-delay: 0.2s;  animation-duration: 0.7s; }
+.agent-waveform span:nth-child(4) { animation-delay: 0.05s; animation-duration: 1.0s; }
+.agent-waveform span:nth-child(5) { animation-delay: 0.15s; animation-duration: 0.8s; }
+
+@keyframes agent-wave {
+  from { height: 4px; }
+  to   { height: 18px; }
+}
+
+@keyframes agent-pulse {
+  0%, 100% { height: 6px; opacity: 0.5; }
+  50%       { height: 14px; opacity: 1; }
+}
+
+/* Agent state text */
+#agent-state-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: #e2e8f0;
+  white-space: nowrap;
+}
+
+/* Agent right controls */
+.agent-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.agent-provider-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(99, 102, 241, 0.2);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.agent-provider-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.agent-provider-row select {
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  background: rgba(15, 23, 42, 0.8);
+  color: #e2e8f0;
+  cursor: pointer;
+}
+
+/* Stop agent button */
+.stop-agent-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.stop-agent-btn:hover { background: rgba(239, 68, 68, 0.2); }
+
+/* Start Agent button in voice controls bar */
+.voice-agent-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--text-secondary, #6b7280);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.voice-agent-btn:hover {
+  background: rgba(99, 102, 241, 0.18);
+  color: #6366f1;
+  border-color: #6366f1;
+}
+
+.voice-agent-btn.active {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border-color: #6366f1;
+}
+
+/* Settings section header */
+.setting-section-header {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6366f1;
+  padding: 12px 0 4px;
+  border-top: 1px solid var(--border, #e5e7eb);
+  margin-top: 8px;
+}
+
+/* Dark mode overrides */
+.dark-mode .voice-agent-panel { background: linear-gradient(135deg, #0f172a, #1e1b4b); }
+.dark-mode .voice-agent-btn   { color: #94a3b8; border-color: rgba(99,102,241,0.3); }
+.dark-mode .voice-agent-btn:hover { color: #a5b4fc; }
+.dark-mode .setting-section-header { border-top-color: #1e293b; }
